@@ -57,7 +57,7 @@ export function FloatingCTA() {
         size="sm"
         data-cursor="book"
         tabIndex={shown ? undefined : -1}
-        className="shadow-[0_8px_24px_-12px_rgba(28,24,21,0.5)]"
+        className="shadow-[0_10px_30px_-12px_rgba(0,0,0,0.85)]"
       >
         Randevu Al
       </ButtonLink>

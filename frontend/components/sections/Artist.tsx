@@ -10,13 +10,13 @@ import { Reveal } from "@/components/ui/Reveal";
  */
 const POINTS = [
   "Dövmeyi geçici bir trend değil, kalıcı bir cümle olarak görüyorum. Her proje; uzun bir dinleme, birkaç taslak ve tek bir doğru çizgiye ulaşana kadar süren bir arınma süreci.",
-  "2016'da İstanbul'da çıraklıkla başladım. 2019'da kendi stüdyomu açtım ve ince çizgi çalışmalarına yoğunlaştım; 2022'den beri neo-traditional portre serisiyle konuk sanatçı olarak çalışıyorum.",
-  "İnce çizgi, neo-traditional, geometrik nokta çalışması ve blackwork — dört ayrı dil, tek bir el. Karaköy'deki stüdyoda yalnızca bire bir randevularla, sınırlı sayıda proje alıyorum.",
+  "2016'da Lefke'de çıraklıkla başladım. 2019'da kendi stüdyomu açtım ve ince çizgi çalışmalarına yoğunlaştım; 2022'den beri neo-traditional portre serisiyle konuk sanatçı olarak çalışıyorum.",
+  "İnce çizgi, neo-traditional, geometrik nokta çalışması ve blackwork — dört ayrı dil, tek bir el. Lefke'deki stüdyoda yalnızca bire bir randevularla, sınırlı sayıda proje alıyorum.",
 ] as const;
 
 export function Artist() {
   return (
-    <section id="sanatci" className="board-surface relative px-6 py-24 sm:px-10 sm:py-32">
+    <section id="hakkimda" className="bg-notebook relative px-6 py-24 sm:px-10 sm:py-32">
       <div className="mx-auto max-w-6xl">
         <div className="grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
           <Reveal className="lg:rotate-[-1.5deg]">
@@ -39,57 +39,23 @@ export function Artist() {
 
           <div className="flex flex-col gap-10">
             <Reveal>
-              <Eyebrow className="mb-4 block">Sanatçı</Eyebrow>
-              <h2 className="font-serif text-[clamp(2.5rem,7vw,5rem)] leading-[0.92] tracking-[-0.02em] text-ink">
-                Sanatçıyla
-                <br />
-                Tanış
+
+              <h2 className="font-hand text-[clamp(3rem,8vw,5.5rem)] leading-[0.92] text-amber drop-shadow-[0_0_8px_rgba(209,140,64,0.3)]">
+                Hakkımda
               </h2>
             </Reveal>
 
-            <ul className="flex flex-col gap-7">
+            <ul className="flex flex-col gap-8">
               {POINTS.map((point, i) => (
                 <Reveal as="li" key={i} delay={i * 90} className="flex gap-4">
-                  <span aria-hidden className="mt-2.5 h-1.5 w-1.5 shrink-0 bg-amber" />
-                  <p className="max-w-lg leading-relaxed text-ink/85">{point}</p>
+                  <span aria-hidden className="mt-3.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber/70" />
+                  <p className="max-w-xl font-hand text-2xl leading-[32px] text-ink-soft/90">{point}</p>
                 </Reveal>
               ))}
             </ul>
           </div>
         </div>
 
-        <div className="mt-20 grid items-end gap-16 lg:mt-10 lg:grid-cols-[1fr_0.85fr]">
-          <Reveal>
-            <h3
-              aria-hidden
-              className="font-serif text-[clamp(4rem,14vw,11rem)] leading-[0.8] tracking-[-0.03em] text-ink/90"
-            >
-              Irmak
-            </h3>
-          </Reveal>
-
-          <Reveal delay={120} className="relative lg:rotate-[1deg]">
-            <figure className="paper-card relative p-2.5">
-              <span className="tape absolute right-6 top-0 h-6 w-24 -translate-y-1/2 rotate-[4deg]" />
-              <div className="relative aspect-[16/10] overflow-hidden bg-parchment">
-                <Image
-                  src="/images/hero/hero-ref.jpg"
-                  alt="Stüdyonun akşam ışığındaki hali"
-                  fill
-                  sizes="(min-width: 1024px) 34vw, 90vw"
-                  className="object-cover"
-                />
-              </div>
-            </figure>
-
-            <div className="absolute -bottom-9 left-2 w-44 rotate-[-4deg] bg-note px-4 py-3 shadow-[0_8px_20px_-12px_rgba(28,24,21,0.5)] sm:-left-8 sm:w-52">
-              <span aria-hidden className="pin absolute -top-1.5 left-1/2 -translate-x-1/2" />
-              <p className="font-hand text-xl leading-tight text-ink-soft">
-                Karaköy, İstanbul — yalnızca randevu ile
-              </p>
-            </div>
-          </Reveal>
-        </div>
       </div>
     </section>
   );

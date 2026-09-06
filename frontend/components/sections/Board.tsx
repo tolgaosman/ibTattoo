@@ -6,7 +6,10 @@ import clsx from "clsx";
 import { Lightbox } from "@/components/work/Lightbox";
 import { Eyebrow } from "@/components/ui/Label";
 import { Reveal } from "@/components/ui/Reveal";
+import { ButtonLink } from "@/components/ui/Button";
 import { STYLE_LABELS, tattoos } from "@/lib/tattoos";
+
+const boardTattoos = tattoos.slice(0, 9);
 
 /**
  * The gallery, staged as the reference's corkboard: taped polaroids scattered
@@ -57,11 +60,11 @@ export function Board() {
   const [index, setIndex] = useState<number | null>(null);
 
   return (
-    <section id="pano" className="board-surface px-6 py-24 sm:px-10 sm:py-32">
+    <section id="pano" className="bg-notebook px-6 py-24 sm:px-10 sm:py-32">
       <Reveal className="mx-auto mb-16 flex max-w-2xl flex-col items-center gap-4 text-center sm:mb-24">
-        <Eyebrow>Seçki</Eyebrow>
-        <h2 className="font-serif text-[clamp(2.5rem,7vw,4.5rem)] leading-[0.95] tracking-[-0.02em] text-ink">
-          Panoda
+
+        <h2 className="font-hand text-[clamp(3rem,8vw,5.5rem)] leading-[0.95] text-amber drop-shadow-[0_0_8px_rgba(209,140,64,0.3)]">
+          Pano
         </h2>
         <p className="max-w-md leading-relaxed text-ink/75">
           Son dönemde tamamlanan işler. Birine dokun, hikayesini oku.
@@ -69,7 +72,7 @@ export function Board() {
       </Reveal>
 
       <div className="relative mx-auto max-w-6xl columns-2 gap-4 sm:gap-6 lg:block lg:columns-1 lg:h-[1240px]">
-        {tattoos.map((tattoo, i) => {
+        {boardTattoos.map((tattoo, i) => {
           const place = PLACEMENT[i];
           return (
             <Polaroid
@@ -90,7 +93,7 @@ export function Board() {
             key={note.text}
             aria-hidden
             style={{ "--x": note.x, "--y": note.y, "--r": note.r } as CSSProperties}
-            className="absolute left-[var(--x)] top-[var(--y)] hidden rotate-[var(--r)] bg-note px-3 py-2 font-hand text-xl leading-none text-ink-soft shadow-[0_6px_16px_-10px_rgba(28,24,21,0.6)] lg:block"
+            className="absolute left-[var(--x)] top-[var(--y)] hidden rotate-[var(--r)] bg-note px-3 py-2 font-hand text-xl leading-none text-ink-soft shadow-[0_8px_20px_-10px_rgba(0,0,0,0.85)] lg:block"
           >
             <span aria-hidden className="pin absolute -top-1.5 left-1/2 -translate-x-1/2" />
             {note.text}
@@ -98,7 +101,13 @@ export function Board() {
         ))}
       </div>
 
-      <Lightbox items={tattoos} index={index} onIndexChange={setIndex} />
+      <div className="mt-16 flex justify-center lg:mt-0 lg:pt-20">
+        <ButtonLink href="/galeri" intent="ghost" size="md">
+          Tümünü Gör
+        </ButtonLink>
+      </div>
+
+      <Lightbox items={boardTattoos} index={index} onIndexChange={setIndex} />
     </section>
   );
 }

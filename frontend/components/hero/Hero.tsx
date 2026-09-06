@@ -1,32 +1,36 @@
 import { HeroBackground } from "./HeroBackground";
 import { HeroLinks } from "./HeroLinks";
+import { HeroTagline } from "./HeroTagline";
 
 export function Hero() {
   return (
     <section className="relative h-screen overflow-hidden bg-paper">
       <HeroBackground />
 
-      <div className="pointer-events-none absolute inset-x-0 top-[12vh] flex flex-col items-center px-6 text-center sm:top-[13vh]">
-        <h1 className="font-serif text-[clamp(2.25rem,6.5vw,5.5rem)] leading-[0.95] tracking-[-0.02em] text-ink drop-shadow-[0_2px_16px_rgba(244,239,230,0.75)]">
-          Irmak
-          <br />
-          Bozkurt
-        </h1>
-        <p className="mt-3 font-serif text-lg italic text-ink-soft drop-shadow-[0_1px_10px_rgba(244,239,230,0.7)]">
-          Derideki Hikayeler.
-        </p>
-        <p className="mt-2 font-mono text-xs uppercase tracking-[0.24em] text-ink-soft drop-shadow-[0_1px_10px_rgba(244,239,230,0.7)]">
-          İstanbul
-        </p>
-      </div>
+      {/* Scrim: the diorama's floor is a light warm tone right where the
+          links sit, so text there needs reliable contrast on its own. This
+          guarantees a dark ground under the bottom stack regardless of
+          what's in the photo underneath. */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-paper-deep/90 via-paper-deep/30 to-transparent" />
 
-      <HeroLinks />
+      {/* Tagline and links share one bottom-left column so they stack in flow
+          instead of two independent absolute blocks fighting for the same
+          strip — that's what let the links overlap each other on narrow
+          screens. The diorama keeps the middle of the frame either way. */}
+      <div className="absolute inset-0 flex flex-col justify-end p-6 pr-16 sm:p-10 sm:pr-24">
+        <div className="flex w-full max-w-[min(94vw,860px)] flex-col items-start gap-7 sm:gap-9">
+          <div className="pointer-events-none w-full">
+            <h1 
+              className="hero-rise mb-4 font-hand text-4xl text-amber drop-shadow-[0_0_12px_var(--color-amber-light)] sm:text-5xl" 
+              style={{ animationDelay: "1300ms" }}
+            >
+              Irmak Bozkurt - tatt2me
+            </h1>
+            <HeroTagline />
+          </div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-8 flex flex-col items-center gap-2">
-        <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-ink-soft drop-shadow-[0_1px_8px_rgba(244,239,230,0.5)]">
-          Kaydır
-        </span>
-        <span className="h-10 w-px bg-gradient-to-b from-amber to-transparent" />
+          <HeroLinks />
+        </div>
       </div>
     </section>
   );

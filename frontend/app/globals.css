@@ -1,31 +1,52 @@
 @import "tailwindcss";
 
 :root {
-  /* Palette pulled from the hero reference: warm bone paper, deep sepia ink,
-     and the bronze of the light breaking through the clouds. */
-  --color-paper: #f4efe6;
-  --color-paper-deep: #ebe4d7;
-  --color-parchment: #eae2d5;
-  --color-sand: #d8cdba;
-  --color-sand-soft: #e3dccd;
-  --color-ink: #1c1815;
-  --color-ink-soft: #4a423a;
-  --color-muted: #8a7e6e;
-  --color-amber: #b4712c;
-  --color-amber-light: #e3ab6b;
-  --color-ember: #8a4b1f;
-  --color-amber-soft: #b4712c26;
+  /* Dark studio palette. Same warm sepia family as the light reference, read
+     the other way round: the ground is inked charcoal, the "paper" tokens are
+     the deep surfaces, and the bronze accents step up in luminance so they
+     still burn against a dark ground. Token names are kept — `ink` is the
+     foreground, `paper` is the ground — so components need no renaming. */
+  --color-paper: #12100e;
+  --color-paper-deep: #0d0c0a;
+  --color-parchment: #1a1613;
+  --color-sand: #2e2721;
+  --color-sand-soft: #241f1a;
+  --color-ink: #f2ece1;
+  --color-ink-soft: #c6bbaa;
+  --color-muted: #8b8072;
+  --color-amber: #d18c40;
+  --color-amber-light: #f0c68d;
+  --color-ember: #a2551f;
+  --color-amber-soft: #d18c4026;
 
-  /* Board surfaces. The reference pins everything to a black corkboard; the
-     warm equivalent is a linen board a shade deeper than the page, so sections
-     separate by ground rather than by a ruled divider line. */
-  --color-board: #e7ded0;
-  --color-tape: #ded2bd;
-  --color-note: #f0d9ae;
+  /* Board surfaces. On a dark ground the board reads as a *lighter* slab than
+     the page — a lit corkboard in a dim room — so sections still separate by
+     ground rather than by a ruled divider line. */
+  --color-board: #1a1613;
+  --color-tape: #423931;
+  --color-note: #3d2f19;
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* Softness layer. The palette was already warm; what read as "technical" was
+     the geometry — every corner at 90°, every edge a hard 1px rule. These are
+     the counterweights: a radius scale, a hairline that whispers instead of
+     drawing, and shadows that carry the depth a border used to. */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  --hairline: rgba(242, 236, 225, 0.07);
+  --hairline-warm: rgba(209, 140, 64, 0.28);
+
+  --shadow-soft: 0 2px 10px -4px rgb(0 0 0 / 0.5);
+  --shadow-lift:
+    0 22px 50px -28px rgb(0 0 0 / 0.85),
+    0 2px 8px -4px rgb(0 0 0 / 0.4);
+  --glow-amber: 0 0 28px -6px rgb(209 140 64 / 0.45);
 }
 
 @theme inline {
@@ -45,22 +66,25 @@
   --color-tape: var(--color-tape);
   --color-note: var(--color-note);
 
-  --font-serif: var(--font-instrument-serif);
-  --font-sans: var(--font-inter);
-  --font-mono: var(--font-jetbrains-mono);
+  --font-serif: var(--font-caveat);
+  --font-sans: var(--font-caveat);
   --font-hand: var(--font-caveat);
+  --font-script: var(--font-caveat);
 
   --ease-out: var(--ease-out);
   --ease-in-out: var(--ease-in-out);
   --ease-drawer: var(--ease-drawer);
 }
 
+/* The default border colour for the whole site. A whisper rather than a rule —
+   depth is carried by shadow and by surface, so a border only has to hint at
+   where one plane ends. */
 * {
-  border-color: var(--color-sand);
+  border-color: var(--hairline);
 }
 
 html {
-  color-scheme: light;
+  color-scheme: dark;
   scroll-behavior: smooth;
 }
 
@@ -79,21 +103,21 @@ body::after {
   inset: 0;
   z-index: 90;
   pointer-events: none;
-  opacity: 0.045;
-  mix-blend-mode: multiply;
+  opacity: 0.05;
+  mix-blend-mode: screen;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 ::selection {
   background: var(--color-amber);
-  color: var(--color-paper);
+  color: var(--color-paper-deep);
 }
 
 /* Visible, deliberate focus ring — never suppressed */
 :focus-visible {
   outline: 2px solid var(--color-amber);
-  outline-offset: 3px;
-  border-radius: 2px;
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
 }
 
 .skip-link {
@@ -103,11 +127,10 @@ body::after {
   z-index: 100;
   background: var(--color-ink);
   color: var(--color-paper);
-  padding: 0.6rem 1rem;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  padding: 0.7rem 1.25rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
   transition: top 200ms var(--ease-out);
 }
 
@@ -123,16 +146,14 @@ body::after {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
     scroll-behavior: auto !important;
   }
 }
 
-/* Custom cursor hides the native one only where it successfully mounts */
-.cursor-enabled {
-  cursor: none;
-}
 
 /* Hero diorama lamp: a slow warm breathing glow standing in for the studio
    light, since the scene itself is a static illustration. */
@@ -153,6 +174,126 @@ body::after {
 }
 
 /* ---------------------------------------------------------------------------
+   Soft surfaces. What used to be a hard 1px box is now a rounded plane that
+   earns its edge from light instead of from a line: a warm gradient face, a
+   hairline catching the top edge, and a wide diffuse shadow underneath.
+   --------------------------------------------------------------------------- */
+
+.soft-card {
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgba(32, 27, 22, 0.92) 0%, rgba(25, 21, 17, 0.92) 100%);
+  border: 1px solid var(--hairline);
+  box-shadow:
+    0 1px 0 rgba(242, 236, 225, 0.045) inset,
+    var(--shadow-lift);
+}
+
+/* Interactive version — contact channels, anything you can click. Lifts a
+   little and warms at the edge rather than snapping to a hard amber border. */
+.soft-card--link {
+  transition:
+    transform 320ms var(--ease-out),
+    border-color 320ms var(--ease-out),
+    box-shadow 320ms var(--ease-out);
+}
+
+.soft-card--link:hover,
+.soft-card--link:focus-visible {
+  transform: translateY(-3px);
+  border-color: var(--hairline-warm);
+  box-shadow:
+    0 1px 0 rgba(242, 236, 225, 0.06) inset,
+    var(--shadow-lift),
+    var(--glow-amber);
+}
+
+/* Hairline that fades out at both ends instead of ruling all the way across —
+   used under the hero tagline and above the footer. */
+.soft-rule {
+  display: block;
+  height: 1px;
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--hairline-warm) 18%,
+    var(--hairline-warm) 62%,
+    transparent
+  );
+}
+
+/* Scroll cue: a soft warm thread with a bead drifting down it, slow enough to
+   read as breathing rather than loading. */
+.scroll-needle {
+  position: relative;
+  width: 1px;
+  height: 3rem;
+  background: linear-gradient(to bottom, transparent, var(--color-amber), transparent);
+  opacity: 0.6;
+}
+
+.scroll-needle::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: var(--color-amber-light);
+  filter: blur(0.5px);
+  box-shadow: 0 0 10px var(--color-amber);
+  animation: scroll-needle-bead 3600ms var(--ease-in-out) infinite;
+}
+
+@keyframes scroll-needle-bead {
+  0% {
+    top: -6px;
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+/* Opening curtain. The name fades up and a warm thread draws under it — the
+   whole of the loading "progress", now that there is no counter. */
+.loader-name {
+  animation: hero-rise 1100ms var(--ease-out) both;
+}
+
+.loader-rule {
+  transform-origin: center;
+  animation: loader-rule-draw 1300ms var(--ease-out) 200ms both;
+}
+
+@keyframes loader-rule-draw {
+  from {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+}
+
+/* Generic staged entrance, delay set per element inline so the cascade stays
+   readable in the markup. */
+.hero-rise {
+  animation: hero-rise 900ms var(--ease-out) both;
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Pinboard kit. The whole site below the hero is staged as things laid on a
    board — polaroids, notes, index cards — so the surface, the paper stock, the
    tape and the pin are shared primitives rather than per-component classes.
@@ -163,26 +304,74 @@ body::after {
   /* Two very wide, very faint warm pools keep the ground from reading flat.
      The film grain in body::after does the rest of the work. */
   background-image:
-    radial-gradient(60% 50% at 20% 15%, rgba(255, 252, 245, 0.55), transparent 70%),
-    radial-gradient(50% 45% at 85% 80%, rgba(255, 250, 240, 0.4), transparent 70%);
-  box-shadow: inset 0 0 90px rgba(28, 24, 21, 0.07);
+    radial-gradient(60% 50% at 20% 15%, rgba(209, 140, 64, 0.09), transparent 70%),
+    radial-gradient(50% 45% at 85% 80%, rgba(240, 198, 141, 0.06), transparent 70%);
+  box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.55);
+}
+
+/* Unique section backgrounds */
+
+/* Warm washes only. The 45° hatch that used to sit on top of these read as
+   engineering paper — the grain in body::after already gives the surface all
+   the tooth it needs. */
+.bg-artist {
+  background-color: var(--color-board);
+  background-image:
+    radial-gradient(45% 65% at 88% 8%, rgba(209, 140, 64, 0.13), transparent 78%),
+    radial-gradient(60% 70% at 12% 88%, rgba(0, 0, 0, 0.72), transparent 80%);
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.7);
+}
+
+.bg-notebook {
+  background-color: var(--color-board);
+  background-image:
+    linear-gradient(90deg, transparent 60px, rgba(162, 85, 31, 0.25) 60px, rgba(162, 85, 31, 0.25) 62px, transparent 62px),
+    repeating-linear-gradient(rgba(242, 236, 225, 0.04) 0px, rgba(242, 236, 225, 0.04) 1px, transparent 1px, transparent 32px);
+  background-size: 100% 100%, 100% 32px;
+  background-position: 0 0, 0 16px;
+  box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.85);
+}
+
+/* Cork, but at dusk. The two repeating stipple layers made this the busiest
+   ground on the site; one very faint stipple is enough to keep it from reading
+   as flat paint, and the warm pools carry the rest. */
+.bg-corkboard {
+  background-color: #2a2015;
+  background-image:
+    radial-gradient(50% 45% at 12% 15%, rgba(209, 140, 64, 0.1), transparent 70%),
+    radial-gradient(45% 40% at 82% 88%, rgba(240, 198, 141, 0.06), transparent 70%),
+    repeating-radial-gradient(circle at 30% 40%, rgba(0, 0, 0, 0.14) 0px, rgba(0, 0, 0, 0.14) 1px, transparent 1px, transparent 7px);
+  box-shadow: inset 0 0 160px rgba(0, 0, 0, 0.9);
+}
+
+.bg-contact {
+  background-color: var(--color-paper);
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(209, 140, 64, 0.08), transparent 50%),
+    radial-gradient(circle at 50% 100%, rgba(209, 140, 64, 0.08), transparent 50%);
+  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.5);
 }
 
 /* Paper stock lifted off the board. Two shadows: a tight contact shadow so the
    edge stays crisp, and a wide soft one for the height. */
+/* Paper stock lifted off the board. On a dark ground a drop shadow alone is
+   invisible, so the height comes from a slightly lighter surface plus a warm
+   hairline catching the light on the top edge; the shadows stay for depth. */
 .paper-card {
-  background: var(--color-paper);
+  background: linear-gradient(180deg, #201b16 0%, #191511 100%);
+  border: 1px solid rgba(242, 236, 225, 0.07);
   box-shadow:
-    0 1px 2px rgba(28, 24, 21, 0.09),
-    0 10px 28px -14px rgba(28, 24, 21, 0.32);
+    0 1px 0 rgba(242, 236, 225, 0.05) inset,
+    0 2px 4px rgba(0, 0, 0, 0.45),
+    0 18px 40px -18px rgba(0, 0, 0, 0.8);
 }
 
 /* Masking-tape strip. multiply keeps whatever it crosses faintly visible, and
    the clip-path nicks the ends so it reads torn rather than die-cut. */
 .tape {
   background: var(--color-tape);
-  opacity: 0.72;
-  mix-blend-mode: multiply;
+  opacity: 0.6;
+  mix-blend-mode: screen;
   clip-path: polygon(
     3% 0%, 97% 4%, 100% 22%, 98% 62%, 100% 96%,
     75% 100%, 40% 96%, 6% 100%, 0% 70%, 2% 30%
@@ -197,7 +386,7 @@ body::after {
   background: radial-gradient(circle at 32% 28%, var(--color-amber-light), var(--color-ember) 78%);
   box-shadow:
     0 1px 1px rgba(255, 255, 255, 0.55) inset,
-    0 2px 5px rgba(28, 24, 21, 0.35);
+    0 2px 6px rgba(0, 0, 0, 0.65);
 }
 
 /* Thread between the process cards. The svg is a 0-100 viewBox stretched over
@@ -210,9 +399,11 @@ body::after {
   stroke: var(--color-amber);
   stroke-width: 0.14;
   stroke-linecap: round;
-  opacity: 0.75;
+  opacity: 0.85;
 }
 
 .thread-draw {
   transition: stroke-dashoffset 1100ms var(--ease-out);
 }
+
+

@@ -4,11 +4,15 @@ import { useEffect, useState } from "react";
 import clsx from "clsx";
 
 const SESSION_KEY = "ib-visited";
-const DURATION_MS = 1400;
+const DURATION_MS = 1500;
 
 /**
- * First-visit opening curtain. Mounted client-only (see Chrome.tsx) so the
+ * First-visit opening. Mounted client-only (see Chrome.tsx) so the
  * sessionStorage check never causes a hydration mismatch.
+ *
+ * It used to count to 100 in monospace behind a progress bar — a loading
+ * screen pretending to measure something. Now it just holds the name in the
+ * script face for a beat and dissolves: the same pause, without the machinery.
  */
 export function Loader() {
   // Lazy-initialized once from browser-only state — this component is
@@ -22,36 +26,29 @@ export function Loader() {
       return true;
     }
   });
-  const [count, setCount] = useState(0);
   const [leaving, setLeaving] = useState(false);
 
   useEffect(() => {
     if (!visible) return;
 
-    const finish = () => {
+    const hold = window.setTimeout(() => {
       setLeaving(true);
       try {
         sessionStorage.setItem(SESSION_KEY, "1");
       } catch {
-        /* private mode — show the loader again next time, harmless */
+        /* private mode — show the opening again next time, harmless */
       }
-      window.setTimeout(() => setVisible(false), 700);
-    };
+    }, DURATION_MS);
 
-    const start = performance.now();
-    let raf = 0;
-    const tick = (now: number) => {
-      const progress = Math.min(1, (now - start) / DURATION_MS);
-      setCount(Math.floor(progress * 100));
-      if (progress < 1) {
-        raf = requestAnimationFrame(tick);
-      } else {
-        finish();
-      }
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    return () => window.clearTimeout(hold);
   }, [visible]);
+
+  // Unmount only once the dissolve has finished, so nothing pops.
+  useEffect(() => {
+    if (!leaving) return;
+    const done = window.setTimeout(() => setVisible(false), 900);
+    return () => window.clearTimeout(done);
+  }, [leaving]);
 
   if (!visible) return null;
 
@@ -59,17 +56,15 @@ export function Loader() {
     <div
       aria-hidden
       className={clsx(
-        "fixed inset-0 z-[70] flex flex-col items-center justify-center bg-paper transition-transform duration-700 ease-out",
-        leaving ? "-translate-y-full" : "translate-y-0",
+        "fixed inset-0 z-[70] flex flex-col items-center justify-center bg-paper",
+        "transition-opacity duration-[900ms] ease-out",
+        leaving ? "pointer-events-none opacity-0" : "opacity-100",
       )}
     >
-      <span className="font-mono text-xs uppercase tracking-[0.3em] text-muted">Yükleniyor</span>
-      <span className="mt-4 font-mono text-6xl tabular-nums text-ink">
-        {String(count).padStart(2, "0")}
+      <span className="loader-name font-script text-[clamp(2rem,7vw,3.5rem)] leading-tight text-ink-soft">
+        Irmak Bozkurt
       </span>
-      <div className="mt-6 h-px w-40 bg-sand">
-        <div className="h-px bg-amber transition-[width] duration-100" style={{ width: `${count}%` }} />
-      </div>
+      <span aria-hidden className="loader-rule mt-6 h-px w-40 bg-amber/60" />
     </div>
   );
 }

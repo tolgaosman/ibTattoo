@@ -30,7 +30,11 @@ export function HeroBackground() {
         x += (pointer.x * -16 - x) * 0.05;
         y += (pointer.y * -12 - y) * 0.05;
 
-        layer.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0)`;
+        // Scale has to ride along in this same string — a plain translate3d
+        // here would replace the `scale-[1.06]` class's transform outright
+        // (inline style wins over the stylesheet for the same property),
+        // silently cancelling the zoom every frame once the loop starts.
+        layer.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) scale(1.06)`;
       }
       raf = requestAnimationFrame(tick);
     };
@@ -41,11 +45,11 @@ export function HeroBackground() {
   return (
     <div ref={layerRef} className="absolute inset-0 scale-[1.06] will-change-transform">
       <Image
-        src="/images/hero/hero-studio-v2.png"
-        alt="İzometrik dövme stüdyosu diorama: dövmeci, sırtı dönük, yüzükoyun yatan bir müşteriye dövme yapıyor."
+        src="/images/hero/hero-studio-v2.webp"
+        alt="İzometrik dövme stüdyosu diorama: dövmeci, sırtı dönük, yüzükoyun yatan bir müşteriye dövme yapıyor, arkadaki duvarda 'Irmak Bozkurt Tattoo Studio' yazan asma bir tabela var."
         fill
         priority
-        sizes="100vw"
+        unoptimized
         className="object-cover object-[50%_46%]"
       />
       {/* Lamp glow: a soft breathing warmth over the studio's work light. */}

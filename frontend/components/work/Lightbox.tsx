@@ -39,14 +39,14 @@ export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
                 <Dialog.Close
                   aria-label="Kapat"
                   data-cursor="view"
-                  className="font-mono text-xs uppercase tracking-[0.14em] text-muted transition-colors duration-200 ease-out hover:text-amber"
+                  className="text-sm text-muted transition-colors duration-300 ease-out hover:text-amber-light"
                 >
                   Kapat
                 </Dialog.Close>
               </div>
 
               <div className="grid flex-1 gap-8 lg:grid-cols-[1.4fr_1fr]">
-                <div className="relative min-h-[40vh] overflow-hidden border border-sand bg-parchment">
+                <div className="relative min-h-[40vh] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-parchment shadow-[var(--shadow-lift)]">
                   <Image
                     src={tattoo.image}
                     alt={`${tattoo.title} — ${STYLE_LABELS[tattoo.style]}`}
@@ -67,23 +67,23 @@ export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
                 </div>
               </div>
 
-              <div className="mt-10 flex items-center justify-between font-mono text-xs uppercase tracking-[0.14em] text-muted">
+              <div className="mt-10 flex items-center justify-between text-sm text-muted">
                 <button
                   type="button"
                   data-cursor="view"
                   onClick={() => onIndexChange((index! - 1 + items.length) % items.length)}
-                  className="transition-colors duration-200 ease-out hover:text-amber"
+                  className="transition-colors duration-300 ease-out hover:text-amber-light"
                 >
                   ← Önceki
                 </button>
-                <span>
-                  {String(index! + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
+                <span className="font-serif text-base italic">
+                  {index! + 1} / {items.length}
                 </span>
                 <button
                   type="button"
                   data-cursor="view"
                   onClick={() => onIndexChange((index! + 1) % items.length)}
-                  className="transition-colors duration-200 ease-out hover:text-amber"
+                  className="transition-colors duration-300 ease-out hover:text-amber-light"
                 >
                   Sonraki →
                 </button>
@@ -98,7 +98,7 @@ export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
 
 function MetaRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-baseline justify-between border-b border-sand pb-2">
+    <div className="flex items-baseline justify-between border-b border-[var(--hairline)] pb-2">
       <Eyebrow>{label}</Eyebrow>
       <span className="font-sans text-sm text-ink">{value}</span>
     </div>

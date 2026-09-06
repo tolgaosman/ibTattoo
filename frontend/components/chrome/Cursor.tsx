@@ -92,7 +92,7 @@ export function Cursor() {
         style={{ width: label ? 64 : 32, height: label ? 64 : 32 }}
       >
         {label ? (
-          <span className="font-mono text-[0.6rem] tracking-[0.1em] text-amber">{label}</span>
+          <span className="font-serif text-xs italic text-amber">{label}</span>
         ) : null}
       </div>
     </div>
