@@ -2,49 +2,57 @@ import { Eyebrow } from "@/components/ui/Label";
 import { Reveal } from "@/components/ui/Reveal";
 import { AppointmentForm } from "@/components/contact/AppointmentForm";
 
-/**
- * The closing section, and the quietest one — it leaves the board behind and
- * returns to plain paper, the way the reference drops its texture here too.
- * Three bordered contact boxes on the left, the request form on the right.
- */
-const CHANNELS = [
-  {
-    label: "E-posta",
-    value: "irmakyamuer2000@gmail.com",
-    href: "mailto:irmakyamuer2000@gmail.com",
-    external: false,
-    icon: (
-      <>
-        <rect x="2" y="4" width="16" height="12" rx="1" />
-        <path d="m2.5 5 7.5 6 7.5-6" />
-      </>
-    ),
-  },
-  {
-    label: "Instagram",
-    value: "@tatt2.me",
-    href: "https://www.instagram.com/tatt2.me/",
-    external: true,
-    icon: (
-      <>
-        <rect x="3" y="3" width="14" height="14" rx="4" />
-        <circle cx="10" cy="10" r="3.4" />
-        <circle cx="14.4" cy="5.6" r="0.6" fill="currentColor" stroke="none" />
-      </>
-    ),
-  },
-] as const;
+interface ContactInfo {
+  email: string;
+  phone: string;
+  phoneDisplay: string;
+  instagram: string;
+  instagramUrl: string;
+}
 
-export function Contact() {
+export function Contact({ contact }: { contact: ContactInfo }) {
+  const CHANNELS = [
+    {
+      label: "E-posta",
+      value: contact.email,
+      href: `mailto:${contact.email}`,
+      external: false,
+      icon: (
+        <>
+          <rect x="2" y="4" width="16" height="12" rx="1" />
+          <path d="m2.5 5 7.5 6 7.5-6" />
+        </>
+      ),
+    },
+    {
+      label: "Telefon",
+      value: contact.phoneDisplay,
+      href: `tel:+${contact.phone}`,
+      external: false,
+      icon: (
+        <path d="M6.5 3h2l1 3.5-1.7 1.2c.7 1.9 2.1 3.3 4 4l1.2-1.7 3.5 1v2c0 1-.8 1.8-1.8 1.7C9.9 14.2 5.8 10.1 5.3 5.3 5.2 4.3 6 3.5 6.5 3z" />
+      ),
+    },
+    {
+      label: "Instagram",
+      value: contact.instagram,
+      href: contact.instagramUrl,
+      external: true,
+      icon: (
+        <>
+          <rect x="3" y="3" width="14" height="14" rx="4" />
+          <circle cx="10" cy="10" r="3.4" />
+          <circle cx="14.4" cy="5.6" r="0.6" fill="currentColor" stroke="none" />
+        </>
+      ),
+    },
+  ] as const;
+
   return (
     <section id="iletisim" className="bg-contact px-6 py-24 sm:px-10 sm:py-32">
-      {/* min-w-0 on the grid and on both columns: without it the grid tracks
-          size to their content's minimum and the long e-mail address pushes
-          the whole section past the viewport on narrow screens. */}
       <div className="mx-auto grid min-w-0 max-w-6xl gap-14 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
         <div className="flex min-w-0 flex-col">
           <Reveal className="mb-12 flex max-w-xl flex-col gap-5 sm:mb-16">
-
             <h2 className="font-hand text-[clamp(3rem,8vw,5.5rem)] leading-[0.95] text-amber drop-shadow-[0_0_8px_rgba(209,140,64,0.3)]">
               Kalıcı bir şey yapalım.
             </h2>

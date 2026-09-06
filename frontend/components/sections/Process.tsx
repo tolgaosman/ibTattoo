@@ -1,47 +1,13 @@
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 
-/**
- * Five cards pinned down the left margin, each still held by a pushpin — the
- * handmade part of the language stays. What went was the drafting-table part:
- * the zero-padded monospace counters, the square corners and the hard 1px rail.
- * The steps are numbered in words now, which is how you'd say them out loud.
- */
 interface Step {
   no: string;
   title: string;
   text: string;
 }
 
-const STEPS: readonly Step[] = [
-  {
-    no: "1",
-    title: "Fikrini Paylaş",
-    text: "Formu doldur ya da doğrudan yaz. Ne düşündüğünü, nereye ve neden istediğini anlat — referans görsel şart değil.",
-  },
-  {
-    no: "2",
-    title: "Kağıda Eskiz",
-    text: "Fikri kendi diline çeviriyorum. İlk eskiz elde, kağıt üzerinde çıkar; dijitale ancak ölçü ve yerleşim netleşince geçiyoruz.",
-  },
-  {
-    no: "3",
-    title: "Birlikte Netleştir",
-    text: "Eskizi beraber gözden geçiriyoruz. Çizgi kalınlığı, boyut, açı — deriye geçmeden önce her şey burada kararını buluyor.",
-  },
-  {
-    no: "4",
-    title: "Dövme Seansı",
-    text: "Stüdyoda, tek kişilik bir gün. Küçük işler tek seansta biter; geniş kapsamlı çalışmalar birkaç güne yayılır.",
-  },
-  {
-    no: "5",
-    title: "İyileşme ve Bakım",
-    text: "İlk iki hafta işin bir parçası. Yazılı bir bakım rehberi veriyorum ve iyileşme boyunca ulaşılabilir kalıyorum.",
-  },
-];
-
-export function Process() {
+export function Process({ process }: { process: Step[] }) {
   return (
     <section
       id="surec"
@@ -56,7 +22,7 @@ export function Process() {
         </Reveal>
 
         <div className="grid gap-x-12 gap-y-16 sm:grid-cols-2 lg:grid-cols-5">
-          {STEPS.map((step, i) => (
+          {process.map((step, i) => (
             <Reveal
               key={step.no}
               delay={i * 80}

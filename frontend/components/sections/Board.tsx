@@ -1,28 +1,13 @@
 "use client";
 
-import { useState, type CSSProperties } from "react";
+import { useState, type CSSProperties, useMemo } from "react";
 import Image from "next/image";
 import clsx from "clsx";
 import { Lightbox } from "@/components/work/Lightbox";
-import { Eyebrow } from "@/components/ui/Label";
 import { Reveal } from "@/components/ui/Reveal";
 import { ButtonLink } from "@/components/ui/Button";
-import { STYLE_LABELS, tattoos } from "@/lib/tattoos";
+import { STYLE_LABELS, type Tattoo } from "@/lib/tattoos";
 
-const boardTattoos = tattoos.slice(0, 9);
-
-/**
- * The gallery, staged as the reference's corkboard: taped polaroids scattered
- * across the surface with handwritten notes pinned between them.
- *
- * The scatter is absolute-positioned percentages on lg+ and collapses to a
- * two-column flow below that, where the free placement would either overlap or
- * force a horizontal scroll. Every offset and tilt is a fixed literal — nothing
- * random, so the server and client render the same board.
- */
-
-/** left / top / width as percentages of the board, the resting tilt, and the
-    angle of the tape strip holding it — all fixed so nothing shifts on rerender. */
 const PLACEMENT: ReadonlyArray<Placement> = [
   { x: "2%", y: "1%", w: "24%", r: "-3deg", tape: "5deg" },
   { x: "37%", y: "5%", w: "22%", r: "2.5deg", tape: "-6deg" },
@@ -56,8 +41,20 @@ const IMAGE_ASPECT = {
   landscape: "aspect-[5/4]",
 } as const;
 
-export function Board() {
+interface BoardProps {
+  selection: string[];
+  gallery: Tattoo[];
+}
+
+export function Board({ selection, gallery }: BoardProps) {
   const [index, setIndex] = useState<number | null>(null);
+
+  const boardTattoos = useMemo(() => {
+    return selection
+      .map((id) => gallery.find((t) => t.id === id))
+      .filter((t): t is Tattoo => t !== undefined)
+      .slice(0, 9);
+  }, [selection, gallery]);
 
   return (
     <section id="pano" className="bg-notebook px-6 py-24 sm:px-10 sm:py-32">

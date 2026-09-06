@@ -1,0 +1,2 @@
+export const WHATSAPP_PHONE = "905338668490";
+export const WHATSAPP_PHONE_DISPLAY = "+90 533 866 84 90";

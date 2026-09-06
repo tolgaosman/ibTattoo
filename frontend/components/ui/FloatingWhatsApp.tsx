@@ -1,7 +1,9 @@
+import { WHATSAPP_PHONE } from "@/lib/site";
+
 export function FloatingWhatsApp() {
   return (
     <a
-      href="https://wa.me/905338668490?text=Merhaba"
+      href={`https://wa.me/${WHATSAPP_PHONE}?text=Merhaba`}
       target="_blank"
       rel="noreferrer noopener"
       aria-label="WhatsApp üzerinden iletişime geçin"
