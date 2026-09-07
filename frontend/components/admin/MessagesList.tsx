@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Archive, CheckCircle2, Loader2, Trash2 } from "lucide-react";
 import type { Appointment, AppointmentStatus } from "@/lib/appointments";
 import { updateAppointmentStatusAction, deleteAppointmentAction } from "@/app/admin/actions";
+import { useToast } from "@/components/ui/Toast";
 
 const STATUS_LABELS: Record<AppointmentStatus, string> = {
   new: "Yeni",
@@ -22,6 +23,7 @@ export function MessagesList({ initialAppointments }: { initialAppointments: App
   const [appointments, setAppointments] = useState(initialAppointments);
   const [loadingId, setLoadingId] = useState<number | null>(null);
   const router = useRouter();
+  const toast = useToast();
 
   const handleStatus = async (id: number, status: AppointmentStatus) => {
     setLoadingId(id);
@@ -41,6 +43,7 @@ export function MessagesList({ initialAppointments }: { initialAppointments: App
       await deleteAppointmentAction(id);
       setAppointments((prev) => prev.filter((a) => a.id !== id));
       router.refresh();
+      toast.success("Mesaj silindi");
     } finally {
       setLoadingId(null);
     }

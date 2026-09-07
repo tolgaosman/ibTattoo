@@ -3,19 +3,21 @@
 import { useState } from "react";
 import { saveContactAction } from "@/app/admin/actions";
 import { Loader2 } from "lucide-react";
+import { useToast } from "@/components/ui/Toast";
 
 export function SettingsForm({ initialContact }: { initialContact: any }) {
   const [contact, setContact] = useState(initialContact);
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
       await saveContactAction(contact);
-      alert("Kişisel bilgiler başarıyla kaydedildi.");
+      toast.success("Kişisel bilgiler başarıyla kaydedildi.");
     } catch (err) {
-      alert("Bir hata oluştu.");
+      toast.error("Bir hata oluştu.");
     } finally {
       setLoading(false);
     }

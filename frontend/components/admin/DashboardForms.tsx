@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { saveHeroAction, saveAboutAction, saveProcessAction, saveBoardSelectionAction, uploadImageAction } from "@/app/admin/actions";
 import { Loader2 } from "lucide-react";
+import { useToast } from "@/components/ui/Toast";
 
 export function DashboardForms({
   initialHero,
@@ -33,6 +34,7 @@ export function DashboardForms({
   });
   const [activeSlot, setActiveSlot] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
   const filledCount = boardSlots.filter(Boolean).length;
   const selectedSlotIndex = (id: string) => boardSlots.indexOf(id);
@@ -56,14 +58,14 @@ export function DashboardForms({
       specialities: heroSpecialitiesStr.split(",").map(s => s.trim()).filter(Boolean)
     });
     setLoading(false);
-    alert("Hero kaydedildi");
+    toast.success("Hero kaydedildi");
   };
 
   const handleSaveAbout = async () => {
     setLoading(true);
     await saveAboutAction(about, aboutImage);
     setLoading(false);
-    alert("Hakkımda kaydedildi");
+    toast.success("Hakkımda kaydedildi");
   };
 
   const handleAboutImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,7 +81,7 @@ export function DashboardForms({
       setAboutImage(url);
     } catch (err) {
       console.error(err);
-      alert("Görsel yüklenirken hata oluştu.");
+      toast.error("Görsel yüklenirken hata oluştu.");
     } finally {
       setUploadingAboutImage(false);
     }
@@ -89,14 +91,14 @@ export function DashboardForms({
     setLoading(true);
     await saveProcessAction(process);
     setLoading(false);
-    alert("Süreç kaydedildi");
+    toast.success("Süreç kaydedildi");
   };
 
   const handleSaveBoard = async () => {
     setLoading(true);
     await saveBoardSelectionAction(boardSlots.filter(Boolean));
     setLoading(false);
-    alert("Pano kaydedildi");
+    toast.success("Pano kaydedildi");
   };
 
   const clearSlot = (index: number) => {

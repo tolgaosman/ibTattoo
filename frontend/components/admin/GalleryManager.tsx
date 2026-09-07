@@ -6,6 +6,7 @@ import { addTattooAction, deleteTattooAction, updateTattooAction, uploadImageAct
 import { Loader2, Plus, Trash2, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { DatePicker } from "@/components/ui/DatePicker";
+import { useToast } from "@/components/ui/Toast";
 
 export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
   const [items, setItems] = useState<Tattoo[]>(initialItems);
@@ -13,6 +14,7 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const router = useRouter();
+  const toast = useToast();
 
   const emptyTattoo: Partial<Tattoo> = {
     style: "",
@@ -51,6 +53,7 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
     setItems(items.filter((i) => i.id !== id));
     setLoading(false);
     router.refresh();
+    toast.success("Dövme silindi");
   };
 
   const handleAdd = async (e: React.FormEvent) => {
@@ -67,7 +70,7 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
       }
 
       if (!imagePath) {
-        alert("Lütfen bir resim yükleyin veya resim yolu girin.");
+        toast.error("Lütfen bir resim yükleyin veya resim yolu girin.");
         setLoading(false);
         return;
       }
@@ -109,9 +112,10 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
 
       cancelForm();
       router.refresh();
+      toast.success(editingId ? "Dövme güncellendi" : "Dövme eklendi");
     } catch (err) {
       console.error(err);
-      alert("Hata oluştu.");
+      alert("Hata oluştu: " + (err instanceof Error ? err.message : String(err)));
     } finally {
       setLoading(false);
     }
@@ -171,10 +175,6 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
                 className="w-full text-sm text-ink file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-amber file:px-4 file:py-2 file:text-sm file:font-medium file:text-paper-deep hover:file:bg-amber-light"
               />
               {uploadFile && <p className="mt-1 truncate text-xs text-muted">{uploadFile.name}</p>}
-            </div>
-            <div>
-              <label className="block text-sm text-ink mb-1">Veya Görsel URL (Örn: /images/work/resim.jpg)</label>
-              <input type="text" value={newTattoo.image || ""} onChange={e => setNewTattoo({...newTattoo, image: e.target.value})} disabled={!!uploadFile} className="w-full rounded-md border border-hairline bg-parchment px-3 py-2 text-ink disabled:opacity-50 focus:border-amber focus:outline-none" />
             </div>
             <div>
               <label className="block text-sm text-ink mb-1">En-Boy Oranı</label>

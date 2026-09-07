@@ -32,6 +32,11 @@ const nextConfig: NextConfig = {
     // production) carries none of the SSRF risk this flag guards against.
     dangerouslyAllowLocalIP: true,
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
+  },
   ...(isStaticExport
     ? {
         output: "export",
