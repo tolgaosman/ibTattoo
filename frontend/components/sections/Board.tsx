@@ -123,7 +123,7 @@ function Polaroid({
         } as CSSProperties
       }
       className={clsx(
-        "paper-card group relative mx-auto mb-2 block w-[88%] break-inside-avoid p-2.5 pb-11 text-left sm:mb-6 sm:w-full",
+        "paper-card group relative mx-auto mb-12 block w-[88%] break-inside-avoid p-2.5 pb-11 text-left sm:mb-8 sm:w-full",
         "rotate-[calc(var(--r)*0.5)] transition-[transform,box-shadow] duration-300 ease-out",
         "hover:z-20 hover:rotate-0 hover:scale-[1.03]",
         "lg:absolute lg:left-[var(--x)] lg:top-[var(--y)] lg:mb-0 lg:w-[var(--w)] lg:rotate-[var(--r)]",

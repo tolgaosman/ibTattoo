@@ -4,7 +4,6 @@ namespace App\Http\Requests\Admin;
 
 use App\Enums\TattooAspect;
 use App\Enums\TattooSize;
-use App\Enums\TattooStyle;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

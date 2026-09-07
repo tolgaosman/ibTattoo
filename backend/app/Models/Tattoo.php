@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Enums\TattooAspect;
 use App\Enums\TattooSize;
-use App\Enums\TattooStyle;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,7 +30,6 @@ class Tattoo extends Model
     protected function casts(): array
     {
         return [
-            'style' => TattooStyle::class,
             'size' => TattooSize::class,
             'aspect' => TattooAspect::class,
             'tattoo_date' => 'date',

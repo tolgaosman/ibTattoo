@@ -23,7 +23,7 @@ class TattooResource extends JsonResource
             'id' => $this->public_id,
             'slug' => $this->slug,
             'title' => $this->title,
-            'style' => $this->style->value,
+            'style' => $this->style,
             'size' => $this->size->value,
             'date' => $this->tattoo_date->toDateString(),
             'placement' => $this->placement,
