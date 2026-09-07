@@ -10,29 +10,6 @@ use App\Http\Controllers\ContentController;
 use App\Http\Controllers\TattooController;
 use Illuminate\Support\Facades\Route;
 
-// Temporary fix route
-Route::get('/fix-images', function () {
-    $fixed = 0;
-    
-    $tattoos = \Illuminate\Support\Facades\DB::table('tattoos')->get();
-    foreach ($tattoos as $t) {
-        if (str_contains($t->image_path, '://')) {
-            $path = preg_replace('#^.*?/storage/#', '', $t->image_path);
-            \Illuminate\Support\Facades\DB::table('tattoos')->where('id', $t->id)->update(['image_path' => '/api/storage/' . $path]);
-            $fixed++;
-        }
-    }
-
-    $setting = \Illuminate\Support\Facades\DB::table('settings')->where('key', 'about_image')->first();
-    if ($setting && str_contains($setting->value, '://')) {
-        $path = preg_replace('#^.*?/storage/#', '', $setting->value);
-        \Illuminate\Support\Facades\DB::table('settings')->where('key', 'about_image')->update(['value' => '/api/storage/' . $path]);
-        $fixed++;
-    }
-
-    return response()->json(['message' => "Success! $fixed image URLs fixed."]);
-});
-
 // Public — consumed by the Next.js server (frontend/lib/db.ts, lib/api.ts).
 Route::get('/content', ContentController::class);
 Route::get('/tattoos', [TattooController::class, 'index']);

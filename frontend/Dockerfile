@@ -19,6 +19,15 @@ COPY . .
 # Environment variables must be present at build time
 ENV NEXT_TELEMETRY_DISABLED=1
 
+# next.config.ts derives its /storage rewrite from API_URL, and with
+# `output: "standalone"` the whole resolved config is baked into the generated
+# server.js — it is never re-read at runtime. So this has to be a BUILD arg;
+# the runtime value in docker-compose.yml only covers lib/api.ts.
+# Deliberately builder-stage only: baking a default into the runner would
+# shadow the compose value.
+ARG API_URL=http://web/api
+ENV API_URL=$API_URL
+
 RUN npm run build
 
 # Production image, copy all the files and run next

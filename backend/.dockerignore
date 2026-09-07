@@ -1,0 +1,20 @@
+# `composer install` runs inside the image; a host vendor/ would shadow it.
+vendor
+node_modules
+
+# The entrypoint creates .env from .env.example on first boot. Shipping a local
+# .env instead would pin DB_HOST=127.0.0.1 and a local admin password.
+.env
+.env.local
+.env.*.local
+
+storage/logs
+storage/framework/cache/data
+storage/framework/sessions
+storage/framework/views
+database/*.sqlite
+
+.git
+.gitignore
+Dockerfile
+.dockerignore

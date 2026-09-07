@@ -3,7 +3,7 @@ import { Artist } from "@/components/sections/Artist";
 import { Board } from "@/components/sections/Board";
 import { Process } from "@/components/sections/Process";
 import { Contact } from "@/components/sections/Contact";
-import { getContent } from "@/lib/db";
+import { getPublicContent } from "@/lib/db";
 
 /**
  * One page, top to bottom. Sections are separated by their ground — the board
@@ -11,7 +11,7 @@ import { getContent } from "@/lib/db";
  * reads as one continuous surface instead of a stack of blocks.
  */
 export default async function HomePage() {
-  const content = await getContent();
+  const content = await getPublicContent();
 
   return (
     <>

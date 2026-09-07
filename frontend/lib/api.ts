@@ -22,9 +22,20 @@ async function parseError(res: Response): Promise<string> {
   }
 }
 
+/**
+ * How long a public read may block a server render. Without this, an
+ * unresponsive API holds the request open until the platform's own timeout —
+ * a dead backend was making the home page take ~18s before erroring. Failing
+ * fast lets `getContent()` fall back to bundled content instead.
+ *
+ * Placed before the spread so a caller can still pass its own `signal`.
+ */
+const READ_TIMEOUT_MS = 5000;
+
 /** Public, unauthenticated calls to the Laravel API. */
 export async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, {
+    signal: AbortSignal.timeout(READ_TIMEOUT_MS),
     ...init,
     headers: { Accept: "application/json", ...init?.headers },
   });

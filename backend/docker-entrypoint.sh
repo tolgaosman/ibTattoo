@@ -29,9 +29,13 @@ php artisan db:seed --class=AdminUserSeeder --force
 echo "Creating storage link..."
 php artisan storage:link || true
 
+# Caching is a performance step, not a correctness one — an uncached Laravel
+# serves every request correctly, just a little slower. Under `set -e` a failing
+# cache step would kill the entrypoint before `exec php-fpm` below, taking the
+# whole site down with a 502; degrade to "slower" instead of "offline".
 echo "Optimizing application..."
-php artisan optimize:clear
-php artisan optimize
+php artisan optimize:clear || echo "WARNING: optimize:clear failed, continuing"
+php artisan optimize || echo "WARNING: optimize failed, continuing uncached"
 
 # Execute CMD (php-fpm)
 exec "$@"

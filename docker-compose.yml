@@ -15,6 +15,10 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        # Baked into the standalone build (next.config.ts rewrites). Must match
+        # the runtime value below — see the comment in frontend/Dockerfile.
+        API_URL: http://web/api
     environment:
       - NODE_ENV=production
       - API_URL=http://web/api
@@ -29,6 +33,11 @@ services:
       - ./frontend:/var/www/frontend:ro
     environment:
       - APP_ENV=production
+      # Without these the container falls back to .env.example, which carries
+      # APP_DEBUG=true and APP_URL=http://127.0.0.1:8000 — the latter is what
+      # leaked absolute localhost URLs into stored image paths.
+      - APP_DEBUG=false
+      - APP_URL=https://tatt2me.net
       - DB_CONNECTION=mysql
       - DB_HOST=db
       - DB_PORT=3306

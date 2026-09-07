@@ -3,49 +3,53 @@ import type { NextConfig } from "next";
 const isStaticExport = process.env.STATIC_EXPORT === "true";
 const basePath = "/ibTattoo";
 
-// The Laravel API serves gallery images from storage/ — allow next/image to
-// optimize them in dev and whatever host API_URL points to in production.
-let apiImageHost: URL | undefined;
+// Where the Laravel side lives. Read at config-eval time, which with
+// `output: "standalone"` means BUILD time — the resolved config is serialized
+// into the generated server.js and never re-read at runtime. That is why
+// docker-compose passes API_URL as a build arg as well as a runtime env var.
+let apiHostUrl: URL | undefined;
 try {
-  apiImageHost = new URL(process.env.API_URL || "http://127.0.0.1:8000/api");
+  apiHostUrl = new URL(process.env.API_URL || "http://127.0.0.1:8000/api");
 } catch {
-  apiImageHost = undefined;
+  apiHostUrl = undefined;
 }
 
-const remotePatterns = apiImageHost
-  ? [
-      {
-        protocol: apiImageHost.protocol.replace(":", "") as "http" | "https",
-        hostname: apiImageHost.hostname,
-        port: apiImageHost.port,
-        pathname: "/storage/**",
-      },
-    ]
-  : [];
+const storageOrigin = apiHostUrl
+  ? `${apiHostUrl.protocol}//${apiHostUrl.host}`
+  : "http://127.0.0.1:8000";
 
 const nextConfig: NextConfig = {
   output: "standalone",
-  images: {
-    remotePatterns,
-    // API_URL is our own fixed server config, not user input, so allowing a
-    // private/loopback host (127.0.0.1 in dev, or the same-VPS backend in
-    // production) carries none of the SSRF risk this flag guards against.
-    dangerouslyAllowLocalIP: true,
-  },
   experimental: {
+    // Admin uploads travel as base64 JSON through a server action, which
+    // inflates the payload ~33% over the 8 MB image cap the API enforces.
     serverActions: {
-      bodySizeLimit: '10mb',
+      bodySizeLimit: "15mb",
     },
   },
-  async rewrites() {
-    const apiHost = apiImageHost ? `${apiImageHost.protocol}//${apiImageHost.host}` : "http://127.0.0.1:8000";
-    return [
-      {
-        source: "/storage/:path*",
-        destination: `${apiHost}/storage/:path*`,
-      },
-    ];
-  },
+
+  // Uploaded images are stored as relative `/storage/...` paths. In production
+  // nginx intercepts that prefix and serves the file straight off the shared
+  // volume, so this rewrite never runs for a browser request. It IS load
+  // bearing for next/image: given a relative src, the optimizer re-enters the
+  // router in-process, and that internal request resolves through rewrites.
+  // Without it the optimizer finds no such file under public/ and 404s.
+  //
+  // No `images.remotePatterns` here on purpose: patterns are only consulted for
+  // absolute URLs, and every stored path is relative now.
+  ...(isStaticExport
+    ? {}
+    : {
+        async rewrites() {
+          return [
+            {
+              source: "/storage/:path*",
+              destination: `${storageOrigin}/storage/:path*`,
+            },
+          ];
+        },
+      }),
+
   ...(isStaticExport
     ? {
         output: "export",

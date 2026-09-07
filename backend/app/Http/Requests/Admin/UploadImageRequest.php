@@ -16,10 +16,13 @@ class UploadImageRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Two accepted shapes: a multipart `file`, or a base64 `data` payload
+        // with its `filename` (what the Next.js server action sends). Exactly
+        // one of them must be present — an empty request used to validate.
         return [
-            'file' => ['nullable', 'image', 'max:8192'],
-            'filename' => ['nullable', 'string'],
-            'data' => ['nullable', 'string'],
+            'file' => ['required_without:data', 'nullable', 'image', 'max:8192'],
+            'data' => ['required_without:file', 'nullable', 'string'],
+            'filename' => ['required_with:data', 'nullable', 'string', 'max:255'],
         ];
     }
 }

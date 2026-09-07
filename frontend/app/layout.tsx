@@ -32,8 +32,8 @@ const caveat = Caveat({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const content = await getContent().catch(() => null);
-  const siteTitle = content?.hero?.title || "Irmak Bozkurt — Derideki Hikayeler";
+  const content = await getPublicContent();
+  const siteTitle = content.hero?.title || "Irmak Bozkurt — Derideki Hikayeler";
   
   return {
     metadataBase: new URL("https://irmakbozkurt.tattoo"),
@@ -72,15 +72,14 @@ const jsonLd = {
 
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import { ToastProvider } from "@/components/ui/Toast";
-import { getContent } from "@/lib/db";
+import { getPublicContent } from "@/lib/db";
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   // Admin's phone-number setting doubles as the WhatsApp contact number
-  // site-wide — if the API is unreachable, FloatingWhatsApp falls back to
-  // its own default rather than breaking every page.
-  const phone = await getContent()
-    .then((content) => content.contact.phone)
-    .catch(() => undefined);
+  // site-wide. If the API is unreachable this resolves to the bundled
+  // fallback's number rather than breaking every page.
+  const { contact } = await getPublicContent();
+  const phone = contact?.phone;
 
   return (
     <html

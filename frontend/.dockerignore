@@ -1,0 +1,19 @@
+# Without this, `COPY . .` drops the host's node_modules on top of the ones
+# installed inside Alpine — the native SWC/lightningcss binaries are
+# platform-specific, so the build dies when the image is built from Windows.
+node_modules
+.next
+out
+
+# Never bake local secrets or stale build state into the image.
+.env
+.env.local
+.env.*.local
+tsconfig.tsbuildinfo
+
+.git
+.gitignore
+Dockerfile
+.dockerignore
+README.md
+npm-debug.log*

@@ -1,6 +1,9 @@
 import type { Tattoo } from "@/lib/tattoos";
+import { cache } from "react";
 import { revalidatePath } from "next/cache";
+import { unstable_rethrow } from "next/navigation";
 import { apiFetch, adminFetch } from "@/lib/api";
+import seedContent from "@/data/content.json";
 
 export interface SiteContent {
   hero: {
@@ -22,8 +25,54 @@ export interface SiteContent {
   };
 }
 
-export async function getContent(): Promise<SiteContent> {
+/**
+ * Last-resort content, bundled into the build. `data/content.json` is the
+ * original seed and predates the editable hero and about-image, so those two
+ * mirror the backend's own defaults (backend ContentController). Its gallery
+ * points at images in `public/images/work/`, so the site still renders in full
+ * with the API completely unreachable.
+ *
+ * The cast is needed because TypeScript widens the JSON's `size`/`aspect`
+ * strings, which `Tattoo` declares as unions.
+ */
+const FALLBACK_CONTENT: SiteContent = {
+  ...(seedContent as unknown as Omit<SiteContent, "hero" | "aboutImage">),
+  hero: {
+    title: "Irmak Bozkurt - tatt2me",
+    tagline: "iğne nereye giderse gitsin, kalbim hep Lefke'de kalır",
+    specialities: ["İnce çizgi", "Neo-traditional", "Geometrik nokta", "Lefke, KKTC"],
+  },
+  aboutImage: "/images/hakkimda/portre.jpg",
+};
+
+/**
+ * `cache()` dedupes this per request — the layout, its metadata and the page
+ * each ask for content, and without it that was three API round trips per view.
+ */
+export const getContent = cache(async (): Promise<SiteContent> => {
   return apiFetch<SiteContent>("/content", { cache: "no-store" });
+});
+
+/**
+ * The public site's entry point. A visitor should never meet a 500 because the
+ * API is down, so failures degrade to the bundled content above.
+ *
+ * Deliberately NOT used by the admin panel: there, seed content silently
+ * standing in for real content would be misleading, so those pages keep the
+ * throwing `getContent()` and surface the error.
+ */
+export async function getPublicContent(): Promise<SiteContent> {
+  try {
+    return await getContent();
+  } catch (error) {
+    // `cache: "no-store"` makes Next signal dynamic rendering by throwing, and
+    // swallowing that would let a page be prerendered with the fallback baked
+    // in permanently. Let Next's own control-flow errors through first.
+    unstable_rethrow(error);
+
+    console.error("[content] API unreachable — serving bundled fallback:", error);
+    return FALLBACK_CONTENT;
+  }
 }
 
 function revalidateSite() {
