@@ -1,6 +1,15 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import { WHATSAPP_PHONE } from "@/lib/site";
+import { useOverlayHidden } from "@/components/ui/OverlayVisibility";
 
 export function FloatingWhatsApp({ phone = WHATSAPP_PHONE }: { phone?: string }) {
+  const pathname = usePathname();
+  const overlayHidden = useOverlayHidden();
+
+  if (pathname?.startsWith("/admin") || overlayHidden) return null;
+
   return (
     <a
       href={`https://wa.me/${phone}?text=Merhaba`}

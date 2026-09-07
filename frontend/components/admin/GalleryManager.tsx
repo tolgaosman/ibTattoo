@@ -94,7 +94,7 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
       } else {
         const fullTattoo: Tattoo = {
           id: Date.now().toString(),
-          slug: newTattoo.title?.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "yeni",
+          slug: (newTattoo.title?.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "yeni") + "-" + Math.random().toString(36).substring(2, 6),
           title: newTattoo.title || "İsimsiz",
           style: newTattoo.style || "",
           size: newTattoo.size as any,

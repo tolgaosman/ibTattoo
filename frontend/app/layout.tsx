@@ -71,6 +71,7 @@ const jsonLd = {
 };
 
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
+import { OverlayVisibilityProvider } from "@/components/ui/OverlayVisibility";
 import { ToastProvider } from "@/components/ui/Toast";
 import { getPublicContent } from "@/lib/db";
 
@@ -93,8 +94,10 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         </a>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <ToastProvider>
-          <Chrome>{children}</Chrome>
-          <FloatingWhatsApp phone={phone} />
+          <OverlayVisibilityProvider>
+            <Chrome>{children}</Chrome>
+            <FloatingWhatsApp phone={phone} />
+          </OverlayVisibilityProvider>
         </ToastProvider>
       </body>
     </html>

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Image from "next/image";
 import { Dialog } from "@base-ui/react/dialog";
 import { Eyebrow } from "@/components/ui/Label";
+import { useOverlayHold } from "@/components/ui/OverlayVisibility";
 import { SIZE_LABELS, formatStyle, type Tattoo } from "@/lib/tattoos";
 
 interface LightboxProps {
@@ -14,6 +15,8 @@ interface LightboxProps {
 
 export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
   const tattoo = index !== null ? items[index] : null;
+
+  useOverlayHold(tattoo !== null);
 
   useEffect(() => {
     if (index === null || items.length === 0) return;
@@ -29,24 +32,24 @@ export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
     <Dialog.Root open={tattoo !== null} onOpenChange={(open) => !open && onIndexChange(null)}>
       <Dialog.Portal>
         <Dialog.Backdrop className="fixed inset-0 z-40 bg-paper/95 transition-opacity duration-300 ease-out data-[starting-style]:opacity-0 data-[ending-style]:opacity-0" />
-        <Dialog.Popup className="fixed inset-0 z-50 overflow-y-auto p-6 transition-[opacity,transform] duration-300 ease-out data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0 sm:p-12">
+        <Dialog.Popup className="fixed inset-0 z-50 flex flex-col overflow-hidden p-4 transition-[opacity,transform] duration-300 ease-out data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0 sm:p-6 lg:overflow-y-auto lg:p-12">
           {tattoo ? (
-            <div className="mx-auto flex min-h-full max-w-5xl flex-col">
-              <div className="mb-8 flex items-center justify-between">
-                <Dialog.Title className="font-serif text-2xl text-ink sm:text-3xl">
+            <div className="mx-auto flex h-full w-full max-w-5xl flex-col">
+              <div className="mb-3 flex shrink-0 items-center justify-between sm:mb-8">
+                <Dialog.Title className="truncate font-serif text-lg text-ink sm:text-2xl lg:text-3xl">
                   {tattoo.title}
                 </Dialog.Title>
                 <Dialog.Close
                   aria-label="Kapat"
                   data-cursor="view"
-                  className="text-sm text-muted transition-colors duration-300 ease-out hover:text-amber-light"
+                  className="shrink-0 pl-4 text-sm text-muted transition-colors duration-300 ease-out hover:text-amber-light"
                 >
                   Kapat
                 </Dialog.Close>
               </div>
 
-              <div className="grid flex-1 gap-8 lg:grid-cols-[1.4fr_1fr]">
-                <div className="relative min-h-[40vh] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-parchment shadow-[var(--shadow-lift)]">
+              <div className="flex min-h-0 flex-1 flex-col gap-3 sm:gap-4 lg:grid lg:grid-cols-[1.4fr_1fr] lg:gap-8">
+                <div className="relative h-[30vh] w-full shrink-0 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-parchment shadow-[var(--shadow-lift)] sm:h-[38vh] lg:h-full lg:min-h-[40vh]">
                   <Image
                     src={tattoo.image}
                     alt={`${tattoo.title} — ${formatStyle(tattoo.style)}`}
@@ -55,19 +58,23 @@ export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
                     className="object-cover"
                   />
                 </div>
-                <div className="flex flex-col gap-6">
-                  <MetaRow label="Tarz" value={formatStyle(tattoo.style)} />
-                  <MetaRow label="Boyut" value={SIZE_LABELS[tattoo.size]} />
-                  <MetaRow label="Bölge" value={tattoo.placement} />
-                  <MetaRow label="Süre" value={tattoo.duration} />
-                  <div>
+                <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-hidden sm:gap-4 lg:gap-6">
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 sm:flex sm:flex-col sm:gap-4">
+                    <MetaRow label="Tarz" value={formatStyle(tattoo.style)} />
+                    <MetaRow label="Boyut" value={SIZE_LABELS[tattoo.size]} />
+                    <MetaRow label="Bölge" value={tattoo.placement} />
+                    <MetaRow label="Süre" value={tattoo.duration} />
+                  </div>
+                  <div className="min-h-0 flex-1 overflow-hidden">
                     <Eyebrow>Sürece Dair</Eyebrow>
-                    <p className="mt-2 leading-relaxed text-ink/90">{tattoo.story}</p>
+                    <p className="mt-1 line-clamp-3 text-sm leading-relaxed text-ink/90 sm:mt-2 sm:line-clamp-none sm:text-base">
+                      {tattoo.story}
+                    </p>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-10 flex items-center justify-between text-sm text-muted">
+              <div className="mt-3 flex shrink-0 items-center justify-between text-xs text-muted sm:mt-10 sm:text-sm">
                 <button
                   type="button"
                   data-cursor="view"
@@ -76,7 +83,7 @@ export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
                 >
                   ← Önceki
                 </button>
-                <span className="font-serif text-base italic">
+                <span className="font-serif text-sm italic sm:text-base">
                   {index! + 1} / {items.length}
                 </span>
                 <button
@@ -98,9 +105,9 @@ export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
 
 function MetaRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-baseline justify-between border-b border-[var(--hairline)] pb-2">
+    <div className="flex items-baseline justify-between gap-2 border-b border-[var(--hairline)] pb-1 sm:pb-2">
       <Eyebrow>{label}</Eyebrow>
-      <span className="font-sans text-sm text-ink">{value}</span>
+      <span className="truncate font-sans text-sm text-ink">{value}</span>
     </div>
   );
 }
