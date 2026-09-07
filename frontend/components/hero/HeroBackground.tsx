@@ -57,7 +57,7 @@ export function HeroBackground() {
         fill
         priority
         unoptimized
-        className="object-cover object-[62%_44%] sm:object-[50%_46%]"
+        className="object-cover object-[35%_44%] sm:object-[50%_46%]"
       />
       {/* Lamp glow: a soft breathing warmth over the studio's work light. */}
       <div className="hero-lamp-glow pointer-events-none absolute left-[50%] top-[42%] h-[15%] w-[15%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-light/50 blur-2xl" />
