@@ -52,16 +52,16 @@ export async function uploadImageAction(formData: FormData): Promise<string> {
   const file = formData.get("file") as File;
   if (!file) throw new Error("Dosya bulunamadı");
 
-  // Reconstruct FormData to avoid Node.js fetch multipart corruption bug
   const buffer = await file.arrayBuffer();
-  const blob = new Blob([buffer], { type: file.type });
-  
-  const newFormData = new FormData();
-  newFormData.append("file", blob, file.name);
+  const base64 = Buffer.from(buffer).toString("base64");
 
   const { url } = await adminFetch<{ url: string }>("/uploads", {
     method: "POST",
-    body: newFormData,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      filename: file.name,
+      data: base64,
+    }),
   });
 
   return url;

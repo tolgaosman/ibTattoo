@@ -17,7 +17,9 @@ class UploadImageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => ['required', 'image', 'max:8192'],
+            'file' => ['nullable', 'image', 'max:8192'],
+            'filename' => ['nullable', 'string'],
+            'data' => ['nullable', 'string'],
         ];
     }
 }
