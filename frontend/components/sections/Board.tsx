@@ -29,10 +29,7 @@ interface Placement {
 }
 
 const NOTES: ReadonlyArray<{ text: string; x: string; y: string; r: string }> = [
-  { text: "#blackwork", x: "90%", y: "23%", r: "-6deg" },
-  { text: "#ince çizgi", x: "1%", y: "24%", r: "5deg" },
   { text: "#dotwork", x: "37%", y: "61%", r: "-4deg" },
-  { text: "#geometrik", x: "91%", y: "58%", r: "7deg" },
 ];
 
 const IMAGE_ASPECT = {

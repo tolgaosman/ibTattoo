@@ -168,7 +168,7 @@ export function DashboardForms({
       <div className="soft-card p-6">
         <h2 className="font-serif text-2xl text-ink mb-6">Hakkımda Düzenle</h2>
 
-        <div className="mb-6 flex items-center gap-4">
+        <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <div className="relative h-24 w-20 shrink-0 overflow-hidden rounded-md border border-hairline bg-parchment">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={aboutImage} alt="Hakkımda görseli" className="h-full w-full object-cover" />
@@ -222,7 +222,7 @@ export function DashboardForms({
         <div className="space-y-6">
           {process.map((step, index) => (
             <div key={index} className="space-y-2 border-b border-hairline pb-4 last:border-0">
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
                 <input
                   type="text"
                   value={step.no}
@@ -231,7 +231,8 @@ export function DashboardForms({
                     newProcess[index].no = e.target.value;
                     setProcess(newProcess);
                   }}
-                  className="w-16 rounded-md border border-hairline bg-parchment px-3 py-2 text-ink focus:border-amber focus:outline-none"
+                  className="w-16 sm:w-16 rounded-md border border-hairline bg-parchment px-3 py-2 text-ink focus:border-amber focus:outline-none"
+                  placeholder="No"
                 />
                 <input
                   type="text"
@@ -242,6 +243,7 @@ export function DashboardForms({
                     setProcess(newProcess);
                   }}
                   className="flex-1 rounded-md border border-hairline bg-parchment px-3 py-2 text-ink focus:border-amber focus:outline-none"
+                  placeholder="Süreç Başlığı"
                 />
               </div>
               <textarea

@@ -16,10 +16,10 @@ export default async function AdminLayout({
   const unreadCount = appointments.filter((a) => a.status === "new").length;
 
   return (
-    <div className="flex min-h-screen bg-paper">
+    <div className="flex min-h-screen bg-paper pb-16 md:pb-0">
       <Sidebar unreadCount={unreadCount} />
-      <main className="flex-1 overflow-y-auto pl-64">
-        <div className="mx-auto max-w-7xl p-8">{children}</div>
+      <main className="flex-1 overflow-y-auto md:pl-64">
+        <div className="mx-auto max-w-7xl p-4 sm:p-6 md:p-8">{children}</div>
       </main>
     </div>
   );
