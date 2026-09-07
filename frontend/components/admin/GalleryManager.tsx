@@ -184,6 +184,10 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
                 <option value="landscape">Yatay (Landscape)</option>
               </select>
             </div>
+            <div>
+              <label className="block text-sm text-ink mb-1">Süre <span className="text-muted">(opsiyonel)</span></label>
+              <input type="text" value={newTattoo.duration || ""} onChange={e => setNewTattoo({...newTattoo, duration: e.target.value})} className="w-full rounded-md border border-hairline bg-parchment px-3 py-2 text-ink focus:border-amber focus:outline-none" placeholder="Örn: 2 saat" />
+            </div>
           </div>
           
           <div>
