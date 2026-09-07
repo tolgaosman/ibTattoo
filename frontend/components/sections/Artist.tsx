@@ -7,7 +7,7 @@ export function Artist({ about, image }: { about: string[]; image: string }) {
       <div className="mx-auto max-w-6xl">
         <div className="grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
           <Reveal className="lg:rotate-[-1.5deg]">
-            <figure className="paper-card relative p-3 pb-16">
+            <figure className="paper-card relative p-3">
               <span className="tape absolute left-1/2 top-0 h-7 w-32 -translate-x-1/2 -translate-y-1/2 rotate-[-3deg]" />
               <div className="relative aspect-[4/5] overflow-hidden bg-parchment">
                 <Image
@@ -18,9 +18,6 @@ export function Artist({ about, image }: { about: string[]; image: string }) {
                   className="object-cover object-[65%_50%]"
                 />
               </div>
-              <figcaption className="absolute inset-x-3 bottom-4 text-center font-hand text-2xl leading-none text-ink-soft">
-                stüdyoda, bir salı öğleden sonrası
-              </figcaption>
             </figure>
           </Reveal>
 
