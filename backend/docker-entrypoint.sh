@@ -13,6 +13,10 @@ echo "MySQL is up - continuing"
 if [ ! -f .env ]; then
   echo "Copying .env.example to .env..."
   cp .env.example .env
+fi
+
+if ! grep -q "^APP_KEY=base64:" .env; then
+  echo "Generating APP_KEY..."
   php artisan key:generate
 fi
 
