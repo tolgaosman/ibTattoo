@@ -1,17 +1,25 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { API_URL } from "@/lib/api";
 
-const ADMIN_PASSWORD = "tatt2metatt2me2005";
 const COOKIE_NAME = "admin_session";
+const ADMIN_EMAIL = "irmakyamuer2000@gmail.com";
 
 export async function POST(request: Request) {
   try {
     const { password } = await request.json();
 
-    if (password === ADMIN_PASSWORD) {
-      // Setup secure cookie session
+    const res = await fetch(`${API_URL}/admin/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ email: ADMIN_EMAIL, password }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.token) {
       const cookieStore = await cookies();
-      cookieStore.set(COOKIE_NAME, "true", {
+      cookieStore.set(COOKIE_NAME, data.token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",

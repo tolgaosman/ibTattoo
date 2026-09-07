@@ -10,8 +10,9 @@ import {
   deleteTattoo,
 } from "@/lib/db";
 import type { Tattoo } from "@/lib/tattoos";
-import fs from "fs/promises";
-import path from "path";
+import { adminFetch } from "@/lib/api";
+import type { AppointmentStatus } from "@/lib/appointments";
+import { revalidatePath } from "next/cache";
 
 export async function saveAboutAction(about: string[]) {
   await updateAbout(about);
@@ -45,19 +46,24 @@ export async function uploadImageAction(formData: FormData): Promise<string> {
   const file = formData.get("file") as File;
   if (!file) throw new Error("Dosya bulunamadı");
 
-  const arrayBuffer = await file.arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
-  
-  const ext = path.extname(file.name) || ".jpg";
-  const name = path.basename(file.name, ext).replace(/[^a-z0-9]/gi, '-').toLowerCase();
-  const filename = `${name}-${Date.now()}${ext}`;
-  
-  // ensure directory exists
-  const uploadDir = path.join(process.cwd(), "public", "images", "uploads");
-  await fs.mkdir(uploadDir, { recursive: true });
-  
-  const filePath = path.join(uploadDir, filename);
-  await fs.writeFile(filePath, buffer);
+  const { url } = await adminFetch<{ url: string }>("/uploads", {
+    method: "POST",
+    body: formData,
+  });
 
-  return `/images/uploads/${filename}`;
+  return url;
+}
+
+export async function updateAppointmentStatusAction(id: number, status: AppointmentStatus) {
+  await adminFetch(`/appointments/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status }),
+  });
+  revalidatePath("/admin/messages");
+}
+
+export async function deleteAppointmentAction(id: number) {
+  await adminFetch(`/appointments/${id}`, { method: "DELETE" });
+  revalidatePath("/admin/messages");
 }

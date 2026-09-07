@@ -72,7 +72,7 @@ export function Contact({ contact }: { contact: ContactInfo }) {
         </div>
 
         <Reveal delay={120} className="min-w-0">
-          <AppointmentForm />
+          <AppointmentForm whatsappPhone={contact.phone} />
         </Reveal>
       </div>
     </section>

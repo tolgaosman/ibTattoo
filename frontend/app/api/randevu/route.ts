@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { API_URL } from "@/lib/api";
 
 interface AppointmentPayload {
   name: string;
@@ -27,8 +28,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Eksik alanlar var.", missing }, { status: 400 });
   }
 
-  // TODO: e-posta gönderimi (Resend) — henüz backend yok, talep şimdilik loglanıyor.
-  console.log("[randevu] yeni talep:", payload);
+  const res = await fetch(`${API_URL}/appointments`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    return NextResponse.json({ error: body.message || "Randevu kaydedilemedi." }, { status: res.status });
+  }
 
   return NextResponse.json({ ok: true });
 }

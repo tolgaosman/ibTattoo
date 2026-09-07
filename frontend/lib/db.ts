@@ -1,9 +1,6 @@
-import fs from "fs/promises";
-import path from "path";
 import type { Tattoo } from "@/lib/tattoos";
 import { revalidatePath } from "next/cache";
-
-const CONTENT_PATH = path.join(process.cwd(), "data", "content.json");
+import { apiFetch, adminFetch } from "@/lib/api";
 
 export interface SiteContent {
   about: string[];
@@ -20,58 +17,71 @@ export interface SiteContent {
 }
 
 export async function getContent(): Promise<SiteContent> {
-  const data = await fs.readFile(CONTENT_PATH, "utf-8");
-  return JSON.parse(data) as SiteContent;
+  return apiFetch<SiteContent>("/content", { cache: "no-store" });
 }
 
-export async function saveContent(content: SiteContent): Promise<void> {
-  await fs.writeFile(CONTENT_PATH, JSON.stringify(content, null, 2), "utf-8");
+function revalidateSite() {
   revalidatePath("/");
   revalidatePath("/galeri");
   revalidatePath("/admin");
 }
 
 export async function updateAbout(about: string[]) {
-  const content = await getContent();
-  content.about = about;
-  await saveContent(content);
+  await adminFetch("/content/about", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ about }),
+  });
+  revalidateSite();
 }
 
 export async function updateProcess(process: { no: string; title: string; text: string }[]) {
-  const content = await getContent();
-  content.process = process;
-  await saveContent(content);
+  await adminFetch("/content/process", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ process }),
+  });
+  revalidateSite();
 }
 
 export async function updateBoardSelection(boardSelection: string[]) {
-  const content = await getContent();
-  content.boardSelection = boardSelection;
-  await saveContent(content);
+  await adminFetch("/content/board-selection", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ boardSelection }),
+  });
+  revalidateSite();
 }
 
 export async function updateContact(contact: SiteContent["contact"]) {
-  const content = await getContent();
-  content.contact = contact;
-  await saveContent(content);
+  await adminFetch("/content/contact", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(contact),
+  });
+  revalidateSite();
 }
 
 // Gallery CRUD
 export async function addTattoo(tattoo: Tattoo) {
-  const content = await getContent();
-  content.gallery.push(tattoo);
-  await saveContent(content);
+  await adminFetch("/tattoos", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(tattoo),
+  });
+  revalidateSite();
 }
 
 export async function updateTattoo(id: string, updated: Partial<Tattoo>) {
-  const content = await getContent();
-  content.gallery = content.gallery.map((t) => (t.id === id ? { ...t, ...updated } : t));
-  await saveContent(content);
+  await adminFetch(`/tattoos/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(updated),
+  });
+  revalidateSite();
 }
 
 export async function deleteTattoo(id: string) {
-  const content = await getContent();
-  content.gallery = content.gallery.filter((t) => t.id !== id);
-  // Remove from board selection if present
-  content.boardSelection = content.boardSelection.filter((tid) => tid !== id);
-  await saveContent(content);
+  await adminFetch(`/tattoos/${id}`, { method: "DELETE" });
+  revalidateSite();
 }

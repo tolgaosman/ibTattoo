@@ -1,9 +1,9 @@
 import { WHATSAPP_PHONE } from "@/lib/site";
 
-export function FloatingWhatsApp() {
+export function FloatingWhatsApp({ phone = WHATSAPP_PHONE }: { phone?: string }) {
   return (
     <a
-      href={`https://wa.me/${WHATSAPP_PHONE}?text=Merhaba`}
+      href={`https://wa.me/${phone}?text=Merhaba`}
       target="_blank"
       rel="noreferrer noopener"
       aria-label="WhatsApp üzerinden iletişime geçin"

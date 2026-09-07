@@ -66,8 +66,16 @@ const jsonLd = {
 };
 
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
+import { getContent } from "@/lib/db";
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  // Admin's phone-number setting doubles as the WhatsApp contact number
+  // site-wide — if the API is unreachable, FloatingWhatsApp falls back to
+  // its own default rather than breaking every page.
+  const phone = await getContent()
+    .then((content) => content.contact.phone)
+    .catch(() => undefined);
+
   return (
     <html
       lang="tr"
@@ -80,7 +88,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </a>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <Chrome>{children}</Chrome>
-        <FloatingWhatsApp />
+        <FloatingWhatsApp phone={phone} />
       </body>
     </html>
   );

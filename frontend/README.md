@@ -3,6 +3,12 @@
 A Next.js site for a fictional Istanbul tattoo artist. See `.claude` plan history for the
 full brief; the short version:
 
+> **Backend required.** All content (about text, process steps, gallery, board selection,
+> contact info) and admin auth are served by the Laravel API in `../backend`. Set `API_URL`
+> in `.env.local` and run `php artisan serve` alongside `npm run dev` — see the root
+> [README](../README.md) for the full local setup. `lib/db.ts` and `lib/appointments.ts` are
+> the only places that talk to it.
+
 - **Hero** (`components/hero/`): a full-bleed isometric tattoo-studio diorama illustration
   (`public/images/hero/hero-studio-v2.png`, AI-generated via Higgsfield/Nano Banana Pro,
   then outpainted twice for horizontal and vertical breathing room around the room) behind
