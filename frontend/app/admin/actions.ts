@@ -52,9 +52,17 @@ export async function uploadImageAction(formData: FormData): Promise<string> {
   const file = formData.get("file") as File;
   if (!file) throw new Error("Dosya bulunamadı");
 
+  // Reconstruct FormData explicitly with a Blob to prevent Node.js fetch
+  // from corrupting or omitting the Next.js File stream content.
+  const buffer = await file.arrayBuffer();
+  const blob = new Blob([buffer], { type: file.type });
+  
+  const sendData = new FormData();
+  sendData.append("file", blob, file.name);
+
   const { url } = await adminFetch<{ url: string }>("/uploads", {
     method: "POST",
-    body: formData,
+    body: sendData,
   });
 
   return url;
