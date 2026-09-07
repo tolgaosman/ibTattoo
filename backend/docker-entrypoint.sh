@@ -17,7 +17,7 @@ fi
 
 if ! grep -q "^APP_KEY=base64:" .env; then
   echo "Generating APP_KEY..."
-  php artisan key:generate
+  php artisan key:generate --force
 fi
 
 echo "Running migrations..."
