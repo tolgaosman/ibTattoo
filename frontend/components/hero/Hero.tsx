@@ -6,7 +6,7 @@ import type { SiteContent } from "@/lib/db";
 
 export function Hero({ hero }: { hero: SiteContent["hero"] }) {
   return (
-    <section className="relative h-screen overflow-hidden bg-paper">
+    <section className="relative h-dvh overflow-hidden bg-paper">
       <HeroBackground />
 
       {/* Scrim: the diorama's floor is a light warm tone right where the
@@ -19,7 +19,7 @@ export function Hero({ hero }: { hero: SiteContent["hero"] }) {
           instead of two independent absolute blocks fighting for the same
           strip — that's what let the links overlap each other on narrow
           screens. The diorama keeps the middle of the frame either way. */}
-      <div className="absolute inset-0 flex flex-col justify-end p-6 pr-16 sm:p-10 sm:pr-24">
+      <div className="absolute inset-0 flex flex-col justify-end p-6 pr-20 sm:p-10 sm:pr-24">
         <div className="flex w-full max-w-[min(94vw,860px)] flex-col items-start gap-7 sm:gap-9">
           <div className="pointer-events-none w-full">
             <h1 

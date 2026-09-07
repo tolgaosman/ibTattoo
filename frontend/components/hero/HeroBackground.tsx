@@ -44,28 +44,20 @@ export function HeroBackground() {
 
   return (
     <div ref={layerRef} className="absolute inset-0 scale-[1.06] will-change-transform">
-      {/* Blurred, oversized backdrop copy. The diorama is a wide landscape
-          shot — on a portrait phone screen, covering the frame with it crops
-          out the hanging sign and half the room. Below sm we switch the
-          foreground to object-contain so the whole scene is visible; this
-          backdrop fills the letterbox gaps that leaves with the same image
-          instead of a flat colour, so it still reads as full-bleed. Hidden
-          from sm up, where the foreground already covers the frame. */}
-      <Image
-        aria-hidden
-        src="/images/hero/hero-studio-v2.webp"
-        alt=""
-        fill
-        unoptimized
-        className="scale-125 object-cover object-[50%_46%] blur-2xl sm:hidden"
-      />
+      {/* The diorama sits in a wide landscape shot with a lot of plain wall
+          and floor around it. object-contain used to show that whole shot on
+          phones so nothing was cropped, but on a tall portrait screen that
+          plain margin dominates the frame — a dead beige band above the
+          actual scene. Covering the frame instead, shifted right toward the
+          room, keeps the artist and table filling the screen; only the
+          hanging sign on the far left gets cropped out below sm. */}
       <Image
         src="/images/hero/hero-studio-v2.webp"
         alt="İzometrik dövme stüdyosu diorama: dövmeci, sırtı dönük, yüzükoyun yatan bir müşteriye dövme yapıyor, arkadaki duvarda 'Irmak Bozkurt Tattoo Studio' yazan asma bir tabela var."
         fill
         priority
         unoptimized
-        className="object-contain object-center sm:object-cover sm:object-[50%_46%]"
+        className="object-cover object-[64%_46%] sm:object-[50%_46%]"
       />
       {/* Lamp glow: a soft breathing warmth over the studio's work light. */}
       <div className="hero-lamp-glow pointer-events-none absolute left-[50%] top-[42%] h-[15%] w-[15%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-light/50 blur-2xl" />

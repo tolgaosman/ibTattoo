@@ -15,7 +15,7 @@ export function HeroTagline({ tagline, specialities }: { tagline: string; specia
       </p>
       {/* The separator rides on the end of the item before it, never the start
           of the next one — otherwise a wrapped line opens with a stray dot. */}
-      <p className="flex flex-wrap items-center gap-x-4 gap-y-2 font-serif italic text-[1.3rem] text-ink-soft drop-shadow-[0_1px_10px_rgba(0,0,0,0.8)]">
+      <p className="flex flex-wrap items-center gap-x-3 gap-y-2 font-serif italic text-base text-ink-soft drop-shadow-[0_1px_10px_rgba(0,0,0,0.8)] sm:gap-x-4 sm:text-[1.3rem]">
         {specialities.map((item, i) => (
           <span key={item} className="flex items-center gap-4">
             {item}
