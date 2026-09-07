@@ -67,7 +67,7 @@ export function AppointmentForm({ whatsappPhone = WHATSAPP_PHONE }: { whatsappPh
 
     setSubmitting(true);
     try {
-      await fetch("/api/randevu", {
+      await fetch("/randevu-api", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
