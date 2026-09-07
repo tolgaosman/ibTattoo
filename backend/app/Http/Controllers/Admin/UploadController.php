@@ -53,6 +53,10 @@ class UploadController extends Controller
         } else {
             $file = $request->file('file');
             $path = $file->storeAs('tattoos', $this->buildFilename($file->getClientOriginalName()), 'public');
+            
+            if ($path === false) {
+                return response()->json(['message' => 'Dosya sunucuya kaydedilemedi. Depolama izni hatası olabilir.'], 500);
+            }
         }
 
         // nginx serves this prefix straight off the shared storage volume
