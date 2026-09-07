@@ -21,6 +21,7 @@ class ContentResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'hero' => $this->resource['hero'],
             'about' => $this->resource['about'],
             'aboutImage' => $this->resource['aboutImage'],
             'process' => $this->resource['process'],
