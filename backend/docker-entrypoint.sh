@@ -23,6 +23,9 @@ fi
 echo "Running migrations..."
 php artisan migrate --force
 
+echo "Syncing admin account..."
+php artisan db:seed --class=AdminUserSeeder --force
+
 echo "Creating storage link..."
 php artisan storage:link || true
 
