@@ -2,7 +2,7 @@ services:
   web:
     image: nginx:alpine
     ports:
-      - "80:80"
+      - "4002:80"
     volumes:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
       - backend-storage:/var/www/backend/storage/app/public
