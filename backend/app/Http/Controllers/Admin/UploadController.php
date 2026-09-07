@@ -19,6 +19,6 @@ class UploadController extends Controller
 
         $path = $file->storeAs('tattoos', $filename, 'public');
 
-        return response()->json(['url' => Storage::disk('public')->url($path)]);
+        return response()->json(['url' => '/storage/' . $path]);
     }
 }

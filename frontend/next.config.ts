@@ -37,6 +37,15 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '10mb',
     },
   },
+  async rewrites() {
+    const apiHost = apiImageHost ? `${apiImageHost.protocol}//${apiImageHost.host}` : "http://127.0.0.1:8000";
+    return [
+      {
+        source: "/storage/:path*",
+        destination: `${apiHost}/storage/:path*`,
+      },
+    ];
+  },
   ...(isStaticExport
     ? {
         output: "export",
