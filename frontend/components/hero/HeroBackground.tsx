@@ -45,19 +45,19 @@ export function HeroBackground() {
   return (
     <div ref={layerRef} className="absolute inset-0 scale-[1.06] will-change-transform">
       {/* The diorama sits in a wide landscape shot with a lot of plain wall
-          and floor around it. object-contain used to show that whole shot on
-          phones so nothing was cropped, but on a tall portrait screen that
-          plain margin dominates the frame — a dead beige band above the
-          actual scene. Covering the frame instead, shifted right toward the
-          room, keeps the artist and table filling the screen; only the
-          hanging sign on the far left gets cropped out below sm. */}
+          and floor around it. Below sm this now lives in its own shorter
+          band (see Hero.tsx) rather than a full-screen-height box, so cover
+          only needs a modest horizontal shift toward the room — the plain
+          margin above it reads as normal headroom instead of dead space.
+          From sm up the box is wide enough that cover barely crops
+          vertically, so centering keeps the hanging sign in frame too. */}
       <Image
         src="/images/hero/hero-studio-v2.webp"
         alt="İzometrik dövme stüdyosu diorama: dövmeci, sırtı dönük, yüzükoyun yatan bir müşteriye dövme yapıyor, arkadaki duvarda 'Irmak Bozkurt Tattoo Studio' yazan asma bir tabela var."
         fill
         priority
         unoptimized
-        className="object-cover object-[64%_46%] sm:object-[50%_46%]"
+        className="object-cover object-[62%_44%] sm:object-[50%_46%]"
       />
       {/* Lamp glow: a soft breathing warmth over the studio's work light. */}
       <div className="hero-lamp-glow pointer-events-none absolute left-[50%] top-[42%] h-[15%] w-[15%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-light/50 blur-2xl" />
