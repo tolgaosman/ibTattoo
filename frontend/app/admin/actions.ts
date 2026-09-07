@@ -52,16 +52,9 @@ export async function uploadImageAction(formData: FormData): Promise<string> {
   const file = formData.get("file") as File;
   if (!file) throw new Error("Dosya bulunamadı");
 
-  const buffer = await file.arrayBuffer();
-  const base64 = Buffer.from(buffer).toString("base64");
-
   const { url } = await adminFetch<{ url: string }>("/uploads", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      filename: file.name,
-      data: base64,
-    }),
+    body: formData,
   });
 
   return url;
