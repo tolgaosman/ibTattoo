@@ -16,7 +16,8 @@ export function HeroBackground() {
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    if (reduced || isMobile) return;
 
     let raf = 0;
     let x = 0;
