@@ -24,6 +24,7 @@ const remotePatterns = apiImageHost
   : [];
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   images: {
     remotePatterns,
     // API_URL is our own fixed server config, not user input, so allowing a
