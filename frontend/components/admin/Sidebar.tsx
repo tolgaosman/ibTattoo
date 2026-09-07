@@ -7,7 +7,6 @@ import { LayoutDashboard, MessageSquare, Image as ImageIcon, Settings, LogOut } 
 const navItems = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { name: "Galeri", href: "/admin/portfolio", icon: ImageIcon },
-  { name: "Mesajlar", href: "/admin/messages", icon: MessageSquare },
   { name: "Ayarlar", href: "/admin/settings", icon: Settings },
 ];
 
@@ -17,7 +16,7 @@ export function Sidebar({ unreadCount = 0 }: { unreadCount?: number }) {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch("/api/auth/logout", { method: "POST" });
+      const res = await fetch("/auth/logout", { method: "POST" });
       if (res.ok) {
         router.push("/admin/login");
         router.refresh();
@@ -48,11 +47,6 @@ export function Sidebar({ unreadCount = 0 }: { unreadCount?: number }) {
             >
               <item.icon className={`h-5 w-5 ${isActive ? "text-amber-light" : "text-muted"}`} />
               <span className="flex-1">{item.name}</span>
-              {item.href === "/admin/messages" && unreadCount > 0 && (
-                <span className="rounded-full bg-amber px-2 py-0.5 text-xs font-semibold text-paper-deep">
-                  {unreadCount}
-                </span>
-              )}
             </Link>
           );
         })}
