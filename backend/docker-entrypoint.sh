@@ -15,6 +15,20 @@ if [ ! -f .env ]; then
   cp .env.example .env
 fi
 
+# Regenerate the package-discovery cache before anything else boots the
+# framework. The Dockerfile runs `composer install --no-dev --no-scripts`, so
+# `bootstrap/cache/packages.php` is whatever was baked into the image — if that
+# came from a stale build (e.g. a host checkout that once had dev packages
+# like laravel/pail installed), every artisan command, starting with
+# key:generate below, fatals with "Class ... not found" and — under `set -e`
+# — kills this script before `exec php-fpm` is ever reached. That crash-loops
+# the container and is what took the whole site down (502 on every /api/*
+# request). `composer dump-autoload` (no --no-scripts here) reruns
+# `package:discover` against the packages actually installed, so the cache
+# always matches reality.
+echo "Rebuilding package-discovery cache..."
+composer dump-autoload --optimize --no-interaction
+
 if ! grep -q "^APP_KEY=base64:" .env; then
   echo "Generating APP_KEY..."
   php artisan key:generate --force
