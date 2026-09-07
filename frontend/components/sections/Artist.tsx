@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Reveal } from "@/components/ui/Reveal";
 
-export function Artist({ about }: { about: string[] }) {
+export function Artist({ about, image }: { about: string[]; image: string }) {
   return (
     <section id="hakkimda" className="bg-notebook relative px-6 py-24 sm:px-10 sm:py-32">
       <div className="mx-auto max-w-6xl">
@@ -11,7 +11,7 @@ export function Artist({ about }: { about: string[] }) {
               <span className="tape absolute left-1/2 top-0 h-7 w-32 -translate-x-1/2 -translate-y-1/2 rotate-[-3deg]" />
               <div className="relative aspect-[4/5] overflow-hidden bg-parchment">
                 <Image
-                  src="/images/hakkimda/portre.jpg"
+                  src={image}
                   alt="Stüdyoda dövme çalışması sırasında bir an"
                   fill
                   sizes="(min-width: 1024px) 38vw, 90vw"

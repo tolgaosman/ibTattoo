@@ -19,6 +19,7 @@ class UpdateAboutRequest extends FormRequest
         return [
             'about' => ['required', 'array', 'min:1'],
             'about.*' => ['required', 'string'],
+            'aboutImage' => ['sometimes', 'string'],
         ];
     }
 }

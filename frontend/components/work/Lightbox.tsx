@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Image from "next/image";
 import { Dialog } from "@base-ui/react/dialog";
 import { Eyebrow } from "@/components/ui/Label";
-import { SIZE_LABELS, STYLE_LABELS, type Tattoo } from "@/lib/tattoos";
+import { SIZE_LABELS, formatStyle, type Tattoo } from "@/lib/tattoos";
 
 interface LightboxProps {
   items: Tattoo[];
@@ -49,14 +49,14 @@ export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
                 <div className="relative min-h-[40vh] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-parchment shadow-[var(--shadow-lift)]">
                   <Image
                     src={tattoo.image}
-                    alt={`${tattoo.title} — ${STYLE_LABELS[tattoo.style]}`}
+                    alt={`${tattoo.title} — ${formatStyle(tattoo.style)}`}
                     fill
                     sizes="(min-width: 1024px) 60vw, 100vw"
                     className="object-cover"
                   />
                 </div>
                 <div className="flex flex-col gap-6">
-                  <MetaRow label="Tarz" value={STYLE_LABELS[tattoo.style]} />
+                  <MetaRow label="Tarz" value={formatStyle(tattoo.style)} />
                   <MetaRow label="Boyut" value={SIZE_LABELS[tattoo.size]} />
                   <MetaRow label="Bölge" value={tattoo.placement} />
                   <MetaRow label="Süre" value={tattoo.duration} />

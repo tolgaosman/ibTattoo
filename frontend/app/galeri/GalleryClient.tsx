@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import clsx from "clsx";
-import { STYLE_LABELS, type Tattoo } from "@/lib/tattoos";
+import { formatStyle, type Tattoo } from "@/lib/tattoos";
 import { Lightbox } from "@/components/work/Lightbox";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
@@ -49,7 +49,7 @@ export function GalleryClient({ tattoos }: { tattoos: Tattoo[] }) {
               type="button"
               onClick={() => setIndex(i)}
               data-cursor="view"
-              aria-label={`${tattoo.title} — ${STYLE_LABELS[tattoo.style]}`}
+              aria-label={`${tattoo.title} — ${formatStyle(tattoo.style)}`}
               className={clsx(
                 "paper-card group relative mb-6 block w-full break-inside-avoid p-2.5 pb-11 text-left",
                 "transition-[transform,box-shadow] duration-300 ease-out",

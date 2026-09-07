@@ -22,6 +22,7 @@ class ContentResource extends JsonResource
     {
         return [
             'about' => $this->resource['about'],
+            'aboutImage' => $this->resource['aboutImage'],
             'process' => $this->resource['process'],
             'gallery' => TattooResource::collection($this->resource['gallery']),
             'boardSelection' => $this->resource['boardSelection'],

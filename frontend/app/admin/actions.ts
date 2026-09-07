@@ -14,8 +14,8 @@ import { adminFetch } from "@/lib/api";
 import type { AppointmentStatus } from "@/lib/appointments";
 import { revalidatePath } from "next/cache";
 
-export async function saveAboutAction(about: string[]) {
-  await updateAbout(about);
+export async function saveAboutAction(about: string[], aboutImage?: string) {
+  await updateAbout(about, aboutImage);
 }
 
 export async function saveProcessAction(process: { no: string; title: string; text: string }[]) {

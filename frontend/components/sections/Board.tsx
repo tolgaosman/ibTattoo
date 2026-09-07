@@ -6,7 +6,7 @@ import clsx from "clsx";
 import { Lightbox } from "@/components/work/Lightbox";
 import { Reveal } from "@/components/ui/Reveal";
 import { ButtonLink } from "@/components/ui/Button";
-import { STYLE_LABELS, type Tattoo } from "@/lib/tattoos";
+import { formatStyle, type Tattoo } from "@/lib/tattoos";
 
 const PLACEMENT: ReadonlyArray<Placement> = [
   { x: "2%", y: "1%", w: "24%", r: "-3deg", tape: "5deg" },
@@ -76,7 +76,7 @@ export function Board({ selection, gallery }: BoardProps) {
               key={tattoo.id}
               title={tattoo.title}
               image={tattoo.image}
-              alt={`${tattoo.title} — ${STYLE_LABELS[tattoo.style]}`}
+              alt={`${tattoo.title} — ${formatStyle(tattoo.style)}`}
               aspect={IMAGE_ASPECT[tattoo.aspect]}
               place={place}
               priority={i < 3}

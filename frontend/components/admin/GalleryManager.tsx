@@ -15,7 +15,7 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
   const router = useRouter();
 
   const emptyTattoo: Partial<Tattoo> = {
-    style: "ince-cizgi",
+    style: "",
     size: "orta",
     aspect: "portrait",
     date: new Date().toISOString().split("T")[0],
@@ -76,7 +76,7 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
         const updates: Partial<Tattoo> = {
           slug: newTattoo.title?.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "yeni",
           title: newTattoo.title || "İsimsiz",
-          style: newTattoo.style as any,
+          style: newTattoo.style || "",
           size: newTattoo.size as any,
           date: newTattoo.date || "",
           placement: newTattoo.placement || "",
@@ -93,7 +93,7 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
           id: Date.now().toString(),
           slug: newTattoo.title?.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "yeni",
           title: newTattoo.title || "İsimsiz",
-          style: newTattoo.style as any,
+          style: newTattoo.style || "",
           size: newTattoo.size as any,
           date: newTattoo.date || "",
           placement: newTattoo.placement || "",
@@ -140,13 +140,7 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
             </div>
             <div>
               <label className="block text-sm text-ink mb-1">Stil</label>
-              <select value={newTattoo.style} onChange={e => setNewTattoo({...newTattoo, style: e.target.value as any})} className="w-full rounded-md border border-hairline bg-parchment px-3 py-2 text-ink focus:border-amber focus:outline-none">
-                <option value="ince-cizgi">İnce Çizgi</option>
-                <option value="neo-traditional">Neo-Traditional</option>
-                <option value="geometrik">Geometrik</option>
-                <option value="dotwork">Dotwork</option>
-                <option value="blackwork">Blackwork</option>
-              </select>
+              <input type="text" required value={newTattoo.style || ""} onChange={e => setNewTattoo({...newTattoo, style: e.target.value})} className="w-full rounded-md border border-hairline bg-parchment px-3 py-2 text-ink focus:border-amber focus:outline-none" placeholder="Örn: İnce Çizgi" />
             </div>
             <div>
               <label className="block text-sm text-ink mb-1">Bölge</label>

@@ -16,6 +16,10 @@ class ContentController extends Controller
     {
         Setting::putValue('about', $request->validated('about'));
 
+        if ($request->has('aboutImage')) {
+            Setting::putValue('about_image', $request->validated('aboutImage'));
+        }
+
         return response()->json(['ok' => true]);
     }
 

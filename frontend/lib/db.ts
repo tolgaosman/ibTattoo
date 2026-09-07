@@ -4,6 +4,7 @@ import { apiFetch, adminFetch } from "@/lib/api";
 
 export interface SiteContent {
   about: string[];
+  aboutImage: string;
   process: { no: string; title: string; text: string }[];
   gallery: Tattoo[];
   boardSelection: string[];
@@ -26,11 +27,11 @@ function revalidateSite() {
   revalidatePath("/admin");
 }
 
-export async function updateAbout(about: string[]) {
+export async function updateAbout(about: string[], aboutImage?: string) {
   await adminFetch("/content/about", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ about }),
+    body: JSON.stringify(aboutImage !== undefined ? { about, aboutImage } : { about }),
   });
   revalidateSite();
 }

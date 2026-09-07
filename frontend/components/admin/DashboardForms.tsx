@@ -1,21 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import { saveAboutAction, saveProcessAction, saveBoardSelectionAction } from "@/app/admin/actions";
+import { useRef, useState } from "react";
+import { saveAboutAction, saveProcessAction, saveBoardSelectionAction, uploadImageAction } from "@/app/admin/actions";
 import { Loader2 } from "lucide-react";
 
 export function DashboardForms({
   initialAbout,
+  initialAboutImage,
   initialProcess,
   initialBoardSelection,
   galleryItems,
 }: {
   initialAbout: string[];
+  initialAboutImage: string;
   initialProcess: any[];
   initialBoardSelection: string[];
   galleryItems: any[];
 }) {
   const [about, setAbout] = useState(initialAbout);
+  const [aboutImage, setAboutImage] = useState(initialAboutImage);
+  const [uploadingAboutImage, setUploadingAboutImage] = useState(false);
+  const aboutImageInputRef = useRef<HTMLInputElement>(null);
   const [process, setProcess] = useState(initialProcess);
   const [boardSlots, setBoardSlots] = useState<string[]>(() => {
     const slots = [...initialBoardSelection.slice(0, 9)];
@@ -42,9 +47,28 @@ export function DashboardForms({
 
   const handleSaveAbout = async () => {
     setLoading(true);
-    await saveAboutAction(about);
+    await saveAboutAction(about, aboutImage);
     setLoading(false);
     alert("Hakkımda kaydedildi");
+  };
+
+  const handleAboutImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+
+    setUploadingAboutImage(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const url = await uploadImageAction(formData);
+      setAboutImage(url);
+    } catch (err) {
+      console.error(err);
+      alert("Görsel yüklenirken hata oluştu.");
+    } finally {
+      setUploadingAboutImage(false);
+    }
   };
 
   const handleSaveProcess = async () => {
@@ -85,6 +109,32 @@ export function DashboardForms({
       {/* About Section */}
       <div className="soft-card p-6">
         <h2 className="font-serif text-2xl text-ink mb-6">Hakkımda Düzenle</h2>
+
+        <div className="mb-6 flex items-center gap-4">
+          <div className="relative h-24 w-20 shrink-0 overflow-hidden rounded-md border border-hairline bg-parchment">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={aboutImage} alt="Hakkımda görseli" className="h-full w-full object-cover" />
+          </div>
+          <div>
+            <input
+              ref={aboutImageInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleAboutImageChange}
+            />
+            <button
+              type="button"
+              onClick={() => aboutImageInputRef.current?.click()}
+              disabled={uploadingAboutImage}
+              className="soft-card--link flex items-center justify-center rounded-md bg-amber px-4 py-2 text-sm font-medium text-paper-deep disabled:opacity-50"
+            >
+              {uploadingAboutImage ? <Loader2 className="h-4 w-4 animate-spin" /> : "Görseli Değiştir"}
+            </button>
+            <p className="mt-1 text-xs text-muted">Değişikliği kalıcı yapmak için altındaki Kaydet butonuna basın.</p>
+          </div>
+        </div>
+
         <div className="space-y-4">
           {about.map((text, index) => (
             <textarea

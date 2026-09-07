@@ -13,8 +13,9 @@ export default async function AdminDashboard() {
         <p className="mt-2 text-muted">Sitenin ana sayfasında yer alan içerikleri buradan güncelleyebilirsiniz.</p>
       </div>
 
-      <DashboardForms 
+      <DashboardForms
         initialAbout={content.about}
+        initialAboutImage={content.aboutImage}
         initialProcess={content.process}
         initialBoardSelection={content.boardSelection}
         galleryItems={content.gallery}

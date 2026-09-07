@@ -12,6 +12,9 @@ const SPECIALITIES = ["İnce çizgi", "Neo-traditional", "Geometrik nokta", "Lef
 export function HeroTagline() {
   return (
     <div className="hero-rise flex flex-col gap-4" style={{ animationDelay: "1500ms" }}>
+      <p className="font-hand text-base text-ink-soft/70 drop-shadow-[0_1px_10px_rgba(0,0,0,0.8)]">
+        iğne nereye giderse gitsin, kalbim hep Lefke&apos;de kalır
+      </p>
       {/* The separator rides on the end of the item before it, never the start
           of the next one — otherwise a wrapped line opens with a stray dot. */}
       <p className="flex flex-wrap items-center gap-x-4 gap-y-2 font-serif italic text-[1.3rem] text-ink-soft drop-shadow-[0_1px_10px_rgba(0,0,0,0.8)]">

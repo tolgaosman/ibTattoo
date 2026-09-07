@@ -1,9 +1,4 @@
-export type TattooStyle =
-  | "ince-cizgi"
-  | "neo-traditional"
-  | "geometrik"
-  | "dotwork"
-  | "blackwork";
+export type TattooStyle = string;
 
 export type TattooSize = "kucuk" | "orta" | "buyuk";
 
@@ -25,13 +20,17 @@ export interface Tattoo {
   credit: string;
 }
 
-export const STYLE_LABELS: Record<TattooStyle, string> = {
+const STYLE_LABELS: Record<string, string> = {
   "ince-cizgi": "Süper İnce Çizgiler",
   "neo-traditional": "Neo-Traditional Portreler",
   geometrik: "Geometrik Nokta Çalışması",
   dotwork: "Dotwork",
   blackwork: "Blackwork",
 };
+
+export function formatStyle(style: string): string {
+  return STYLE_LABELS[style] || style;
+}
 
 export const SIZE_LABELS: Record<TattooSize, string> = {
   kucuk: "Küçük",

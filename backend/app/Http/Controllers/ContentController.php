@@ -20,6 +20,7 @@ class ContentController extends Controller
 
         return new ContentResource([
             'about' => Setting::getValue('about', []),
+            'aboutImage' => Setting::getValue('about_image', '/images/hakkimda/portre.jpg'),
             'process' => Setting::getValue('process', []),
             'gallery' => $gallery,
             'boardSelection' => Setting::getValue('board_selection', []),
