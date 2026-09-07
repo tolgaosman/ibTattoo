@@ -28,7 +28,7 @@ class UpdateTattooRequest extends FormRequest
         return [
             'slug' => ['sometimes', 'string', 'max:255', Rule::unique('tattoos', 'slug')->ignore($tattoo?->id)],
             'title' => ['sometimes', 'string', 'max:255'],
-            'style' => ['sometimes', Rule::enum(TattooStyle::class)],
+            'style' => ['sometimes', 'string', 'max:255'],
             'size' => ['sometimes', Rule::enum(TattooSize::class)],
             'date' => ['sometimes', 'date'],
             'placement' => ['sometimes', 'string', 'max:255'],

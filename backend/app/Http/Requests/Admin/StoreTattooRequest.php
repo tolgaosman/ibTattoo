@@ -26,7 +26,7 @@ class StoreTattooRequest extends FormRequest
             'id' => ['required', 'string', 'max:64', 'unique:tattoos,public_id'],
             'slug' => ['required', 'string', 'max:255', 'unique:tattoos,slug'],
             'title' => ['required', 'string', 'max:255'],
-            'style' => ['required', Rule::enum(TattooStyle::class)],
+            'style' => ['required', 'string', 'max:255'],
             'size' => ['required', Rule::enum(TattooSize::class)],
             'date' => ['required', 'date'],
             'placement' => ['required', 'string', 'max:255'],

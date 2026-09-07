@@ -9,15 +9,15 @@ import { ButtonLink } from "@/components/ui/Button";
 import { formatStyle, type Tattoo } from "@/lib/tattoos";
 
 const PLACEMENT: ReadonlyArray<Placement> = [
-  { x: "2%", y: "1%", w: "24%", r: "-3deg", tape: "5deg" },
-  { x: "37%", y: "5%", w: "22%", r: "2.5deg", tape: "-6deg" },
-  { x: "72%", y: "0%", w: "23%", r: "-1.5deg", tape: "3deg" },
-  { x: "11%", y: "35%", w: "23%", r: "3deg", tape: "-4deg" },
-  { x: "44%", y: "38%", w: "21%", r: "-2deg", tape: "7deg" },
-  { x: "74%", y: "34%", w: "22%", r: "1.5deg", tape: "-3deg" },
-  { x: "3%", y: "69%", w: "22%", r: "2deg", tape: "-7deg" },
-  { x: "34%", y: "72%", w: "23%", r: "-2.5deg", tape: "4deg" },
-  { x: "68%", y: "67%", w: "25%", r: "1deg", tape: "-5deg" },
+  { x: "0%", y: "0%", w: "29%", r: "-4deg", tape: "6deg" },
+  { x: "31%", y: "9%", w: "15%", r: "5deg", tape: "-7deg" },
+  { x: "49%", y: "-2%", w: "26%", r: "-2deg", tape: "4deg" },
+  { x: "79%", y: "12%", w: "20%", r: "4deg", tape: "-5deg" },
+  { x: "2%", y: "38%", w: "18%", r: "3deg", tape: "-4deg" },
+  { x: "24%", y: "45%", w: "32%", r: "-3deg", tape: "6deg" },
+  { x: "63%", y: "31%", w: "16%", r: "-5.5deg", tape: "5deg" },
+  { x: "6%", y: "74%", w: "23%", r: "2.5deg", tape: "-6deg" },
+  { x: "62%", y: "68%", w: "30%", r: "3deg", tape: "-5deg" },
 ];
 
 interface Placement {
@@ -27,10 +27,6 @@ interface Placement {
   r: string;
   tape: string;
 }
-
-const NOTES: ReadonlyArray<{ text: string; x: string; y: string; r: string }> = [
-  { text: "#dotwork", x: "37%", y: "61%", r: "-4deg" },
-];
 
 const IMAGE_ASPECT = {
   portrait: "aspect-[4/5]",
@@ -81,18 +77,6 @@ export function Board({ selection, gallery }: BoardProps) {
             />
           );
         })}
-
-        {NOTES.map((note) => (
-          <span
-            key={note.text}
-            aria-hidden
-            style={{ "--x": note.x, "--y": note.y, "--r": note.r } as CSSProperties}
-            className="absolute left-[var(--x)] top-[var(--y)] hidden rotate-[var(--r)] bg-note px-3 py-2 font-hand text-xl leading-none text-ink-soft shadow-[0_8px_20px_-10px_rgba(0,0,0,0.85)] lg:block"
-          >
-            <span aria-hidden className="pin absolute -top-1.5 left-1/2 -translate-x-1/2" />
-            {note.text}
-          </span>
-        ))}
       </div>
 
       <div className="mt-16 flex justify-center lg:mt-0 lg:pt-20">
