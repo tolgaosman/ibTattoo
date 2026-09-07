@@ -6,12 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateAboutRequest;
 use App\Http\Requests\Admin\UpdateBoardSelectionRequest;
 use App\Http\Requests\Admin\UpdateContactRequest;
+use App\Http\Requests\Admin\UpdateHeroRequest;
 use App\Http\Requests\Admin\UpdateProcessRequest;
 use App\Models\Setting;
 use Illuminate\Http\JsonResponse;
 
 class ContentController extends Controller
 {
+    public function updateHero(UpdateHeroRequest $request): JsonResponse
+    {
+        Setting::putValue('hero', $request->validated());
+
+        return response()->json(['ok' => true]);
+    }
+
     public function updateAbout(UpdateAboutRequest $request): JsonResponse
     {
         Setting::putValue('about', $request->validated('about'));

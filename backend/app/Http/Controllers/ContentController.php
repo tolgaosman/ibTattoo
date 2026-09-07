@@ -19,6 +19,11 @@ class ContentController extends Controller
         $gallery = Tattoo::query()->orderBy('id')->get();
 
         return new ContentResource([
+            'hero' => Setting::getValue('hero', [
+                'title' => 'Irmak Bozkurt - tatt2me',
+                'tagline' => 'iğne nereye giderse gitsin, kalbim hep Lefke\'de kalır',
+                'specialities' => ['İnce çizgi', 'Neo-traditional', 'Geometrik nokta', 'Lefke, KKTC'],
+            ]),
             'about' => Setting::getValue('about', []),
             'aboutImage' => Setting::getValue('about_image', '/images/hakkimda/portre.jpg'),
             'process' => Setting::getValue('process', []),

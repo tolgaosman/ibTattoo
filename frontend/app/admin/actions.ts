@@ -2,17 +2,23 @@
 
 import {
   updateAbout,
+  updateHero,
   updateProcess,
   updateBoardSelection,
   updateContact,
   addTattoo,
   updateTattoo,
   deleteTattoo,
+  type SiteContent,
 } from "@/lib/db";
 import type { Tattoo } from "@/lib/tattoos";
 import { adminFetch } from "@/lib/api";
 import type { AppointmentStatus } from "@/lib/appointments";
 import { revalidatePath } from "next/cache";
+
+export async function saveHeroAction(hero: SiteContent["hero"]) {
+  await updateHero(hero);
+}
 
 export async function saveAboutAction(about: string[], aboutImage?: string) {
   await updateAbout(about, aboutImage);

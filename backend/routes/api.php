@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
 
+    Route::put('/content/hero', [AdminContentController::class, 'updateHero']);
     Route::put('/content/about', [AdminContentController::class, 'updateAbout']);
     Route::put('/content/process', [AdminContentController::class, 'updateProcess']);
     Route::put('/content/board-selection', [AdminContentController::class, 'updateBoardSelection']);

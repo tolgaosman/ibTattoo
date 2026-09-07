@@ -1,22 +1,26 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { saveAboutAction, saveProcessAction, saveBoardSelectionAction, uploadImageAction } from "@/app/admin/actions";
+import { saveHeroAction, saveAboutAction, saveProcessAction, saveBoardSelectionAction, uploadImageAction } from "@/app/admin/actions";
 import { Loader2 } from "lucide-react";
 
 export function DashboardForms({
+  initialHero,
   initialAbout,
   initialAboutImage,
   initialProcess,
   initialBoardSelection,
   galleryItems,
 }: {
+  initialHero: { title: string; tagline: string; specialities: string[] };
   initialAbout: string[];
   initialAboutImage: string;
   initialProcess: any[];
   initialBoardSelection: string[];
   galleryItems: any[];
 }) {
+  const [hero, setHero] = useState(initialHero);
+  const [heroSpecialitiesStr, setHeroSpecialitiesStr] = useState(initialHero.specialities.join(", "));
   const [about, setAbout] = useState(initialAbout);
   const [aboutImage, setAboutImage] = useState(initialAboutImage);
   const [uploadingAboutImage, setUploadingAboutImage] = useState(false);
@@ -44,6 +48,16 @@ export function DashboardForms({
     "Orta Alt",
     "Sağ Alt",
   ];
+
+  const handleSaveHero = async () => {
+    setLoading(true);
+    await saveHeroAction({
+      ...hero,
+      specialities: heroSpecialitiesStr.split(",").map(s => s.trim()).filter(Boolean)
+    });
+    setLoading(false);
+    alert("Hero kaydedildi");
+  };
 
   const handleSaveAbout = async () => {
     setLoading(true);
@@ -106,6 +120,48 @@ export function DashboardForms({
 
   return (
     <div className="space-y-12">
+      {/* Hero Section */}
+      <div className="soft-card p-6">
+        <h2 className="font-serif text-2xl text-ink mb-6">Hero (Karşılama Ekranı) ve Site Adı</h2>
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm text-ink mb-1">Başlık (Site Adı)</label>
+            <input
+              type="text"
+              value={hero.title}
+              onChange={(e) => setHero({ ...hero, title: e.target.value })}
+              className="w-full rounded-md border border-hairline bg-parchment px-4 py-2 text-ink focus:border-amber focus:outline-none focus:ring-1 focus:ring-amber"
+            />
+          </div>
+          <div>
+            <label className="block text-sm text-ink mb-1">Slogan</label>
+            <input
+              type="text"
+              value={hero.tagline}
+              onChange={(e) => setHero({ ...hero, tagline: e.target.value })}
+              className="w-full rounded-md border border-hairline bg-parchment px-4 py-2 text-ink focus:border-amber focus:outline-none focus:ring-1 focus:ring-amber"
+            />
+          </div>
+          <div>
+            <label className="block text-sm text-ink mb-1">Uzmanlık Alanları (Virgülle ayırın)</label>
+            <input
+              type="text"
+              value={heroSpecialitiesStr}
+              onChange={(e) => setHeroSpecialitiesStr(e.target.value)}
+              placeholder="Örn: İnce çizgi, Neo-traditional, Geometrik nokta"
+              className="w-full rounded-md border border-hairline bg-parchment px-4 py-2 text-ink focus:border-amber focus:outline-none focus:ring-1 focus:ring-amber"
+            />
+          </div>
+          <button
+            onClick={handleSaveHero}
+            disabled={loading}
+            className="soft-card--link flex w-full sm:w-auto items-center justify-center rounded-md bg-amber px-6 py-2 text-sm font-medium text-paper-deep disabled:opacity-50"
+          >
+            {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Kaydet"}
+          </button>
+        </div>
+      </div>
+
       {/* About Section */}
       <div className="soft-card p-6">
         <h2 className="font-serif text-2xl text-ink mb-6">Hakkımda Düzenle</h2>

@@ -3,6 +3,11 @@ import { revalidatePath } from "next/cache";
 import { apiFetch, adminFetch } from "@/lib/api";
 
 export interface SiteContent {
+  hero: {
+    title: string;
+    tagline: string;
+    specialities: string[];
+  };
   about: string[];
   aboutImage: string;
   process: { no: string; title: string; text: string }[];
@@ -25,6 +30,15 @@ function revalidateSite() {
   revalidatePath("/");
   revalidatePath("/galeri");
   revalidatePath("/admin");
+}
+
+export async function updateHero(hero: SiteContent["hero"]) {
+  await adminFetch("/content/hero", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(hero),
+  });
+  revalidateSite();
 }
 
 export async function updateAbout(about: string[], aboutImage?: string) {

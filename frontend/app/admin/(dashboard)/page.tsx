@@ -14,6 +14,7 @@ export default async function AdminDashboard() {
       </div>
 
       <DashboardForms
+        initialHero={content.hero}
         initialAbout={content.about}
         initialAboutImage={content.aboutImage}
         initialProcess={content.process}

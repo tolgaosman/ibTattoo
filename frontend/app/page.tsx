@@ -15,7 +15,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <Hero />
+      <Hero hero={content.hero} />
 
       <Artist about={content.about} image={content.aboutImage} />
       <Board selection={content.boardSelection} gallery={content.gallery} />

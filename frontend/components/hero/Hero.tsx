@@ -2,7 +2,9 @@ import { HeroBackground } from "./HeroBackground";
 import { HeroLinks } from "./HeroLinks";
 import { HeroTagline } from "./HeroTagline";
 
-export function Hero() {
+import type { SiteContent } from "@/lib/db";
+
+export function Hero({ hero }: { hero: SiteContent["hero"] }) {
   return (
     <section className="relative h-screen overflow-hidden bg-paper">
       <HeroBackground />
@@ -24,9 +26,9 @@ export function Hero() {
               className="hero-rise mb-4 font-hand text-4xl text-amber drop-shadow-[0_0_12px_var(--color-amber-light)] sm:text-5xl" 
               style={{ animationDelay: "1300ms" }}
             >
-              Irmak Bozkurt - tatt2me
+              {hero.title}
             </h1>
-            <HeroTagline />
+            <HeroTagline tagline={hero.tagline} specialities={hero.specialities} />
           </div>
 
           <HeroLinks />

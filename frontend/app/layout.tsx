@@ -31,22 +31,27 @@ const caveat = Caveat({
   subsets: ["latin", "latin-ext"],
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://irmakbozkurt.tattoo"),
-  title: {
-    default: "Irmak Bozkurt — Derideki Hikayeler",
-    template: "%s — Irmak Bozkurt",
-  },
-  description:
-    "Kuzey Kıbrıs dövme sanatçısı Irmak Bozkurt. İnce çizgi, neo-traditional ve geometrik nokta çalışmaları.",
-  openGraph: {
-    title: "Irmak Bozkurt — Derideki Hikayeler",
+export async function generateMetadata(): Promise<Metadata> {
+  const content = await getContent().catch(() => null);
+  const siteTitle = content?.hero?.title || "Irmak Bozkurt — Derideki Hikayeler";
+  
+  return {
+    metadataBase: new URL("https://irmakbozkurt.tattoo"),
+    title: {
+      default: siteTitle,
+      template: `%s — ${siteTitle.split(' - ')[0]}`,
+    },
     description:
       "Kuzey Kıbrıs dövme sanatçısı Irmak Bozkurt. İnce çizgi, neo-traditional ve geometrik nokta çalışmaları.",
-    locale: "tr_TR",
-    type: "website",
-  },
-};
+    openGraph: {
+      title: siteTitle,
+      description:
+        "Kuzey Kıbrıs dövme sanatçısı Irmak Bozkurt. İnce çizgi, neo-traditional ve geometrik nokta çalışmaları.",
+      locale: "tr_TR",
+      type: "website",
+    },
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#12100e",
