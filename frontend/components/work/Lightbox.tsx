@@ -108,9 +108,9 @@ export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
 
 function MetaRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex flex-col gap-1 rounded-[var(--radius-sm)] border border-[var(--hairline)] bg-paper/40 px-3 py-2 sm:px-4 sm:py-3">
-      <Eyebrow className="text-xs sm:text-sm">{label}</Eyebrow>
-      <span className="truncate font-serif text-base text-ink sm:text-lg">{value}</span>
+    <div className="flex h-full flex-col justify-center gap-1 rounded-[var(--radius-sm)] border border-[var(--hairline)] bg-paper/40 px-3 py-2 sm:px-4 sm:py-3">
+      <Eyebrow className="text-[10px] sm:text-xs">{label}</Eyebrow>
+      <span className="truncate whitespace-nowrap font-serif text-xs tracking-tight text-ink sm:text-sm md:text-base">{value}</span>
     </div>
   );
 }

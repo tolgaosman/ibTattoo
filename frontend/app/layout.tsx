@@ -44,8 +44,8 @@ export async function generateMetadata(): Promise<Metadata> {
     description:
       "Kuzey Kıbrıs dövme sanatçısı Irmak Bozkurt. İnce çizgi, neo-traditional ve geometrik nokta çalışmaları.",
     icons: {
-      icon: "/siteLogo.png",
-      apple: "/siteLogo.png",
+      icon: "/images/siteLogo.png",
+      apple: "/images/siteLogo.png",
     },
     openGraph: {
       title: siteTitle,
