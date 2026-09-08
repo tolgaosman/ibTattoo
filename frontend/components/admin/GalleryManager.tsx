@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { Tattoo } from "@/lib/tattoos";
 import { addTattooAction, deleteTattooAction, updateTattooAction, uploadImageAction } from "@/app/admin/actions";
 import { Loader2, Plus, Trash2, Pencil } from "lucide-react";
@@ -15,6 +15,7 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const router = useRouter();
   const toast = useToast();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const emptyTattoo: Partial<Tattoo> = {
     style: "",
@@ -25,11 +26,18 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
   const [newTattoo, setNewTattoo] = useState<Partial<Tattoo>>(emptyTattoo);
   const [uploadFile, setUploadFile] = useState<File | null>(null);
 
+  const scrollToForm = () => {
+    setTimeout(() => {
+      containerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  };
+
   const startAdd = () => {
     setEditingId(null);
     setNewTattoo(emptyTattoo);
     setUploadFile(null);
     setIsAdding(true);
+    scrollToForm();
   };
 
   const startEdit = (item: Tattoo) => {
@@ -37,6 +45,7 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
     setNewTattoo(item);
     setUploadFile(null);
     setIsAdding(true);
+    scrollToForm();
   };
 
   const cancelForm = () => {
@@ -122,7 +131,7 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" ref={containerRef}>
       <div className="flex justify-end">
         <button
           onClick={() => (isAdding ? cancelForm() : startAdd())}
@@ -182,6 +191,14 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
                 <option value="portrait">Dikey (Portrait)</option>
                 <option value="square">Kare (Square)</option>
                 <option value="landscape">Yatay (Landscape)</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm text-ink mb-1">Boyut</label>
+              <select value={newTattoo.size} onChange={e => setNewTattoo({...newTattoo, size: e.target.value as any})} className="w-full rounded-md border border-hairline bg-parchment px-3 py-2 text-ink focus:border-amber focus:outline-none">
+                <option value="kucuk">Küçük</option>
+                <option value="orta">Orta</option>
+                <option value="buyuk">Büyük</option>
               </select>
             </div>
             <div>

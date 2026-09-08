@@ -86,6 +86,11 @@
 html {
   color-scheme: dark;
   scroll-behavior: smooth;
+  /* Without this, rubber-band overscroll at the top on mobile browsers
+     drags the page down and exposes the html background for a frame,
+     which read as a stray line between the hero and the section under it. */
+  background: var(--color-paper-deep);
+  overscroll-behavior-y: none;
 }
 
 body {

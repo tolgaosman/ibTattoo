@@ -18,8 +18,21 @@ const storageOrigin = apiHostUrl
   ? `${apiHostUrl.protocol}//${apiHostUrl.host}`
   : "http://127.0.0.1:8000";
 
+const csp = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline'",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com",
+  `img-src 'self' data: blob: ${storageOrigin}`,
+  `connect-src 'self' ${storageOrigin}`,
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+].join("; ");
+
 const nextConfig: NextConfig = {
   output: "standalone",
+  poweredByHeader: false,
   experimental: {
     // Admin uploads travel as base64 JSON through a server action, which
     // inflates the payload ~33% over the 8 MB image cap the API enforces.
@@ -45,6 +58,27 @@ const nextConfig: NextConfig = {
             {
               source: "/storage/:path*",
               destination: `${storageOrigin}/storage/:path*`,
+            },
+          ];
+        },
+
+        // Static export (next export) can't serve custom headers — the host
+        // (e.g. GitHub Pages) would just ignore them — so this only applies
+        // to the standalone server build.
+        async headers() {
+          return [
+            {
+              source: "/:path*",
+              headers: [
+                { key: "X-Frame-Options", value: "DENY" },
+                { key: "X-Content-Type-Options", value: "nosniff" },
+                { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+                {
+                  key: "Permissions-Policy",
+                  value: "camera=(), microphone=(), geolocation=()",
+                },
+                { key: "Content-Security-Policy", value: csp },
+              ],
             },
           ];
         },

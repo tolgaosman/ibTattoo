@@ -36,7 +36,7 @@ export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
           {tattoo ? (
             <div className="mx-auto flex h-full w-full max-w-5xl flex-col">
               <div className="mb-3 flex shrink-0 items-center justify-between sm:mb-8">
-                <Dialog.Title className="truncate font-serif text-lg text-ink sm:text-2xl lg:text-3xl">
+                <Dialog.Title className="truncate font-serif text-xl text-ink sm:text-3xl lg:text-4xl">
                   {tattoo.title}
                 </Dialog.Title>
                 <Dialog.Close
@@ -58,16 +58,19 @@ export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
                     className="object-cover"
                   />
                 </div>
-                <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-hidden sm:gap-4 lg:gap-6">
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 sm:flex sm:flex-col sm:gap-4">
+                <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-parchment/60 p-4 sm:gap-6 sm:p-6 lg:justify-center lg:p-8">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
                     <MetaRow label="Tarz" value={formatStyle(tattoo.style)} />
                     <MetaRow label="Boyut" value={SIZE_LABELS[tattoo.size]} />
                     <MetaRow label="Bölge" value={tattoo.placement} />
                     <MetaRow label="Süre" value={tattoo.duration} />
                   </div>
-                  <div className="min-h-0 flex-1 overflow-hidden">
-                    <Eyebrow>Sürece Dair</Eyebrow>
-                    <p className="mt-1 line-clamp-3 text-sm leading-relaxed text-ink/90 sm:mt-2 sm:line-clamp-none sm:text-base">
+                  <div className="min-h-0 flex-1 overflow-hidden border-t border-[var(--hairline)] pt-4 sm:flex-none sm:pt-6">
+                    <Eyebrow className="text-base sm:text-lg">Sürece Dair</Eyebrow>
+                    <p className="relative mt-2 line-clamp-4 font-serif text-lg leading-relaxed text-ink/90 sm:mt-3 sm:line-clamp-none sm:text-xl lg:text-2xl">
+                      <span aria-hidden className="mr-0.5 font-serif text-2xl text-amber-light/70 sm:text-3xl">
+                        &ldquo;
+                      </span>
                       {tattoo.story}
                     </p>
                   </div>
@@ -105,9 +108,9 @@ export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
 
 function MetaRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-baseline justify-between gap-2 border-b border-[var(--hairline)] pb-1 sm:pb-2">
-      <Eyebrow>{label}</Eyebrow>
-      <span className="truncate font-sans text-sm text-ink">{value}</span>
+    <div className="flex flex-col gap-1 rounded-[var(--radius-sm)] border border-[var(--hairline)] bg-paper/40 px-3 py-2 sm:px-4 sm:py-3">
+      <Eyebrow className="text-xs sm:text-sm">{label}</Eyebrow>
+      <span className="truncate font-serif text-base text-ink sm:text-lg">{value}</span>
     </div>
   );
 }

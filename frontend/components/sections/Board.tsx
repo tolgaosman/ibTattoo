@@ -9,15 +9,15 @@ import { ButtonLink } from "@/components/ui/Button";
 import { formatStyle, type Tattoo } from "@/lib/tattoos";
 
 const PLACEMENT: ReadonlyArray<Placement> = [
-  { x: "2%", y: "1%", w: "24%", r: "-3deg", tape: "5deg" },
-  { x: "37%", y: "5%", w: "22%", r: "2.5deg", tape: "-6deg" },
-  { x: "72%", y: "0%", w: "23%", r: "-1.5deg", tape: "3deg" },
-  { x: "11%", y: "35%", w: "23%", r: "3deg", tape: "-4deg" },
-  { x: "44%", y: "38%", w: "21%", r: "-2deg", tape: "7deg" },
-  { x: "74%", y: "34%", w: "22%", r: "1.5deg", tape: "-3deg" },
-  { x: "3%", y: "69%", w: "22%", r: "2deg", tape: "-7deg" },
-  { x: "34%", y: "72%", w: "23%", r: "-2.5deg", tape: "4deg" },
-  { x: "68%", y: "67%", w: "25%", r: "1deg", tape: "-5deg" },
+  { x: "0%", y: "1%", w: "28%", r: "-3deg", tape: "5deg" },
+  { x: "35%", y: "5%", w: "26%", r: "2.5deg", tape: "-6deg" },
+  { x: "70%", y: "0%", w: "27%", r: "-1.5deg", tape: "3deg" },
+  { x: "9%", y: "35%", w: "27%", r: "3deg", tape: "-4deg" },
+  { x: "42%", y: "38%", w: "25%", r: "-2deg", tape: "7deg" },
+  { x: "72%", y: "34%", w: "26%", r: "1.5deg", tape: "-3deg" },
+  { x: "1%", y: "69%", w: "26%", r: "2deg", tape: "-7deg" },
+  { x: "32%", y: "72%", w: "27%", r: "-2.5deg", tape: "4deg" },
+  { x: "66%", y: "67%", w: "29%", r: "1deg", tape: "-5deg" },
 ];
 
 interface Placement {
@@ -61,7 +61,7 @@ export function Board({ selection, gallery }: BoardProps) {
         </p>
       </Reveal>
 
-      <div className="relative mx-auto max-w-6xl columns-1 gap-6 sm:columns-2 sm:gap-6 lg:block lg:columns-1 lg:h-[1240px]">
+      <div className="relative mx-auto max-w-6xl columns-1 gap-6 sm:columns-2 sm:gap-6 lg:block lg:columns-1 lg:h-[1350px]">
         {boardTattoos.map((tattoo, i) => {
           const place = PLACEMENT[i];
           return (

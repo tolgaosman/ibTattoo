@@ -46,7 +46,6 @@ export default function AdminLogin() {
         <div className="soft-card p-8 hero-rise">
           <div className="text-center mb-8">
             <h1 className="font-serif text-3xl text-amber-light">Admin Girişi</h1>
-            <p className="mt-2 text-sm text-muted">irmakyamuer2000@gmail.com</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -57,7 +56,9 @@ export default function AdminLogin() {
               <div className="relative mt-2">
                 <input
                   id="password"
+                  name="password"
                   type={showPassword ? "text" : "password"}
+                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={isLoading}
