@@ -17,7 +17,7 @@ export function Hero({ hero }: { hero: SiteContent["hero"] }) {
           in normal flow rather than pinned to the bottom of a screen-height
           box. From sm up there's enough width for cover to fill the frame
           properly, so the image goes back to full-bleed with text overlaid. */}
-      <div className="relative h-[52dvh] min-h-[280px] overflow-hidden sm:absolute sm:inset-0 sm:h-auto sm:min-h-0">
+      <div className="relative h-[52svh] min-h-[280px] overflow-hidden sm:absolute sm:inset-0 sm:h-auto sm:min-h-0">
         <HeroBackground />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-paper-deep to-transparent sm:hidden" />
       </div>
