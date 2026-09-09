@@ -17,15 +17,10 @@ class UpdateProcessRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'process' => ['required', 'array'],
-            'process.tr' => ['required', 'array', 'min:1'],
-            'process.tr.*.no' => ['required', 'string'],
-            'process.tr.*.title' => ['required', 'string'],
-            'process.tr.*.text' => ['required', 'string'],
-            'process.en' => ['nullable', 'array'],
-            'process.en.*.no' => ['required', 'string'],
-            'process.en.*.title' => ['required', 'string'],
-            'process.en.*.text' => ['required', 'string'],
+            'process' => ['required', 'array', 'min:1'],
+            'process.*.no' => ['required', 'string'],
+            'process.*.title' => ['required', 'string'],
+            'process.*.text' => ['required', 'string'],
         ];
     }
 }

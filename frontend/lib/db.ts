@@ -76,9 +76,7 @@ export async function getPublicContent(): Promise<SiteContent> {
 }
 
 function revalidateSite() {
-  revalidatePath("/");
-  revalidatePath("/galeri");
-  revalidatePath("/admin");
+  revalidatePath("/", "layout");
 }
 
 export async function updateHero(hero: SiteContent["hero"]) {

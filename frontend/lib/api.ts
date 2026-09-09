@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { getLocale } from "next-intl/server";
 
 const API_URL = process.env.API_URL || "http://127.0.0.1:8000/api";
 const ADMIN_COOKIE = "admin_session";
@@ -35,15 +34,7 @@ const READ_TIMEOUT_MS = 5000;
 
 /** Public, unauthenticated calls to the Laravel API. */
 export async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
-  let locale = "tr";
-  try {
-    locale = await getLocale();
-  } catch {
-    // Might fail during static generation outside a request
-  }
-  
-  const separator = path.includes('?') ? '&' : '?';
-  const url = `${API_URL}${path}${separator}locale=${locale}`;
+  const url = `${API_URL}${path}`;
 
   const res = await fetch(url, {
     signal: AbortSignal.timeout(READ_TIMEOUT_MS),
@@ -63,8 +54,7 @@ export async function adminFetch<T>(path: string, init?: RequestInit): Promise<T
   const cookieStore = await cookies();
   const token = cookieStore.get(ADMIN_COOKIE)?.value;
 
-  const separator = path.includes('?') ? '&' : '?';
-  const url = `${API_URL}/admin${path}${separator}admin=1`;
+  const url = `${API_URL}/admin${path}`;
 
   const res = await fetch(url, {
     ...init,

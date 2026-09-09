@@ -148,19 +148,19 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm text-ink mb-1">Başlık</label>
+              <label className="block text-sm text-ink mb-1">Başlık *</label>
               <input type="text" required value={newTattoo.title || ""} onChange={e => setNewTattoo({...newTattoo, title: e.target.value})} className="w-full rounded-md border border-hairline bg-parchment px-3 py-2 text-ink focus:border-amber focus:outline-none" />
             </div>
             <div>
-              <label className="block text-sm text-ink mb-1">Stil</label>
+              <label className="block text-sm text-ink mb-1">Stil *</label>
               <input type="text" required value={newTattoo.style || ""} onChange={e => setNewTattoo({...newTattoo, style: e.target.value})} className="w-full rounded-md border border-hairline bg-parchment px-3 py-2 text-ink focus:border-amber focus:outline-none" placeholder="Örn: İnce Çizgi" />
             </div>
             <div>
-              <label className="block text-sm text-ink mb-1">Bölge</label>
+              <label className="block text-sm text-ink mb-1">Bölge *</label>
               <input type="text" required value={newTattoo.placement || ""} onChange={e => setNewTattoo({...newTattoo, placement: e.target.value})} className="w-full rounded-md border border-hairline bg-parchment px-3 py-2 text-ink focus:border-amber focus:outline-none" />
             </div>
             <div>
-              <label className="block text-sm text-ink mb-1">Tarih</label>
+              <label className="block text-sm text-ink mb-1">Tarih *</label>
               <DatePicker
                 value={newTattoo.date ? new Date(newTattoo.date) : undefined}
                 onChange={date => {
@@ -176,7 +176,7 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
               />
             </div>
             <div>
-              <label className="block text-sm text-ink mb-1">Görsel (PC'den Seç)</label>
+              <label className="block text-sm text-ink mb-1">Görsel (PC'den Seç) *</label>
               <input
                 type="file"
                 accept="image/*"
@@ -186,7 +186,7 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
               {uploadFile && <p className="mt-1 truncate text-xs text-muted">{uploadFile.name}</p>}
             </div>
             <div>
-              <label className="block text-sm text-ink mb-1">En-Boy Oranı</label>
+              <label className="block text-sm text-ink mb-1">En-Boy Oranı *</label>
               <select value={newTattoo.aspect} onChange={e => setNewTattoo({...newTattoo, aspect: e.target.value as any})} className="w-full rounded-md border border-hairline bg-parchment px-3 py-2 text-ink focus:border-amber focus:outline-none">
                 <option value="portrait">Dikey (Portrait)</option>
                 <option value="square">Kare (Square)</option>
@@ -194,7 +194,7 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
               </select>
             </div>
             <div>
-              <label className="block text-sm text-ink mb-1">Boyut</label>
+              <label className="block text-sm text-ink mb-1">Boyut *</label>
               <select value={newTattoo.size} onChange={e => setNewTattoo({...newTattoo, size: e.target.value as any})} className="w-full rounded-md border border-hairline bg-parchment px-3 py-2 text-ink focus:border-amber focus:outline-none">
                 <option value="kucuk">Küçük</option>
                 <option value="orta">Orta</option>
@@ -208,7 +208,7 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
           </div>
           
           <div>
-            <label className="block text-sm text-ink mb-1">Hikaye</label>
+            <label className="block text-sm text-ink mb-1">Hikaye <span className="text-muted">(opsiyonel)</span></label>
             <textarea value={newTattoo.story || ""} onChange={e => setNewTattoo({...newTattoo, story: e.target.value})} className="w-full h-24 rounded-md border border-hairline bg-parchment px-3 py-2 text-ink focus:border-amber focus:outline-none" />
           </div>
           

@@ -19,18 +19,16 @@ class TattooResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $isAdmin = $request->query('admin') === '1';
-
         return [
             'id' => $this->public_id,
             'slug' => $this->slug,
-            'title' => $isAdmin ? $this->getTranslations('title') : $this->title,
+            'title' => $this->title,
             'style' => $this->style,
             'size' => $this->size->value,
             'date' => $this->tattoo_date->toDateString(),
-            'placement' => $isAdmin ? $this->getTranslations('placement') : $this->placement,
-            'duration' => $isAdmin ? $this->getTranslations('duration') : $this->duration,
-            'story' => $isAdmin ? $this->getTranslations('story') : $this->story,
+            'placement' => $this->placement,
+            'duration' => $this->duration,
+            'story' => $this->story,
             'aspect' => $this->aspect->value,
             'image' => $this->resolveImageUrl(),
             'credit' => $this->credit,

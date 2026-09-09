@@ -75,21 +75,11 @@ const jsonLd = {
 };
 
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
-import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { OverlayVisibilityProvider } from "@/components/ui/OverlayVisibility";
 import { ToastProvider } from "@/components/ui/Toast";
 import { getPublicContent } from "@/lib/db";
 
-import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, setRequestLocale } from 'next-intl/server';
-
-export default async function RootLayout({ children, params }: { children: React.ReactNode, params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
-  // Set the locale for the current request
-  setRequestLocale(locale);
-  
-  // Provide messages to the client side
-  const messages = await getMessages();
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   // Admin's phone-number setting doubles as the WhatsApp contact number
   // site-wide. If the API is unreachable this resolves to the bundled
   // fallback's number rather than breaking every page.
@@ -98,12 +88,11 @@ export default async function RootLayout({ children, params }: { children: React
 
   return (
     <html
-      lang={locale}
+      lang="tr"
       data-scroll-behavior="smooth"
       className={`${instrumentSerif.variable} ${inter.variable} ${parisienne.variable} ${caveat.variable} h-full`}
     >
       <body className="flex min-h-full flex-col bg-paper text-ink antialiased">
-        <NextIntlClientProvider messages={messages}>
         <a href="#icerik" className="skip-link">
           İçeriğe geç
         </a>
@@ -111,11 +100,9 @@ export default async function RootLayout({ children, params }: { children: React
         <ToastProvider>
           <OverlayVisibilityProvider>
             <Chrome>{children}</Chrome>
-            <LanguageSwitcher />
             <FloatingWhatsApp phone={phone} />
           </OverlayVisibilityProvider>
         </ToastProvider>
-        </NextIntlClientProvider>
       </body>
     </html>
   );

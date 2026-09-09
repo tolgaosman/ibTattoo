@@ -127,7 +127,7 @@ export function DashboardForms({
         <h2 className="font-serif text-2xl text-ink mb-6">Hero (Karşılama Ekranı) ve Site Adı</h2>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm text-ink mb-1">Başlık (Site Adı)</label>
+            <label className="block text-sm text-ink mb-1">Başlık (Site Adı) *</label>
             <input
               type="text"
               value={hero.title}
@@ -136,7 +136,7 @@ export function DashboardForms({
             />
           </div>
           <div>
-            <label className="block text-sm text-ink mb-1">Slogan</label>
+            <label className="block text-sm text-ink mb-1">Slogan *</label>
             <input
               type="text"
               value={hero.tagline}
@@ -145,7 +145,7 @@ export function DashboardForms({
             />
           </div>
           <div>
-            <label className="block text-sm text-ink mb-1">Uzmanlık Alanları (Virgülle ayırın)</label>
+            <label className="block text-sm text-ink mb-1">Uzmanlık Alanları (Virgülle ayırın) *</label>
             <input
               type="text"
               value={heroSpecialitiesStr}

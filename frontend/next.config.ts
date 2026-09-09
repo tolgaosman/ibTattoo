@@ -1,7 +1,4 @@
 import type { NextConfig } from "next";
-import createNextIntlPlugin from 'next-intl/plugin';
-
-const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 const isStaticExport = process.env.STATIC_EXPORT === "true";
 const basePath = "/ibTattoo";
@@ -97,4 +94,4 @@ const nextConfig: NextConfig = {
     : {}),
 };
 
-export default withNextIntl(nextConfig);
+export default nextConfig;

@@ -27,7 +27,7 @@ export function SettingsForm({ initialContact }: { initialContact: any }) {
     <div className="soft-card p-6 max-w-2xl">
       <form onSubmit={handleSave} className="space-y-6">
         <div>
-          <label className="block text-sm text-ink mb-1">E-posta Adresi</label>
+          <label className="block text-sm text-ink mb-1">E-posta Adresi <span className="text-muted">(opsiyonel)</span></label>
           <input
             type="email"
             value={contact.email}
@@ -38,7 +38,7 @@ export function SettingsForm({ initialContact }: { initialContact: any }) {
         
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm text-ink mb-1">Telefon Numarası (Sadece Rakamlar, Örn: 905331234567)</label>
+            <label className="block text-sm text-ink mb-1">Telefon Numarası (Sadece Rakamlar, Örn: 905331234567) <span className="text-muted">(opsiyonel)</span></label>
             <input
               type="text"
               value={contact.phone}
@@ -47,7 +47,7 @@ export function SettingsForm({ initialContact }: { initialContact: any }) {
             />
           </div>
           <div>
-            <label className="block text-sm text-ink mb-1">Telefon (Görünecek Metin, Örn: +90 533 123 45 67)</label>
+            <label className="block text-sm text-ink mb-1">Telefon (Görünecek Metin, Örn: +90 533 123 45 67) <span className="text-muted">(opsiyonel)</span></label>
             <input
               type="text"
               value={contact.phoneDisplay}
@@ -59,7 +59,7 @@ export function SettingsForm({ initialContact }: { initialContact: any }) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm text-ink mb-1">Instagram Kullanıcı Adı</label>
+            <label className="block text-sm text-ink mb-1">Instagram Kullanıcı Adı <span className="text-muted">(opsiyonel)</span></label>
             <input
               type="text"
               value={contact.instagram}
@@ -68,7 +68,7 @@ export function SettingsForm({ initialContact }: { initialContact: any }) {
             />
           </div>
           <div>
-            <label className="block text-sm text-ink mb-1">Instagram URL</label>
+            <label className="block text-sm text-ink mb-1">Instagram URL <span className="text-muted">(opsiyonel)</span></label>
             <input
               type="url"
               value={contact.instagramUrl}
