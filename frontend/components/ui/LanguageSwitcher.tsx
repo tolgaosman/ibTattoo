@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useOverlayHidden } from "@/components/ui/OverlayVisibility";
+import { Button } from "@/components/ui/Button";
 
 type Lang = "tr" | "en";
 
@@ -89,15 +90,16 @@ export function LanguageSwitcher() {
           ))}
         </div>
       )}
-      <button
+      <Button
         type="button"
+        intent="neon"
         onClick={() => setOpen((o) => !o)}
         aria-label="Dil seçin / Select language"
         aria-expanded={open}
-        className="notranslate flex h-14 w-14 items-center justify-center rounded-full bg-amber text-sm font-semibold uppercase text-paper-deep shadow-lg shadow-black/20 ring-1 ring-white/10 transition-transform duration-300 hover:scale-110 active:scale-95"
+        className="notranslate"
       >
-        {lang}
-      </button>
+        {lang.toUpperCase()}
+      </Button>
     </div>
   );
 }
