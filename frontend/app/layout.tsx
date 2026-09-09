@@ -75,6 +75,8 @@ const jsonLd = {
 };
 
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
+import { GoogleTranslate } from "@/components/ui/GoogleTranslate";
+import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { OverlayVisibilityProvider } from "@/components/ui/OverlayVisibility";
 import { ToastProvider } from "@/components/ui/Toast";
 import { getPublicContent } from "@/lib/db";
@@ -100,6 +102,8 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <ToastProvider>
           <OverlayVisibilityProvider>
             <Chrome>{children}</Chrome>
+            <GoogleTranslate />
+            <LanguageSwitcher />
             <FloatingWhatsApp phone={phone} />
           </OverlayVisibilityProvider>
         </ToastProvider>

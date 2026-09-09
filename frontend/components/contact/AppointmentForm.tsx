@@ -32,7 +32,6 @@ function validate(values: FormValues): Errors {
   const errors: Errors = {};
 
   if (!values.name.trim()) errors.name = "Adını ve soyadını yazar mısın?";
-  if (!values.contact.trim()) errors.contact = "Sana geri dönebilmemiz için telefon veya Instagram bırakır mısın?";
 
   if (!values.idea.trim() || values.idea.trim().length < 10) {
     errors.idea = "Fikrini biraz daha anlatır mısın? En az birkaç cümle yeterli.";
@@ -41,6 +40,9 @@ function validate(values: FormValues): Errors {
   if (!values.placement.trim()) errors.placement = "Vücutta hangi bölgeyi düşünüyorsun?";
   if (!values.size || isNaN(Number(values.size)) || Number(values.size) <= 0) {
     errors.size = "Lütfen santimetre cinsinden geçerli bir sayı gir.";
+  }
+  if (!values.dates?.from) {
+    errors.dates = "Lütfen tercih ettiğin bir tarih aralığı seç.";
   }
 
   return errors;
@@ -94,7 +96,7 @@ export function AppointmentForm({ whatsappPhone = WHATSAPP_PHONE }: { whatsappPh
   return (
     <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Ad Soyad" error={errors.name}>
+        <Field label="Ad Soyad *" error={errors.name}>
           <input
             type="text"
             value={values.name}
@@ -103,7 +105,7 @@ export function AppointmentForm({ whatsappPhone = WHATSAPP_PHONE }: { whatsappPh
           />
         </Field>
 
-        <Field label="İletişim" error={errors.contact} hint="Telefon veya Instagram">
+        <Field label="İletişim (opsiyonel)" error={errors.contact} hint="Telefon veya Instagram">
           <input
             type="text"
             value={values.contact}
@@ -114,7 +116,7 @@ export function AppointmentForm({ whatsappPhone = WHATSAPP_PHONE }: { whatsappPh
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Bölge" error={errors.placement} hint="Örn. ön kol, sırt, baldır">
+        <Field label="Bölge *" error={errors.placement} hint="Örn. ön kol, sırt, baldır">
           <input
             type="text"
             value={values.placement}
@@ -123,7 +125,7 @@ export function AppointmentForm({ whatsappPhone = WHATSAPP_PHONE }: { whatsappPh
           />
         </Field>
 
-        <Field label="Yaklaşık Boyut (cm)" error={errors.size}>
+        <Field label="Yaklaşık Boyut (cm) *" error={errors.size}>
           <input
             type="number"
             min="1"
@@ -135,7 +137,7 @@ export function AppointmentForm({ whatsappPhone = WHATSAPP_PHONE }: { whatsappPh
         </Field>
       </div>
 
-      <Field label="Fikrini Anlat" error={errors.idea} hint="Ne düşündüğünü, ilham aldığın şeyleri kısaca yaz.">
+      <Field label="Fikrini Anlat *" error={errors.idea} hint="Ne düşündüğünü, ilham aldığın şeyleri kısaca yaz.">
         <textarea
           rows={5}
           value={values.idea}
@@ -144,7 +146,7 @@ export function AppointmentForm({ whatsappPhone = WHATSAPP_PHONE }: { whatsappPh
         />
       </Field>
 
-      <Field label="Tercih Ettiğin Tarih Aralığı">
+      <Field label="Tercih Ettiğin Tarih Aralığı *" error={errors.dates}>
         <DateRangePicker
           value={values.dates}
           onChange={(range) => update("dates", range)}
