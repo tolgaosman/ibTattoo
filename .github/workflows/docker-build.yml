@@ -38,6 +38,8 @@ jobs:
           context: ./frontend
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.REPO }}-frontend:latest
+          build-args: |
+            API_URL=https://tatt2me.net/api
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
