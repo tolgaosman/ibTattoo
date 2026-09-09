@@ -1,5 +1,9 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import createIntlMiddleware from 'next-intl/middleware';
+import { routing } from './i18n/routing';
+
+const handleI18nRouting = createIntlMiddleware(routing);
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -14,15 +18,20 @@ export function middleware(request: NextRequest) {
     const session = request.cookies.get('admin_session');
     
     if (!session) {
-      // Redirect unauthenticated users to the login page, flagging that this
-      // is likely a lapsed 1-hour session rather than a rejected password.
+      // Redirect unauthenticated users to the login page
       return NextResponse.redirect(new URL('/admin/login?expired=1', request.url));
     }
+    
+    return NextResponse.next();
   }
   
-  return NextResponse.next();
+  return handleI18nRouting(request);
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  // Match all request paths except for the ones starting with:
+  // - _next (static files, image optimization)
+  // - api, auth, randevu-api (API routes)
+  // - files with extensions (e.g. .jpg, .png, .svg)
+  matcher: ['/((?!api|auth|randevu-api|_next|.*\\..*).*)'],
 };

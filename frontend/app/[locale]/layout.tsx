@@ -75,13 +75,20 @@ const jsonLd = {
 };
 
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
-import { GoogleTranslate } from "@/components/ui/GoogleTranslate";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { OverlayVisibilityProvider } from "@/components/ui/OverlayVisibility";
 import { ToastProvider } from "@/components/ui/Toast";
 import { getPublicContent } from "@/lib/db";
 
-export default async function RootLayout({ children }: LayoutProps<"/">) {
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages, setRequestLocale } from 'next-intl/server';
+
+export default async function RootLayout({ children, params }: LayoutProps<"/"> & { params: { locale: string } }) {
+  // Set the locale for the current request
+  setRequestLocale(params.locale);
+  
+  // Provide messages to the client side
+  const messages = await getMessages();
   // Admin's phone-number setting doubles as the WhatsApp contact number
   // site-wide. If the API is unreachable this resolves to the bundled
   // fallback's number rather than breaking every page.
@@ -90,11 +97,12 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
 
   return (
     <html
-      lang="tr"
+      lang={params.locale}
       data-scroll-behavior="smooth"
       className={`${instrumentSerif.variable} ${inter.variable} ${parisienne.variable} ${caveat.variable} h-full`}
     >
       <body className="flex min-h-full flex-col bg-paper text-ink antialiased">
+        <NextIntlClientProvider messages={messages}>
         <a href="#icerik" className="skip-link">
           İçeriğe geç
         </a>
@@ -102,11 +110,11 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <ToastProvider>
           <OverlayVisibilityProvider>
             <Chrome>{children}</Chrome>
-            <GoogleTranslate />
             <LanguageSwitcher />
             <FloatingWhatsApp phone={phone} />
           </OverlayVisibilityProvider>
         </ToastProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

@@ -17,8 +17,11 @@ class UpdateAboutRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'about' => ['required', 'array', 'min:1'],
-            'about.*' => ['required', 'string'],
+            'about' => ['required', 'array'],
+            'about.tr' => ['required', 'array', 'min:1'],
+            'about.tr.*' => ['required', 'string'],
+            'about.en' => ['nullable', 'array'],
+            'about.en.*' => ['required', 'string'],
             'aboutImage' => ['sometimes', 'string'],
         ];
     }

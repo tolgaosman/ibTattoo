@@ -7,6 +7,7 @@ import { Lightbox } from "@/components/work/Lightbox";
 import { Reveal } from "@/components/ui/Reveal";
 import { ButtonLink } from "@/components/ui/Button";
 import { formatStyle, type Tattoo } from "@/lib/tattoos";
+import { useTranslations } from "next-intl";
 
 const PLACEMENT: ReadonlyArray<Placement> = [
   { x: "0%", y: "1%", w: "28%", r: "-3deg", tape: "5deg" },
@@ -41,6 +42,7 @@ interface BoardProps {
 
 export function Board({ selection, gallery }: BoardProps) {
   const [index, setIndex] = useState<number | null>(null);
+  const t = useTranslations("Board");
 
   const boardTattoos = useMemo(() => {
     return selection
@@ -54,10 +56,10 @@ export function Board({ selection, gallery }: BoardProps) {
       <Reveal className="mx-auto mb-16 flex max-w-2xl flex-col items-center gap-4 text-center sm:mb-24">
 
         <h2 className="font-hand text-[clamp(3rem,8vw,5.5rem)] leading-[0.95] text-amber drop-shadow-[0_0_8px_rgba(209,140,64,0.3)]">
-          Pano
+          {t('title')}
         </h2>
         <p className="max-w-md leading-relaxed text-ink/75">
-          Son dönemde tamamlanan işler. Birine dokun, hikayesini oku.
+          {t('description')}
         </p>
       </Reveal>
 
@@ -81,7 +83,7 @@ export function Board({ selection, gallery }: BoardProps) {
 
       <div className="mt-16 flex justify-center lg:mt-0 lg:pt-20">
         <ButtonLink href="/galeri" intent="ghost" size="md">
-          Tümünü Gör
+          {t('viewAll')}
         </ButtonLink>
       </div>
 

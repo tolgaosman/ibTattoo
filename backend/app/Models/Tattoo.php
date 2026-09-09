@@ -6,10 +6,13 @@ use App\Enums\TattooAspect;
 use App\Enums\TattooSize;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
 
 class Tattoo extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTranslations;
+
+    public $translatable = ['title', 'placement', 'duration', 'story'];
 
     protected $fillable = [
         'public_id',

@@ -16,6 +16,10 @@ return Application::configure(basePath: dirname(__DIR__))
         // Pure JSON API — never redirect unauthenticated requests to a
         // "login" web route (there isn't one).
         $middleware->redirectGuestsTo(fn () => null);
+        
+        $middleware->api(append: [
+            \App\Http\Middleware\SetLocale::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

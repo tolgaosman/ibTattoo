@@ -1,0 +1,12 @@
+{
+  "Board": {
+    "title": "Pano",
+    "description": "Son dönemde tamamlanan işler. Birine dokun, hikayesini oku.",
+    "viewAll": "Tümünü Gör"
+  },
+  "Process": {
+    "eyebrow": "Süreç",
+    "title": "Fikirden Deriye",
+    "description": "İlk mesajdan iyileşmiş dövmeye kadar beş adım. Aceleye getirilen hiçbir aşama yok - kalıcı bir şey yapıyoruz."
+  }
+}
