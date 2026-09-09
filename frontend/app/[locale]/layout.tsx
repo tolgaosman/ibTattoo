@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Caveat, Instrument_Serif, Inter, Parisienne } from "next/font/google";
 import { Chrome } from "@/components/chrome/Chrome";
-import "./globals.css";
+import "../globals.css";
 
 const instrumentSerif = Instrument_Serif({
   variable: "--font-instrument-serif",
@@ -83,9 +83,10 @@ import { getPublicContent } from "@/lib/db";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 
-export default async function RootLayout({ children, params }: LayoutProps<"/"> & { params: { locale: string } }) {
+export default async function RootLayout({ children, params }: { children: React.ReactNode, params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   // Set the locale for the current request
-  setRequestLocale(params.locale);
+  setRequestLocale(locale);
   
   // Provide messages to the client side
   const messages = await getMessages();
@@ -97,7 +98,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/"> 
 
   return (
     <html
-      lang={params.locale}
+      lang={locale}
       data-scroll-behavior="smooth"
       className={`${instrumentSerif.variable} ${inter.variable} ${parisienne.variable} ${caveat.variable} h-full`}
     >
