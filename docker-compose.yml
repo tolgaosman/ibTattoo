@@ -13,13 +13,6 @@ services:
 
   frontend:
     image: ghcr.io/tolgaosman/ibtattoo-frontend:latest
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-      args:
-        # Baked into the standalone build (next.config.ts rewrites). Must match
-        # the runtime value below — see the comment in frontend/Dockerfile.
-        API_URL: http://web/api
     environment:
       - NODE_ENV=production
       - API_URL=http://web/api
@@ -27,9 +20,6 @@ services:
 
   backend:
     image: ghcr.io/tolgaosman/ibtattoo-backend:latest
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
     volumes:
       - backend-storage:/var/www/html/storage/app/public
       - ./frontend:/var/www/frontend:ro
