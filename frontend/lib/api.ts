@@ -63,7 +63,7 @@ export async function adminFetch<T>(path: string, init?: RequestInit): Promise<T
 
   if (res.status === 401) {
     cookieStore.delete(ADMIN_COOKIE);
-    redirect("/admin/login");
+    redirect("/admin/login?expired=1");
   }
 
   if (!res.ok) {

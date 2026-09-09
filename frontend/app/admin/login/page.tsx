@@ -1,15 +1,25 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 
 export default function AdminLogin() {
+  return (
+    <Suspense fallback={null}>
+      <AdminLoginForm />
+    </Suspense>
+  );
+}
+
+function AdminLoginForm() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const sessionExpired = searchParams.get("expired") === "1";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,6 +57,12 @@ export default function AdminLogin() {
           <div className="text-center mb-8">
             <h1 className="font-serif text-3xl text-amber-light">Admin Girişi</h1>
           </div>
+
+          {sessionExpired && !error && (
+            <p className="mb-6 rounded-md border border-amber/40 bg-amber/10 px-4 py-3 text-sm text-amber-light">
+              Oturumunuzun süresi doldu (güvenlik için 1 saatte bir istenir). Aynı şifreyle tekrar giriş yapabilirsiniz.
+            </p>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>

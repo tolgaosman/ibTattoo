@@ -14,8 +14,9 @@ export function middleware(request: NextRequest) {
     const session = request.cookies.get('admin_session');
     
     if (!session) {
-      // Redirect unauthenticated users to the login page
-      return NextResponse.redirect(new URL('/admin/login', request.url));
+      // Redirect unauthenticated users to the login page, flagging that this
+      // is likely a lapsed 1-hour session rather than a rejected password.
+      return NextResponse.redirect(new URL('/admin/login?expired=1', request.url));
     }
   }
   
