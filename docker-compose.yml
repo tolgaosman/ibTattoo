@@ -44,6 +44,8 @@ services:
       - DB_DATABASE=ibtattoo
       - DB_USERNAME=ibtattoo_user
       - DB_PASSWORD=ibtattoo_pass
+      - ADMIN_EMAIL=irmakyamuer2000@gmail.com
+      - ADMIN_PASSWORD=irmak2005tatt2me
     depends_on:
       - db
     restart: unless-stopped
