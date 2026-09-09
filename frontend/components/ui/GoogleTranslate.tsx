@@ -64,6 +64,9 @@ export function GoogleTranslate() {
   }, []);
 
   // Kept in the DOM but visually hidden — LanguageSwitcher drives the real
-  // <select> Google renders inside it programmatically.
-  return <div id="google_translate_element" className="hidden" />;
+  // <select> Google renders inside it programmatically. Must NOT be
+  // display:none: Google's widget frequently fails to mount the
+  // .goog-te-combo <select> inside a display:none container, so this uses
+  // the off-screen sr-only technique instead (present in layout, invisible).
+  return <div id="google_translate_element" className="sr-only" />;
 }

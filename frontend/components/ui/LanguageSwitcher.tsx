@@ -75,7 +75,7 @@ export function LanguageSwitcher() {
   return (
     <div ref={rootRef} className="fixed bottom-6 right-24 z-50 sm:bottom-8 sm:right-28">
       {open && (
-        <div className="notranslate absolute bottom-16 right-0 flex flex-col overflow-hidden rounded-[var(--radius-md)] border border-[var(--hairline)] bg-parchment shadow-xl">
+        <div className="notranslate absolute bottom-14 right-0 flex flex-col overflow-hidden rounded-[var(--radius-md)] border border-[var(--hairline)] bg-parchment shadow-xl">
           {LANGUAGES.map((l) => (
             <button
               key={l.code}
@@ -93,6 +93,7 @@ export function LanguageSwitcher() {
       <Button
         type="button"
         intent="neon"
+        size="sm"
         onClick={() => setOpen((o) => !o)}
         aria-label="Dil seçin / Select language"
         aria-expanded={open}
