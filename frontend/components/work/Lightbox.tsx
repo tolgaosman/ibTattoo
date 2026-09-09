@@ -49,13 +49,13 @@ export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
               </div>
 
               <div className="flex min-h-0 flex-1 flex-col gap-3 sm:gap-4 lg:grid lg:grid-cols-[1.4fr_1fr] lg:gap-8">
-                <div className="relative h-[30vh] w-full shrink-0 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-parchment shadow-[var(--shadow-lift)] sm:h-[38vh] lg:h-full lg:min-h-[40vh]">
+                <div className={`relative w-full shrink-0 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-parchment shadow-[var(--shadow-lift)] lg:h-full lg:min-h-[40vh] ${tattoo.aspect === "portrait" ? "aspect-[3/4]" : tattoo.aspect === "landscape" ? "aspect-[4/3]" : "aspect-square"}`}>
                   <Image
                     src={tattoo.image}
                     alt={`${tattoo.title} — ${formatStyle(tattoo.style)}`}
                     fill
                     sizes="(min-width: 1024px) 60vw, 100vw"
-                    className="object-cover"
+                    className="object-contain lg:object-cover"
                   />
                 </div>
                 <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-parchment/60 p-4 sm:gap-6 sm:p-6 lg:justify-center lg:p-8">
