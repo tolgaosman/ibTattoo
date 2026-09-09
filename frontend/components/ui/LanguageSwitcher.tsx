@@ -19,7 +19,7 @@ function applyLanguage(lang: Lang) {
   if (!select) return false;
   if (select.value === lang) return true;
   select.value = lang;
-  select.dispatchEvent(new Event("change"));
+  select.dispatchEvent(new Event("change", { bubbles: true }));
   return true;
 }
 
