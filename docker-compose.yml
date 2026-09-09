@@ -12,6 +12,7 @@ services:
     restart: unless-stopped
 
   frontend:
+    image: ghcr.io/tolgaosman/ibtattoo-frontend:latest
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -25,6 +26,7 @@ services:
     restart: unless-stopped
 
   backend:
+    image: ghcr.io/tolgaosman/ibtattoo-backend:latest
     build:
       context: ./backend
       dockerfile: Dockerfile
