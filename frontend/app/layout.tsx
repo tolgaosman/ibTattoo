@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Caveat, Instrument_Serif, Inter, Parisienne } from "next/font/google";
 import { Chrome } from "@/components/chrome/Chrome";
-import "../globals.css";
+import "./globals.css";
 
 const instrumentSerif = Instrument_Serif({
   variable: "--font-instrument-serif",
