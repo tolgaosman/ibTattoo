@@ -371,7 +371,7 @@ export function DashboardForms({
         )}
         <button
           onClick={handleSaveBoard}
-          disabled={loading || filledCount !== 9}
+          disabled={loading}
           className="soft-card--link flex w-full sm:w-auto items-center justify-center rounded-md bg-amber px-6 py-2 text-sm font-medium text-paper-deep disabled:opacity-50"
         >
           {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Panoyu Kaydet"}

@@ -18,7 +18,7 @@ class UpdateBoardSelectionRequest extends FormRequest
     {
         return [
             // Mirrors the admin UI's fixed 3x3 board (frontend/components/admin/DashboardForms.tsx).
-            'boardSelection' => ['required', 'array', 'size:9'],
+            'boardSelection' => ['array', 'max:9'],
             'boardSelection.*' => ['required', 'string', 'distinct', 'exists:tattoos,public_id'],
         ];
     }
