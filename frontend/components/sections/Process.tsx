@@ -1,6 +1,5 @@
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
-import { useTranslations } from "next-intl";
 
 interface Step {
   no: string;
@@ -9,7 +8,6 @@ interface Step {
 }
 
 export function Process({ process }: { process: Step[] }) {
-  const t = useTranslations("Process");
   return (
     <section
       id="surec"
@@ -17,9 +15,9 @@ export function Process({ process }: { process: Step[] }) {
     >
       <div className="relative mx-auto max-w-7xl pl-8 sm:pl-12 lg:pl-16">
         <Reveal className="mb-16 flex max-w-xl flex-col gap-5 sm:mb-24">
-          <SectionHeading eyebrow={t("eyebrow")} title={t("title")} />
+          <SectionHeading eyebrow="Nasıl Çalışıyorum?" title="Fikirden Deriye." />
           <p className="font-hand text-2xl leading-[32px] text-ink-soft/80">
-            {t("description")}
+            Dövme yaptırmak sadece bir sonuç değil, birlikte yürüdüğümüz bir süreç.
           </p>
         </Reveal>
 

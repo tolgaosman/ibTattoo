@@ -1,9 +1,5 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import createIntlMiddleware from 'next-intl/middleware';
-import { routing } from './i18n/routing';
-
-const handleI18nRouting = createIntlMiddleware(routing);
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -25,7 +21,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
   
-  return handleI18nRouting(request);
+  return NextResponse.next();
 }
 
 export const config = {
