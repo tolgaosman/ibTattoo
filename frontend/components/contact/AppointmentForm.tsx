@@ -67,6 +67,13 @@ export function AppointmentForm({ whatsappPhone = WHATSAPP_PHONE }: { whatsappPh
       ? `${values.dates.from.toLocaleDateString("tr-TR")}${values.dates.to ? ` - ${values.dates.to.toLocaleDateString("tr-TR")}` : ""}`
       : undefined;
 
+    const datesMessage = datesStr ? `\nTarih Aralığı: ${datesStr}` : "";
+    const message = `Merhaba, dövme randevusu için yazıyorum.\n\nAd Soyad: ${values.name}\nİletişim: ${values.contact}\nBölge: ${values.placement}\nBoyut: ${values.size} cm\n\nFikir: ${values.idea}${datesMessage}`;
+    const wpUrl = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(message)}`;
+
+    // Open WhatsApp synchronously before the async fetch to avoid popup blockers
+    window.open(wpUrl, "_blank");
+
     setSubmitting(true);
     try {
       await fetch("/randevu-api", {
@@ -86,11 +93,6 @@ export function AppointmentForm({ whatsappPhone = WHATSAPP_PHONE }: { whatsappPh
     } finally {
       setSubmitting(false);
     }
-
-    const datesMessage = datesStr ? `\nTarih Aralığı: ${datesStr}` : "";
-    const message = `Merhaba, dövme randevusu için yazıyorum.\n\nAd Soyad: ${values.name}\nİletişim: ${values.contact}\nBölge: ${values.placement}\nBoyut: ${values.size} cm\n\nFikir: ${values.idea}${datesMessage}`;
-
-    window.open(`https://wa.me/${whatsappPhone}?text=${encodeURIComponent(message)}`, "_blank");
   }
 
   return (
