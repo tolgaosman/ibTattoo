@@ -33,9 +33,9 @@ export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
     <Dialog.Root open={tattoo !== null} onOpenChange={(open) => !open && onIndexChange(null)}>
       <Dialog.Portal>
         <Dialog.Backdrop className="fixed inset-0 z-40 bg-paper/95 transition-opacity duration-300 ease-out data-[starting-style]:opacity-0 data-[ending-style]:opacity-0" />
-        <Dialog.Popup className="fixed inset-0 z-50 flex flex-col overflow-hidden p-4 transition-[opacity,transform] duration-300 ease-out data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0 sm:p-6 lg:overflow-y-auto lg:p-12">
+        <Dialog.Popup className="fixed inset-0 z-50 flex flex-col overflow-y-auto overflow-x-hidden p-4 transition-[opacity,transform] duration-300 ease-out data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0 sm:p-6 lg:p-12">
           {tattoo ? (
-            <div className="mx-auto flex h-full w-full max-w-5xl flex-col">
+            <div className="mx-auto flex min-h-full w-full max-w-5xl flex-col justify-center">
               <div className="mb-3 flex shrink-0 items-center justify-between gap-4 sm:mb-8">
                 <Dialog.Title className="truncate font-serif text-xl text-ink sm:text-3xl lg:text-4xl">
                   {tattoo.title}
@@ -52,7 +52,7 @@ export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
                 </Dialog.Close>
               </div>
 
-              <div className="flex min-h-0 flex-1 flex-col gap-3 sm:gap-4 lg:grid lg:grid-cols-[1.4fr_1fr] lg:gap-8">
+              <div className="flex flex-1 flex-col gap-3 sm:gap-4 lg:grid lg:grid-cols-[1.4fr_1fr] lg:gap-8">
                 <div className={`relative w-full shrink-0 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-parchment shadow-[var(--shadow-lift)] lg:h-full lg:min-h-[40vh] ${tattoo.aspect === "portrait" ? "aspect-[3/4]" : tattoo.aspect === "landscape" ? "aspect-[4/3]" : "aspect-square"}`}>
                   <Image
                     src={tattoo.image}
@@ -62,7 +62,7 @@ export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
                     className="object-contain lg:object-cover"
                   />
                 </div>
-                <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-parchment/60 p-4 sm:gap-6 sm:p-6 lg:justify-center lg:p-8">
+                <div className="flex shrink-0 flex-col gap-4 rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-parchment/60 p-4 sm:gap-6 sm:p-6 lg:flex-1 lg:justify-center lg:p-8">
                   <div className="grid grid-cols-2 gap-3 sm:gap-4">
                     <MetaRow label="Tarz" value={formatStyle(tattoo.style)} />
                     <MetaRow label="Boyut" value={SIZE_LABELS[tattoo.size]} />
@@ -70,7 +70,7 @@ export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
                     <MetaRow label="Süre" value={tattoo.duration} />
                   </div>
                   {tattoo.story ? (
-                    <div className="min-h-0 flex-1 overflow-hidden border-t border-[var(--hairline)] pt-4 sm:flex-none sm:pt-6">
+                    <div className="flex-none border-t border-[var(--hairline)] pt-4 sm:pt-6">
                       <Eyebrow className="text-base sm:text-lg">Sürece Dair</Eyebrow>
                       <p className="relative mt-2 line-clamp-4 font-serif text-lg leading-relaxed text-ink/90 sm:mt-3 sm:line-clamp-none sm:text-xl lg:text-2xl">
                         <span aria-hidden className="mr-0.5 font-serif text-2xl text-amber-light/70 sm:text-3xl">

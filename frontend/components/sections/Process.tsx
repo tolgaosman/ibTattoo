@@ -16,7 +16,7 @@ export function Process({ process }: { process: Step[] }) {
       <div className="relative mx-auto max-w-[90rem] pl-8 sm:pl-12 lg:pl-16">
         <Reveal className="mb-16 flex max-w-xl flex-col gap-5 sm:mb-24">
           <SectionHeading eyebrow="Nasıl Çalışıyorum?" title="Fikirden Deriye." />
-          <p className="font-hand text-2xl leading-[32px] text-ink-soft/80">
+          <p className="font-hand text-xl leading-[28px] sm:text-2xl sm:leading-[32px] text-ink-soft/80">
             Dövme yaptırmak sadece bir sonuç değil, birlikte yürüdüğümüz bir süreç.
           </p>
         </Reveal>
@@ -29,11 +29,11 @@ export function Process({ process }: { process: Step[] }) {
               className="relative"
             >
               <article className="flex flex-col">
-                <span className="font-hand text-3xl font-bold text-amber mb-2 tracking-widest">{step.no}</span>
-                <h3 className="font-hand text-3xl leading-[32px] text-ink mb-1">
+                <span className="font-hand text-2xl sm:text-3xl font-bold text-amber mb-2 tracking-widest">{step.no}</span>
+                <h3 className="font-hand text-2xl leading-[28px] sm:text-3xl sm:leading-[32px] text-ink mb-1">
                   {step.title}
                 </h3>
-                <p className="font-hand text-2xl leading-[32px] text-ink-soft/80">
+                <p className="font-hand text-xl leading-[28px] sm:text-2xl sm:leading-[32px] text-ink-soft/80">
                   {step.text}
                 </p>
               </article>

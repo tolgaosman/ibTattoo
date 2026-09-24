@@ -23,7 +23,7 @@ export function Artist({ about, image }: { about: string[]; image: string }) {
 
           <div className="flex flex-col gap-10">
             <Reveal>
-              <h2 className="font-hand text-[clamp(3rem,8vw,5.5rem)] leading-[0.92] text-amber drop-shadow-[0_0_8px_rgba(209,140,64,0.3)]">
+              <h2 className="font-hand text-[clamp(2.25rem,8vw,5.5rem)] leading-[0.92] text-amber drop-shadow-[0_0_8px_rgba(209,140,64,0.3)]">
                 Hakkımda
               </h2>
             </Reveal>
@@ -32,7 +32,7 @@ export function Artist({ about, image }: { about: string[]; image: string }) {
               {about.map((point, i) => (
                 <Reveal as="li" key={i} delay={i * 90} className="flex gap-4">
                   <span aria-hidden className="mt-3.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber/70" />
-                  <p className="max-w-xl font-hand text-2xl leading-[32px] text-ink-soft/90">{point}</p>
+                  <p className="max-w-xl font-hand text-xl leading-[28px] sm:text-2xl sm:leading-[32px] text-ink-soft/90">{point}</p>
                 </Reveal>
               ))}
             </ul>
