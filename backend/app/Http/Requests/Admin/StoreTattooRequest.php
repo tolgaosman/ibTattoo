@@ -30,9 +30,14 @@ class StoreTattooRequest extends FormRequest
             'date' => ['required', 'date'],
             'placement' => ['required', 'string', 'max:255'],
             'duration' => ['nullable', 'string', 'max:255'],
-            'story' => ['nullable', 'string'],
+            'story' => ['nullable', 'string', 'max:5000'],
             'aspect' => ['required', Rule::enum(TattooAspect::class)],
-            'image' => ['required', 'string'],
+            // Rendered as an <img src>, but still pinned to what this app
+            // actually produces (an uploaded /storage path or a site-local
+            // /images path) or a remote https image, to keep out
+            // `javascript:`/`data:` values and protocol-relative `//host`
+            // URLs (which a browser resolves to an arbitrary external host).
+            'image' => ['required', 'string', 'max:2048', 'regex:#^(https://|/(?!/))#'],
             'credit' => ['required', 'string', 'max:255'],
         ];
     }

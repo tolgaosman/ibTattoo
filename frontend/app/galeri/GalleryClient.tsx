@@ -45,7 +45,7 @@ export function GalleryClient({ tattoos }: { tattoos: Tattoo[] }) {
         {/* Same 4-column layout on every screen; spacing, frame and caption scale
             with viewport width so small screens show a smaller copy of the
             same page instead of a reflowed one. */}
-        <div className="columns-4 gap-[clamp(0.5rem,1.6vw,1.5rem)]">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 sm:gap-6">
           {tattoos.map((tattoo, i) => (
             <button
               key={tattoo.id}
@@ -54,22 +54,22 @@ export function GalleryClient({ tattoos }: { tattoos: Tattoo[] }) {
               data-cursor="view"
               aria-label={`${tattoo.title} — ${formatStyle(tattoo.style)}`}
               className={clsx(
-                "paper-card group relative mb-[clamp(0.5rem,1.6vw,1.5rem)] block w-full break-inside-avoid p-[clamp(3px,0.7vw,10px)] pb-[clamp(1.1rem,3vw,2.75rem)] text-left",
+                "paper-card group relative block w-full p-2 pb-10 sm:p-2.5 sm:pb-12 text-left",
                 "transition-[transform,box-shadow] duration-300 ease-out",
                 "hover:z-20 hover:scale-[1.02]",
               )}
             >
-              <span className="tape absolute left-1/2 top-0 h-[clamp(0.5rem,1.6vw,1.5rem)] w-[clamp(1.75rem,5.5vw,5rem)] -translate-x-1/2 -translate-y-1/2 rotate-[2deg] opacity-60 mix-blend-screen" />
+              <span className="tape absolute left-1/2 top-0 h-4 w-12 sm:h-6 sm:w-20 -translate-x-1/2 -translate-y-1/2 rotate-[2deg] opacity-60 mix-blend-screen" />
               <span className={clsx("relative block overflow-hidden bg-parchment", IMAGE_ASPECT[tattoo.aspect])}>
                 <Image
                   src={tattoo.image}
                   alt=""
                   fill
-                  sizes="(min-width: 1440px) 360px, 25vw"
+                  sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
                   className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
                 />
               </span>
-              <span className="absolute inset-x-[clamp(3px,0.8vw,12px)] bottom-0 pb-[clamp(2px,0.5vw,8px)] truncate text-center font-hand text-[clamp(0.6rem,1.4vw,1.25rem)] leading-[1.4] text-ink-soft">
+              <span className="absolute inset-x-2 sm:inset-x-3 bottom-0 truncate text-center font-hand text-sm sm:text-xl leading-[2.5] text-ink-soft">
                 {tattoo.title.toLocaleLowerCase("tr-TR")}
               </span>
             </button>

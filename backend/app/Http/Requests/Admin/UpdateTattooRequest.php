@@ -32,9 +32,9 @@ class UpdateTattooRequest extends FormRequest
             'date' => ['sometimes', 'date'],
             'placement' => ['sometimes', 'string', 'max:255'],
             'duration' => ['sometimes', 'nullable', 'string', 'max:255'],
-            'story' => ['sometimes', 'nullable', 'string'],
+            'story' => ['sometimes', 'nullable', 'string', 'max:5000'],
             'aspect' => ['sometimes', Rule::enum(TattooAspect::class)],
-            'image' => ['sometimes', 'string'],
+            'image' => ['sometimes', 'string', 'max:2048', 'regex:#^(https://|/(?!/))#'],
             'credit' => ['sometimes', 'string', 'max:255'],
         ];
     }

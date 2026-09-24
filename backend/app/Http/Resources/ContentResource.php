@@ -20,7 +20,6 @@ class ContentResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $isAdmin = $request->query('admin') === '1';
         return [
             'hero' => $this['hero'],
             'about' => $this['about'],

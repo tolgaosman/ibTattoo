@@ -25,7 +25,7 @@ class UpdateHeroRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'tagline' => ['required', 'string', 'max:500'],
-            'specialities' => ['required', 'array'],
+            'specialities' => ['required', 'array', 'max:10'],
             'specialities.*' => ['required', 'string', 'max:100'],
         ];
     }

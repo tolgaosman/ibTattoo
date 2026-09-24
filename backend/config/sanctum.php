@@ -37,7 +37,11 @@ return [
     |
     */
 
-    'guard' => ['web'],
+    // Admin auth is bearer-token-only (the Next.js BFF sends
+    // `Authorization: Bearer <token>`; the browser never talks to this API
+    // directly, so there is no first-party cookie session to fall back to).
+    // An empty guard list disables that cookie-session fallback entirely.
+    'guard' => [],
 
     /*
     |--------------------------------------------------------------------------
@@ -50,7 +54,7 @@ return [
     |
     */
 
-    'expiration' => null,
+    'expiration' => env('SANCTUM_EXPIRATION', 60),
 
     /*
     |--------------------------------------------------------------------------

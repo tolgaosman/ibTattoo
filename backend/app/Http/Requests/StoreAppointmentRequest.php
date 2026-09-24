@@ -21,10 +21,10 @@ class StoreAppointmentRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'contact' => ['required', 'string', 'max:255'],
-            'idea' => ['required', 'string'],
+            'idea' => ['required', 'string', 'max:5000'],
             'placement' => ['required', 'string', 'max:255'],
             'size' => ['required', 'string', 'max:255'],
-            'reference' => ['nullable', 'string'],
+            'reference' => ['nullable', 'string', 'max:2000'],
             'dates' => ['nullable', 'string', 'max:255'],
         ];
     }

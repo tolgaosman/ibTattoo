@@ -135,7 +135,7 @@ export async function addTattoo(tattoo: Tattoo) {
 }
 
 export async function updateTattoo(id: string, updated: Partial<Tattoo>) {
-  await adminFetch(`/tattoos/${id}`, {
+  await adminFetch(`/tattoos/${encodeURIComponent(id)}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(updated),
@@ -144,6 +144,6 @@ export async function updateTattoo(id: string, updated: Partial<Tattoo>) {
 }
 
 export async function deleteTattoo(id: string) {
-  await adminFetch(`/tattoos/${id}`, { method: "DELETE" });
+  await adminFetch(`/tattoos/${encodeURIComponent(id)}`, { method: "DELETE" });
   revalidateSite();
 }

@@ -76,6 +76,7 @@ const jsonLd = {
   sameAs: ["https://www.instagram.com/tatt2.me/"],
 };
 
+import { headers } from "next/headers";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import { OverlayVisibilityProvider } from "@/components/ui/OverlayVisibility";
 import { ToastProvider } from "@/components/ui/Toast";
@@ -88,6 +89,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const { contact } = await getPublicContent();
   const phone = contact?.phone;
 
+  // Set by middleware.ts on every page request; required by the CSP header
+  // it also sets (script-src only allows inline scripts carrying this nonce).
+  const nonce = (await headers()).get("x-nonce") || undefined;
+
   return (
     <html
       lang="tr"
@@ -98,7 +103,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <a href="#icerik" className="skip-link">
           İçeriğe geç
         </a>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <script
+          type="application/ld+json"
+          nonce={nonce}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <ToastProvider>
           <OverlayVisibilityProvider>
             <Chrome>{children}</Chrome>

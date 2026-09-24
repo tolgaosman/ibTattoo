@@ -84,6 +84,11 @@ export async function uploadImageAction(formData: FormData): Promise<string> {
 }
 
 export async function updateAppointmentStatusAction(id: number, status: AppointmentStatus) {
+  // TypeScript's `id: number` isn't enforced at runtime for a Server Action —
+  // it's reachable by a direct POST with an arbitrary JSON value — so this is
+  // the actual guard against a non-numeric id reaching the URL path.
+  if (!Number.isInteger(id)) throw new Error("Geçersiz randevu kimliği.");
+
   await adminFetch(`/appointments/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
@@ -93,6 +98,8 @@ export async function updateAppointmentStatusAction(id: number, status: Appointm
 }
 
 export async function deleteAppointmentAction(id: number) {
+  if (!Number.isInteger(id)) throw new Error("Geçersiz randevu kimliği.");
+
   await adminFetch(`/appointments/${id}`, { method: "DELETE" });
   revalidatePath("/admin/messages");
 }

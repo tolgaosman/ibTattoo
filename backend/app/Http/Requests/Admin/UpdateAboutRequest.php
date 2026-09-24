@@ -17,9 +17,9 @@ class UpdateAboutRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'about' => ['required', 'array', 'min:1'],
-            'about.*' => ['required', 'string'],
-            'aboutImage' => ['sometimes', 'string'],
+            'about' => ['required', 'array', 'min:1', 'max:20'],
+            'about.*' => ['required', 'string', 'max:3000'],
+            'aboutImage' => ['sometimes', 'string', 'max:2048', 'regex:#^(https://|/(?!/))#'],
         ];
     }
 }

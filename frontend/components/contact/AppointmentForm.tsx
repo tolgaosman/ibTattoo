@@ -15,6 +15,10 @@ interface FormValues {
   placement: string;
   size: string;
   dates: DateRange | undefined;
+  // Honeypot: real visitors never see or fill this field (it's visually
+  // hidden below), so a non-empty value marks the submission as automated.
+  // Checked client-side too so a bot filling it never even opens WhatsApp.
+  website: string;
 }
 
 const INITIAL: FormValues = {
@@ -24,6 +28,7 @@ const INITIAL: FormValues = {
   placement: "",
   size: "",
   dates: undefined,
+  website: "",
 };
 
 type Errors = Partial<Record<keyof FormValues, string>>;
@@ -59,6 +64,7 @@ export function AppointmentForm({ whatsappPhone = WHATSAPP_PHONE }: { whatsappPh
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
+    if (values.website.trim()) return; // honeypot tripped — silently drop
     const nextErrors = validate(values);
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
@@ -71,8 +77,10 @@ export function AppointmentForm({ whatsappPhone = WHATSAPP_PHONE }: { whatsappPh
     const message = `Merhaba, dövme randevusu için yazıyorum.\n\nAd Soyad: ${values.name}\nİletişim: ${values.contact}\nBölge: ${values.placement}\nBoyut: ${values.size} cm\n\nFikir: ${values.idea}${datesMessage}`;
     const wpUrl = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(message)}`;
 
-    // Open WhatsApp synchronously before the async fetch to avoid popup blockers
-    window.open(wpUrl, "_blank");
+    // Open WhatsApp synchronously before the async fetch to avoid popup
+    // blockers. `noopener,noreferrer` keeps the new tab from getting a
+    // `window.opener` handle back to this page (reverse tabnabbing).
+    window.open(wpUrl, "_blank", "noopener,noreferrer");
 
     setSubmitting(true);
     try {
@@ -86,6 +94,7 @@ export function AppointmentForm({ whatsappPhone = WHATSAPP_PHONE }: { whatsappPh
           placement: values.placement,
           size: values.size,
           dates: datesStr,
+          website: values.website,
         }),
       });
     } catch {
@@ -97,6 +106,20 @@ export function AppointmentForm({ whatsappPhone = WHATSAPP_PHONE }: { whatsappPh
 
   return (
     <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
+      {/* Honeypot — hidden from sighted and screen-reader users alike, left
+          only for bots that blindly fill every field they find. */}
+      <label className="absolute left-[-9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+        Web sitesi
+        <input
+          type="text"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          value={values.website}
+          onChange={(event) => update("website", event.target.value)}
+        />
+      </label>
+
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Ad Soyad *" error={errors.name}>
           <input

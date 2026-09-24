@@ -20,7 +20,9 @@ class UploadImageRequest extends FormRequest
         // with its `filename` (what the Next.js server action sends). Exactly
         // one of them must be present — an empty request used to validate.
         return [
-            'file' => ['required_without:data', 'nullable', 'image', 'max:8192'],
+            // `image` alone also accepts svg and bmp; svg specifically can carry
+            // an embedded <script>, so the mime list is pinned to raster formats.
+            'file' => ['required_without:data', 'nullable', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:8192'],
             'data' => ['required_without:file', 'nullable', 'string'],
             'filename' => ['required_with:data', 'nullable', 'string', 'max:255'],
         ];

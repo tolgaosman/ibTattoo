@@ -18,17 +18,13 @@ const storageOrigin = apiHostUrl
   ? `${apiHostUrl.protocol}//${apiHostUrl.host}`
   : "http://127.0.0.1:8000";
 
-const csp = [
-  "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  "font-src 'self' https://fonts.gstatic.com",
-  `img-src 'self' data: blob: ${storageOrigin}`,
-  `connect-src 'self' ${storageOrigin}`,
-  "frame-ancestors 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-].join("; ");
+// A minimal, static CSP for the routes middleware.ts doesn't cover (its own
+// route handlers under /auth and /randevu-api — plain JSON responses, never
+// HTML, so there's no script to run and no per-request nonce is needed).
+// Scoped by `source` below to exactly the paths middleware.ts's matcher
+// excludes, so this never has to compete with middleware's own,
+// nonce-based Content-Security-Policy header on the same response.
+const staticCsp = "default-src 'none'; frame-ancestors 'none'; base-uri 'none'";
 
 const nextConfig: NextConfig = {
   output: "standalone",
@@ -77,8 +73,22 @@ const nextConfig: NextConfig = {
                   key: "Permissions-Policy",
                   value: "camera=(), microphone=(), geolocation=()",
                 },
-                { key: "Content-Security-Policy", value: csp },
+                {
+                  key: "Strict-Transport-Security",
+                  value: "max-age=31536000; includeSubDomains",
+                },
               ],
+            },
+            // middleware.ts's matcher excludes exactly these two route
+            // handlers (they're JSON, not HTML) — this is the only place
+            // that sets their Content-Security-Policy.
+            {
+              source: "/auth/:path*",
+              headers: [{ key: "Content-Security-Policy", value: staticCsp }],
+            },
+            {
+              source: "/randevu-api",
+              headers: [{ key: "Content-Security-Policy", value: staticCsp }],
             },
           ];
         },

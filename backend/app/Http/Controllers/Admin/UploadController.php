@@ -11,11 +11,19 @@ use Illuminate\Support\Str;
 class UploadController extends Controller
 {
     /**
-     * Extensions we are willing to write into the public storage directory.
-     * The extension is derived from a client-supplied filename, so anything
-     * outside this list is coerced rather than trusted.
+     * Extensions we are willing to write into the public storage directory,
+     * mapped from the IMAGETYPE_* constant `getimagesize()` reports for the
+     * decoded bytes. The client-supplied filename only ever contributes the
+     * human-readable slug portion of the stored name — never the extension —
+     * so a mislabelled or malicious upload can't land with a trusted-looking
+     * extension it doesn't actually have.
      */
-    private const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+    private const EXTENSION_BY_IMAGETYPE = [
+        IMAGETYPE_JPEG => 'jpg',
+        IMAGETYPE_PNG => 'png',
+        IMAGETYPE_GIF => 'gif',
+        IMAGETYPE_WEBP => 'webp',
+    ];
 
     /** Decoded byte ceiling, mirroring the `max:8192` (KB) rule on the multipart branch. */
     private const MAX_BYTES = 8192 * 1024;
@@ -40,20 +48,25 @@ class UploadController extends Controller
                 return response()->json(['message' => 'Görsel çok büyük (en fazla 8 MB).'], 422);
             }
 
-            // The base64 branch never passes through Laravel's `image` rule, so
-            // verify the decoded bytes really are an image before writing them
-            // into a publicly served directory.
-            if (@getimagesizefromstring($fileData) === false) {
+            $extension = $this->detectExtension($fileData);
+
+            if ($extension === null) {
                 return response()->json(['message' => 'Geçerli bir görsel değil.'], 422);
             }
 
-            $path = 'tattoos/' . $this->buildFilename($request->input('filename', 'gorsel.jpg'));
+            $path = 'tattoos/' . $this->buildFilename($request->input('filename', 'gorsel'), $extension);
 
             Storage::disk('public')->put($path, $fileData);
         } else {
             $file = $request->file('file');
-            $path = $file->storeAs('tattoos', $this->buildFilename($file->getClientOriginalName()), 'public');
-            
+            $extension = $this->detectExtension((string) file_get_contents($file->getRealPath()));
+
+            if ($extension === null) {
+                return response()->json(['message' => 'Geçerli bir görsel değil.'], 422);
+            }
+
+            $path = $file->storeAs('tattoos', $this->buildFilename($file->getClientOriginalName(), $extension), 'public');
+
             if ($path === false) {
                 return response()->json(['message' => 'Dosya sunucuya kaydedilemedi. Depolama izni hatası olabilir.'], 500);
             }
@@ -66,14 +79,26 @@ class UploadController extends Controller
         return response()->json(['url' => '/storage/' . $path]);
     }
 
-    private function buildFilename(string $original): string
+    /**
+     * Decodes the actual image type from raw bytes and maps it to a safe
+     * extension. Returns null when the bytes aren't a recognised raster
+     * image (this rejects e.g. an SVG or HTML file smuggled past the
+     * `image` validation rule, or any polyglot that isn't a real image).
+     */
+    private function detectExtension(string $bytes): ?string
+    {
+        $info = @getimagesizefromstring($bytes);
+
+        if ($info === false) {
+            return null;
+        }
+
+        return self::EXTENSION_BY_IMAGETYPE[$info[2]] ?? null;
+    }
+
+    private function buildFilename(string $original, string $extension): string
     {
         $name = Str::slug(pathinfo($original, PATHINFO_FILENAME)) ?: 'gorsel';
-        $extension = strtolower(pathinfo($original, PATHINFO_EXTENSION));
-
-        if (! in_array($extension, self::ALLOWED_EXTENSIONS, true)) {
-            $extension = 'jpg';
-        }
 
         return sprintf('%s-%d-%s.%s', $name, now()->timestamp, Str::random(6), $extension);
     }
