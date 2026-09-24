@@ -4,12 +4,40 @@ services:
     ports:
       - "4002:80"
     volumes:
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
       - backend-storage:/var/www/backend/storage/app/public
     depends_on:
       - frontend
       - backend
     restart: unless-stopped
+    command: >
+      /bin/sh -c "
+      echo '
+      server {
+          listen 80;
+          server_name _;
+          root /var/www/html/public;
+          index index.php index.html;
+          client_max_body_size 20M;
+          location / {
+              proxy_pass http://frontend:3000;
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade $$http_upgrade;
+              proxy_set_header Connection \"upgrade\";
+              proxy_set_header Host $$host;
+              proxy_cache_bypass $$http_upgrade;
+          }
+          location ~ ^/(api|sanctum) {
+              fastcgi_pass backend:9000;
+              fastcgi_index index.php;
+              include fastcgi_params;
+              fastcgi_param SCRIPT_FILENAME $$document_root/index.php;
+              fastcgi_param SCRIPT_NAME /index.php;
+          }
+          location ^~ /storage/ {
+              alias /var/www/backend/storage/app/public/;
+          }
+      }' > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
+      "
 
   frontend:
     image: ghcr.io/tolgaosman/ibtattoo-frontend:latest
