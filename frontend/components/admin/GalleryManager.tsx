@@ -7,6 +7,7 @@ import { Loader2, Plus, Trash2, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { DatePicker } from "@/components/ui/DatePicker";
 import { useToast } from "@/components/ui/Toast";
+import { useConfirm } from "@/components/ui/ConfirmDialog";
 
 export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
   const [items, setItems] = useState<Tattoo[]>(initialItems);
@@ -15,6 +16,7 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const router = useRouter();
   const toast = useToast();
+  const confirm = useConfirm();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const emptyTattoo: Partial<Tattoo> = {
@@ -56,19 +58,42 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Bu dövmeyi silmek istediğinize emin misiniz?")) return;
+    const ok = await confirm({
+      title: "Dövmeyi Sil",
+      message: "Bu dövmeyi silmek istediğinize emin misiniz? Bu işlem geri alınamaz.",
+    });
+    if (!ok) return;
+
     setLoading(true);
-    await deleteTattooAction(id);
-    setItems(items.filter((i) => i.id !== id));
-    setLoading(false);
-    router.refresh();
-    toast.success("Dövme silindi");
+    try {
+      const result = await deleteTattooAction(id);
+      if (result?.error) throw new Error(result.error);
+      setItems(items.filter((i) => i.id !== id));
+      router.refresh();
+      toast.success("Dövme silindi");
+    } catch (err) {
+      console.error(err);
+      toast.error(err instanceof Error ? err.message : "Dövme silinirken hata oluştu.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const missing: string[] = [];
+    if (!newTattoo.title?.trim()) missing.push("Başlık");
+    if (!newTattoo.style?.trim()) missing.push("Stil");
+    if (!newTattoo.placement?.trim()) missing.push("Bölge");
+    if (!newTattoo.date) missing.push("Tarih");
+    if (missing.length > 0) {
+      toast.error(`Lütfen şu alanları doldurun: ${missing.join(", ")}`);
+      return;
+    }
+
     setLoading(true);
-    
+
     try {
       let imagePath = newTattoo.image || "";
 
@@ -86,7 +111,6 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
 
       if (editingId) {
         const updates: Partial<Tattoo> = {
-          slug: newTattoo.title?.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "yeni",
           title: newTattoo.title || "İsimsiz",
           style: newTattoo.style || "",
           size: newTattoo.size as any,
@@ -147,21 +171,21 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
       </div>
 
       {isAdding && (
-        <form onSubmit={handleAdd} className="soft-card p-6 space-y-4">
+        <form onSubmit={handleAdd} noValidate className="soft-card p-6 space-y-4">
           <h2 className="font-serif text-2xl text-amber-light">{editingId ? "Dövmeyi Düzenle" : "Yeni Dövme Ekle"}</h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm text-ink mb-1">Başlık *</label>
-              <input type="text" required value={newTattoo.title || ""} onChange={e => setNewTattoo({...newTattoo, title: e.target.value})} className="w-full rounded-md border border-hairline bg-parchment px-3 py-2 text-ink focus:border-amber focus:outline-none" />
+              <input type="text" value={newTattoo.title || ""} onChange={e => setNewTattoo({...newTattoo, title: e.target.value})} className="w-full rounded-md border border-hairline bg-parchment px-3 py-2 text-ink focus:border-amber focus:outline-none" />
             </div>
             <div>
               <label className="block text-sm text-ink mb-1">Stil *</label>
-              <input type="text" required value={newTattoo.style || ""} onChange={e => setNewTattoo({...newTattoo, style: e.target.value})} className="w-full rounded-md border border-hairline bg-parchment px-3 py-2 text-ink focus:border-amber focus:outline-none" placeholder="Örn: İnce Çizgi" />
+              <input type="text" value={newTattoo.style || ""} onChange={e => setNewTattoo({...newTattoo, style: e.target.value})} className="w-full rounded-md border border-hairline bg-parchment px-3 py-2 text-ink focus:border-amber focus:outline-none" placeholder="Örn: İnce Çizgi" />
             </div>
             <div>
               <label className="block text-sm text-ink mb-1">Bölge *</label>
-              <input type="text" required value={newTattoo.placement || ""} onChange={e => setNewTattoo({...newTattoo, placement: e.target.value})} className="w-full rounded-md border border-hairline bg-parchment px-3 py-2 text-ink focus:border-amber focus:outline-none" />
+              <input type="text" value={newTattoo.placement || ""} onChange={e => setNewTattoo({...newTattoo, placement: e.target.value})} className="w-full rounded-md border border-hairline bg-parchment px-3 py-2 text-ink focus:border-amber focus:outline-none" />
             </div>
             <div>
               <label className="block text-sm text-ink mb-1">Tarih *</label>

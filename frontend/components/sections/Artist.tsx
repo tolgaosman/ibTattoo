@@ -4,7 +4,7 @@ import { Reveal } from "@/components/ui/Reveal";
 export function Artist({ about, image }: { about: string[]; image: string }) {
   return (
     <section id="hakkimda" className="bg-notebook relative px-6 py-24 sm:px-10 sm:py-32">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-[90rem]">
         <div className="grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
           <Reveal className="lg:rotate-[-1.5deg]">
             <figure className="paper-card relative p-3">

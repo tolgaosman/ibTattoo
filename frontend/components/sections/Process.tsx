@@ -13,7 +13,7 @@ export function Process({ process }: { process: Step[] }) {
       id="surec"
       className="bg-notebook relative isolate overflow-hidden px-6 py-24 sm:px-10 sm:py-32"
     >
-      <div className="relative mx-auto max-w-7xl pl-8 sm:pl-12 lg:pl-16">
+      <div className="relative mx-auto max-w-[90rem] pl-8 sm:pl-12 lg:pl-16">
         <Reveal className="mb-16 flex max-w-xl flex-col gap-5 sm:mb-24">
           <SectionHeading eyebrow="Nasıl Çalışıyorum?" title="Fikirden Deriye." />
           <p className="font-hand text-2xl leading-[32px] text-ink-soft/80">

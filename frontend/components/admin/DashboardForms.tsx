@@ -53,19 +53,31 @@ export function DashboardForms({
 
   const handleSaveHero = async () => {
     setLoading(true);
-    await saveHeroAction({
-      ...hero,
-      specialities: heroSpecialitiesStr.split(",").map(s => s.trim()).filter(Boolean)
-    });
-    setLoading(false);
-    toast.success("Hero kaydedildi");
+    try {
+      await saveHeroAction({
+        ...hero,
+        specialities: heroSpecialitiesStr.split(",").map(s => s.trim()).filter(Boolean)
+      });
+      toast.success("Hero kaydedildi");
+    } catch (err) {
+      console.error(err);
+      toast.error("Hero kaydedilirken hata oluştu.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSaveAbout = async () => {
     setLoading(true);
-    await saveAboutAction(about, aboutImage);
-    setLoading(false);
-    toast.success("Hakkımda kaydedildi");
+    try {
+      await saveAboutAction(about, aboutImage);
+      toast.success("Hakkımda kaydedildi");
+    } catch (err) {
+      console.error(err);
+      toast.error("Hakkımda kaydedilirken hata oluştu.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleAboutImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,16 +101,28 @@ export function DashboardForms({
 
   const handleSaveProcess = async () => {
     setLoading(true);
-    await saveProcessAction(process);
-    setLoading(false);
-    toast.success("Süreç kaydedildi");
+    try {
+      await saveProcessAction(process);
+      toast.success("Süreç kaydedildi");
+    } catch (err) {
+      console.error(err);
+      toast.error("Süreç kaydedilirken hata oluştu.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSaveBoard = async () => {
     setLoading(true);
-    await saveBoardSelectionAction(boardSlots.filter(Boolean));
-    setLoading(false);
-    toast.success("Pano kaydedildi");
+    try {
+      await saveBoardSelectionAction(boardSlots.filter(Boolean));
+      toast.success("Pano kaydedildi");
+    } catch (err) {
+      console.error(err);
+      toast.error("Pano kaydedilirken hata oluştu.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const clearSlot = (index: number) => {

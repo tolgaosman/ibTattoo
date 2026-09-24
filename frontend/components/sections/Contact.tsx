@@ -50,7 +50,7 @@ export function Contact({ contact }: { contact: ContactInfo }) {
 
   return (
     <section id="iletisim" className="bg-contact px-6 py-24 sm:px-10 sm:py-32">
-      <div className="mx-auto grid min-w-0 max-w-6xl gap-14 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
+      <div className="mx-auto grid min-w-0 max-w-[90rem] gap-14 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
         <div className="flex min-w-0 flex-col">
           <Reveal className="mb-12 flex max-w-xl flex-col gap-5 sm:mb-16">
             <h2 className="font-hand text-[clamp(3rem,8vw,5.5rem)] leading-[0.95] text-amber drop-shadow-[0_0_8px_rgba(209,140,64,0.3)]">

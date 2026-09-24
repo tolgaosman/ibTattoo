@@ -6,6 +6,7 @@ import { Archive, CheckCircle2, Loader2, Trash2 } from "lucide-react";
 import type { Appointment, AppointmentStatus } from "@/lib/appointments";
 import { updateAppointmentStatusAction, deleteAppointmentAction } from "@/app/admin/actions";
 import { useToast } from "@/components/ui/Toast";
+import { useConfirm } from "@/components/ui/ConfirmDialog";
 
 const STATUS_LABELS: Record<AppointmentStatus, string> = {
   new: "Yeni",
@@ -24,6 +25,7 @@ export function MessagesList({ initialAppointments }: { initialAppointments: App
   const [loadingId, setLoadingId] = useState<number | null>(null);
   const router = useRouter();
   const toast = useToast();
+  const confirm = useConfirm();
 
   const handleStatus = async (id: number, status: AppointmentStatus) => {
     setLoadingId(id);
@@ -31,19 +33,30 @@ export function MessagesList({ initialAppointments }: { initialAppointments: App
       await updateAppointmentStatusAction(id, status);
       setAppointments((prev) => prev.map((a) => (a.id === id ? { ...a, status } : a)));
       router.refresh();
+    } catch (err) {
+      console.error(err);
+      toast.error("Durum güncellenirken hata oluştu.");
     } finally {
       setLoadingId(null);
     }
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm("Bu mesajı silmek istediğinize emin misiniz?")) return;
+    const ok = await confirm({
+      title: "Mesajı Sil",
+      message: "Bu mesajı silmek istediğinize emin misiniz? Bu işlem geri alınamaz.",
+    });
+    if (!ok) return;
+
     setLoadingId(id);
     try {
       await deleteAppointmentAction(id);
       setAppointments((prev) => prev.filter((a) => a.id !== id));
       router.refresh();
       toast.success("Mesaj silindi");
+    } catch (err) {
+      console.error(err);
+      toast.error("Mesaj silinirken hata oluştu.");
     } finally {
       setLoadingId(null);
     }

@@ -52,6 +52,12 @@ class TattooController extends Controller
             $data['image_path'] = $data['image'];
             unset($data['image']);
         }
+        if (array_key_exists('duration', $data)) {
+            $data['duration'] = $data['duration'] ?? '';
+        }
+        if (array_key_exists('story', $data)) {
+            $data['story'] = $data['story'] ?? '';
+        }
 
         $tattoo->update($data);
 

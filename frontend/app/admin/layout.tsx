@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "../globals.css";
 import { ToastProvider } from "@/components/ui/Toast";
+import { ConfirmProvider } from "@/components/ui/ConfirmDialog";
 
 const inter = Inter({ subsets: ["latin", "latin-ext"] });
 
@@ -16,7 +17,9 @@ export default function AdminRootLayout({
   return (
     <html lang="tr">
       <body className={`${inter.className} bg-paper text-ink antialiased`}>
-        <ToastProvider>{children}</ToastProvider>
+        <ToastProvider>
+          <ConfirmProvider>{children}</ConfirmProvider>
+        </ToastProvider>
       </body>
     </html>
   );

@@ -59,7 +59,7 @@ export function Board({ selection, gallery }: BoardProps) {
         </p>
       </Reveal>
 
-      <div className="relative mx-auto max-w-6xl columns-1 gap-6 sm:columns-2 sm:gap-6 lg:block lg:columns-1 lg:h-[1350px]">
+      <div className="relative mx-auto max-w-[90rem] columns-1 gap-6 sm:columns-2 sm:gap-6 lg:block lg:columns-1 lg:h-[1350px]">
         {boardTattoos.map((tattoo, i) => {
           const place = PLACEMENT[i];
           return (

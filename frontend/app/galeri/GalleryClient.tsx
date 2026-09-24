@@ -19,7 +19,7 @@ export function GalleryClient({ tattoos }: { tattoos: Tattoo[] }) {
 
   return (
     <main className="bg-notebook min-h-screen px-6 py-24 sm:px-10 sm:py-32">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-[90rem]">
         <Link
           href="/"
           className="group mb-12 inline-flex items-center gap-2 font-hand text-xl text-ink-soft transition-colors hover:text-amber"
@@ -42,7 +42,7 @@ export function GalleryClient({ tattoos }: { tattoos: Tattoo[] }) {
 
         <SectionHeading title="Galeri" className="mb-16" />
 
-        <div className="columns-1 gap-6 sm:columns-2 lg:columns-3">
+        <div className="columns-1 gap-6 sm:columns-2 lg:columns-3 2xl:columns-4">
           {tattoos.map((tattoo, i) => (
             <button
               key={tattoo.id}
