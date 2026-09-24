@@ -5,11 +5,165 @@ services:
       - "4002:80"
     volumes:
       - backend-storage:/var/www/backend/storage/app/public
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - frontend
       - backend
     restart: unless-stopped
+    # Written out at container start rather than bind-mounted from
+    # docker/nginx/default.conf: on Coolify (and similar setups where the
+    # Docker daemon compose actually talks to isn't guaranteed to see this
+    # repo checkout at the same path `docker compose` was invoked from), a
+    # relative bind-mount source that the daemon can't find gets silently
+    # auto-created as an empty DIRECTORY, and container creation then fails
+    # with "mount directory onto a file". A named volume (backend-storage,
+    # above) doesn't have this problem — only single-file host bind mounts
+    # do — which is also why /storage/ is still mounted normally.
+    #
+    # docker/nginx/default.conf is kept in the repo as a readable reference
+    # copy of this exact config (easier to review/diff than an escaped
+    # here-doc) but is NOT read at deploy time — this command is the only
+    # copy that actually runs. Keep the two in sync by hand when editing
+    # either one; every `$x` below is `$$x` only because Compose's own
+    # variable interpolation collapses `$$` -> `$` before this ever reaches
+    # the container's shell.
+    command:
+      - /bin/sh
+      - -c
+      - |
+        cat <<'NGINXCONF' > /etc/nginx/conf.d/default.conf
+        # Per-client request budgets. Keyed on the real client address (see the
+        # real_ip block below), so one abusive client can't exhaust the budget for
+        # everyone else.
+        limit_req_zone $$binary_remote_addr zone=login:10m rate=5r/m;
+        limit_req_zone $$binary_remote_addr zone=appointments:10m rate=10r/m;
+        limit_req_status 429;
+
+        server {
+            listen 80;
+            server_name _;
+
+            root /var/www/html/public;
+            index index.php index.html;
+
+            server_tokens off;
+
+            # Recover the real client IP. Only private ranges are trusted: the docker
+            # network (the Next.js container calling back into /api) and a reverse proxy
+            # on the host. A public client's own X-Forwarded-For is ignored because its
+            # address isn't in these ranges. If the site is ever put behind Cloudflare,
+            # add Cloudflare's published IP ranges here as well.
+            set_real_ip_from 10.0.0.0/8;
+            set_real_ip_from 172.16.0.0/12;
+            set_real_ip_from 192.168.0.0/16;
+            set_real_ip_from 127.0.0.1;
+            real_ip_header X-Forwarded-For;
+            real_ip_recursive on;
+
+            # Admin image uploads travel as base64 JSON (~33% larger than the file), so
+            # this sits above the 8 MB image cap enforced in UploadController.
+            client_max_body_size 20M;
+
+            add_header X-Content-Type-Options "nosniff" always;
+            add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+            add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
+            # Never serve dotfiles (.env, .git, ...) from anywhere.
+            location ~ /\. {
+                return 404;
+            }
+
+            # Frontend Next.js Proxy
+            location / {
+                proxy_pass http://frontend:3000;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $$http_upgrade;
+                proxy_set_header Connection 'upgrade';
+                proxy_set_header Host $$host;
+                # Overwritten, not appended: after real_ip, $$remote_addr is the actual
+                # client, and a client-supplied header must not survive to Next.js.
+                proxy_set_header X-Forwarded-For $$remote_addr;
+                proxy_set_header X-Real-IP $$remote_addr;
+                proxy_set_header X-Forwarded-Proto $$scheme;
+                proxy_cache_bypass $$http_upgrade;
+            }
+
+            location = /auth/login {
+                limit_req zone=login burst=5 nodelay;
+                proxy_pass http://frontend:3000;
+                proxy_http_version 1.1;
+                proxy_set_header Host $$host;
+                proxy_set_header X-Forwarded-For $$remote_addr;
+                proxy_set_header X-Real-IP $$remote_addr;
+                proxy_set_header X-Forwarded-Proto $$scheme;
+            }
+
+            location = /randevu-api {
+                limit_req zone=appointments burst=5 nodelay;
+                proxy_pass http://frontend:3000;
+                proxy_http_version 1.1;
+                proxy_set_header Host $$host;
+                proxy_set_header X-Forwarded-For $$remote_addr;
+                proxy_set_header X-Real-IP $$remote_addr;
+                proxy_set_header X-Forwarded-Proto $$scheme;
+            }
+
+            # Backend API and Sanctum Proxy
+            location = /api/admin/login {
+                limit_req zone=login burst=5 nodelay;
+                fastcgi_pass backend:9000;
+                include fastcgi_params;
+                fastcgi_param SCRIPT_FILENAME $$document_root/index.php;
+                fastcgi_param SCRIPT_NAME /index.php;
+                # Unlike proxy_pass, nginx's fastcgi module forwards every client
+                # request header to PHP-FPM as an HTTP_* param automatically — so
+                # without this, a client's own X-Forwarded-For/X-Real-IP would reach
+                # Laravel's $$request->ip() unfiltered, letting them rotate it per
+                # request to reset both nginx-independent throttles (throttle:10,1
+                # and the IP+email login lockout in AuthController) on every attempt.
+                fastcgi_param HTTP_X_FORWARDED_FOR $$remote_addr;
+                fastcgi_param HTTP_X_REAL_IP $$remote_addr;
+            }
+
+            location = /api/appointments {
+                limit_req zone=appointments burst=5 nodelay;
+                fastcgi_pass backend:9000;
+                include fastcgi_params;
+                fastcgi_param SCRIPT_FILENAME $$document_root/index.php;
+                fastcgi_param SCRIPT_NAME /index.php;
+                fastcgi_param HTTP_X_FORWARDED_FOR $$remote_addr;
+                fastcgi_param HTTP_X_REAL_IP $$remote_addr;
+            }
+
+            location ~ ^/(api|sanctum)(/|$$) {
+                fastcgi_pass backend:9000;
+                fastcgi_index index.php;
+                include fastcgi_params;
+                fastcgi_param SCRIPT_FILENAME $$document_root/index.php;
+                fastcgi_param SCRIPT_NAME /index.php;
+                fastcgi_param HTTP_X_FORWARDED_FOR $$remote_addr;
+                fastcgi_param HTTP_X_REAL_IP $$remote_addr;
+            }
+
+            # Serve uploaded images directly from storage — images only. Anything else
+            # that ever lands in the volume (html, svg, php, ...) is never served.
+            location ^~ /storage/ {
+                alias /var/www/backend/storage/app/public/;
+                autoindex off;
+
+                location ~* \.(jpe?g|png|webp|gif)$$ {
+                    add_header X-Content-Type-Options "nosniff" always;
+                    add_header Content-Security-Policy "default-src 'none'; sandbox" always;
+                    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+                    add_header Cache-Control "public, max-age=2592000" always;
+                }
+
+                location ~ .* {
+                    return 404;
+                }
+            }
+        }
+        NGINXCONF
+        exec nginx -g 'daemon off;'
 
   frontend:
     image: ghcr.io/tolgaosman/ibtattoo-frontend:latest
