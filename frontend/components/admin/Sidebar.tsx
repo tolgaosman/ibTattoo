@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { LayoutDashboard, MessageSquare, Image as ImageIcon, Settings, LogOut } from "lucide-react";
 
@@ -29,7 +30,14 @@ export function Sidebar({ unreadCount = 0 }: { unreadCount?: number }) {
   return (
     <aside className="fixed bottom-0 inset-x-0 flex flex-row md:inset-y-0 md:left-0 md:h-screen md:w-64 md:flex-col bg-paper-deep border-t md:border-t-0 md:border-r border-hairline z-50">
       <div className="hidden md:flex h-16 shrink-0 items-center justify-center border-b border-hairline px-6">
-        <h2 className="font-serif text-2xl text-amber-light">tatt2me Admin Panel</h2>
+        <Image
+          src="/images/siteLogo-wordmark.png"
+          alt="tatt2me"
+          width={162}
+          height={80}
+          priority
+          className="h-9 w-auto"
+        />
       </div>
       
       <nav className="flex-1 flex flex-row justify-around md:flex-col md:justify-start space-y-0 md:space-y-1 p-2 md:p-4">

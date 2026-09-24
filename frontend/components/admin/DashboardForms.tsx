@@ -364,7 +364,7 @@ export function DashboardForms({
                 Kapat
               </button>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-3 gap-4 max-w-xl">
               {galleryItems.map((item) => {
                 const slotIndex = selectedSlotIndex(item.id);
                 const isUsedElsewhere = slotIndex !== -1 && slotIndex !== activeSlot;

@@ -59,7 +59,12 @@ export function Board({ selection, gallery }: BoardProps) {
         </p>
       </Reveal>
 
-      <div className="relative mx-auto max-w-[90rem] columns-1 gap-6 sm:columns-2 sm:gap-6 lg:block lg:columns-1 lg:h-[1350px]">
+      {/* lg: height must clear the tallest possible card at any placement —
+          a portrait (4/5) photo at the widest slot (29% of 90rem) plus its
+          frame padding is ~576px tall. The three rows sit at y ~1/35/69%, so
+          2200px gives each row ~200px of clearance instead of the ~470px a
+          row actually got at the old 1350px, which let rows overlap. */}
+      <div className="relative mx-auto max-w-[90rem] columns-1 gap-6 sm:columns-2 sm:gap-6 lg:block lg:columns-1 lg:h-[2200px]">
         {boardTattoos.map((tattoo, i) => {
           const place = PLACEMENT[i];
           return (
