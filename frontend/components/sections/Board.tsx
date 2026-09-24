@@ -7,16 +7,19 @@ import { Lightbox } from "@/components/work/Lightbox";
 import { Reveal } from "@/components/ui/Reveal";
 import { ButtonLink } from "@/components/ui/Button";
 import { formatStyle, type Tattoo } from "@/lib/tattoos";
+// lg: each card sits in its own grid cell (3 columns), so rows can never
+// overlap regardless of photo aspect or viewport width. x/y/w only nudge the
+// card inside its cell (x + w must stay ≤ 100%) to keep the scattered look.
 const PLACEMENT: ReadonlyArray<Placement> = [
-  { x: "0%", y: "1%", w: "28%", r: "-3deg", tape: "5deg" },
-  { x: "35%", y: "5%", w: "26%", r: "2.5deg", tape: "-6deg" },
-  { x: "70%", y: "0%", w: "27%", r: "-1.5deg", tape: "3deg" },
-  { x: "9%", y: "35%", w: "27%", r: "3deg", tape: "-4deg" },
-  { x: "42%", y: "38%", w: "25%", r: "-2deg", tape: "7deg" },
-  { x: "72%", y: "34%", w: "26%", r: "1.5deg", tape: "-3deg" },
-  { x: "1%", y: "69%", w: "26%", r: "2deg", tape: "-7deg" },
-  { x: "32%", y: "72%", w: "27%", r: "-2.5deg", tape: "4deg" },
-  { x: "66%", y: "67%", w: "29%", r: "1deg", tape: "-5deg" },
+  { x: "0%", y: "0rem", w: "92%", r: "-3deg", tape: "5deg" },
+  { x: "8%", y: "3rem", w: "86%", r: "2.5deg", tape: "-6deg" },
+  { x: "6%", y: "0.5rem", w: "90%", r: "-1.5deg", tape: "3deg" },
+  { x: "10%", y: "1.5rem", w: "88%", r: "3deg", tape: "-4deg" },
+  { x: "4%", y: "3.5rem", w: "86%", r: "-2deg", tape: "7deg" },
+  { x: "8%", y: "0rem", w: "88%", r: "1.5deg", tape: "-3deg" },
+  { x: "2%", y: "2rem", w: "88%", r: "2deg", tape: "-7deg" },
+  { x: "6%", y: "3rem", w: "90%", r: "-2.5deg", tape: "4deg" },
+  { x: "0%", y: "1rem", w: "94%", r: "1deg", tape: "-5deg" },
 ];
 
 interface Placement {
@@ -59,12 +62,7 @@ export function Board({ selection, gallery }: BoardProps) {
         </p>
       </Reveal>
 
-      {/* lg: height must clear the tallest possible card at any placement —
-          a portrait (4/5) photo at the widest slot (29% of 90rem) plus its
-          frame padding is ~576px tall. The three rows sit at y ~1/35/69%, so
-          2200px gives each row ~200px of clearance instead of the ~470px a
-          row actually got at the old 1350px, which let rows overlap. */}
-      <div className="relative mx-auto max-w-[90rem] columns-1 gap-6 sm:columns-2 sm:gap-6 lg:block lg:columns-1 lg:h-[2200px]">
+      <div className="relative mx-auto max-w-[90rem] columns-1 gap-6 sm:columns-2 sm:gap-6 lg:grid lg:grid-cols-3 lg:items-start lg:gap-x-12 lg:gap-y-20">
         {boardTattoos.map((tattoo, i) => {
           const place = PLACEMENT[i];
           return (
@@ -129,7 +127,7 @@ function Polaroid({
         "paper-card group relative mx-auto mb-12 block w-[88%] break-inside-avoid p-2.5 pb-11 text-left sm:mb-8 sm:w-full",
         "rotate-[calc(var(--r)*0.5)] transition-[transform,box-shadow] duration-300 ease-out",
         "hover:z-20 hover:rotate-0 hover:scale-[1.03]",
-        "lg:absolute lg:left-[var(--x)] lg:top-[var(--y)] lg:mb-0 lg:w-[var(--w)] lg:rotate-[var(--r)]",
+        "lg:mb-0 lg:ml-[var(--x)] lg:mt-[var(--y)] lg:w-[var(--w)] lg:rotate-[var(--r)]",
       )}
     >
       <span className="tape absolute left-1/2 top-0 h-6 w-20 -translate-x-1/2 -translate-y-1/2 rotate-[var(--tape)]" />
