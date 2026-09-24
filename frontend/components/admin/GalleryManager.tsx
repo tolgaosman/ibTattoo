@@ -18,6 +18,7 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
   const toast = useToast();
   const confirm = useConfirm();
   const containerRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const emptyTattoo: Partial<Tattoo> = {
     style: "",
@@ -204,13 +205,21 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
               />
             </div>
             <div>
-              <label className="block text-sm text-ink mb-1">Görsel (PC'den Seç) *</label>
+              <label className="block text-sm text-ink mb-1">Görsel *</label>
               <input
+                ref={fileInputRef}
                 type="file"
                 accept="image/*"
                 onChange={e => setUploadFile(e.target.files?.[0] || null)}
-                className="w-full text-sm text-ink file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-amber file:px-4 file:py-2 file:text-sm file:font-medium file:text-paper-deep hover:file:bg-amber-light"
+                className="hidden"
               />
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="soft-card--link flex items-center justify-center rounded-md bg-amber px-4 py-2 text-sm font-medium text-paper-deep"
+              >
+                Dosya Yükle
+              </button>
               {uploadFile && <p className="mt-1 truncate text-xs text-muted">{uploadFile.name}</p>}
             </div>
             <div>

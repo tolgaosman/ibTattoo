@@ -211,7 +211,7 @@ export function DashboardForms({
               disabled={uploadingAboutImage}
               className="soft-card--link flex items-center justify-center rounded-md bg-amber px-4 py-2 text-sm font-medium text-paper-deep disabled:opacity-50"
             >
-              {uploadingAboutImage ? <Loader2 className="h-4 w-4 animate-spin" /> : "Görseli Değiştir"}
+              {uploadingAboutImage ? <Loader2 className="h-4 w-4 animate-spin" /> : "Dosya Yükle"}
             </button>
             <p className="mt-1 text-xs text-muted">Değişikliği kalıcı yapmak için altındaki Kaydet butonuna basın.</p>
           </div>

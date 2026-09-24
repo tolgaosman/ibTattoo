@@ -66,10 +66,10 @@
   --color-tape: var(--color-tape);
   --color-note: var(--color-note);
 
-  --font-serif: var(--font-shantell);
-  --font-sans: var(--font-shantell);
-  --font-hand: var(--font-shantell);
-  --font-script: var(--font-shantell);
+  --font-serif: var(--font-indie-flower);
+  --font-sans: var(--font-indie-flower);
+  --font-hand: var(--font-indie-flower);
+  --font-script: var(--font-indie-flower);
 
   --ease-out: var(--ease-out);
   --ease-in-out: var(--ease-in-out);
