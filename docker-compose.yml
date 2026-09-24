@@ -204,7 +204,10 @@ services:
 
   db:
     image: mysql:8.0
-    command: --default-authentication-plugin=mysql_native_password
+    # TEMPORARY password-recovery mode — revert right after resetting the
+    # MySQL user passwords. --skip-networking keeps it unreachable from any
+    # other container while grant checks are off.
+    command: --default-authentication-plugin=mysql_native_password --skip-grant-tables --skip-networking
     environment:
       - MYSQL_DATABASE=ibtattoo
       - MYSQL_USER=ibtattoo_user
