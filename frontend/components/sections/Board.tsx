@@ -141,7 +141,7 @@ function Polaroid({
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
         />
       </span>
-      <span className="absolute inset-x-3 bottom-3 truncate text-center font-hand text-xl leading-none text-ink-soft">
+      <span className="absolute inset-x-3 bottom-2 truncate text-center font-hand text-xl leading-[1.4] text-ink-soft">
         {title.toLocaleLowerCase("tr-TR")}
       </span>
     </button>
