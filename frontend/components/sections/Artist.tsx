@@ -3,9 +3,9 @@ import { Reveal } from "@/components/ui/Reveal";
 
 export function Artist({ about, image }: { about: string[]; image: string }) {
   return (
-    <section id="hakkimda" className="bg-notebook relative px-6 py-24 sm:px-10 sm:py-32">
+    <section id="hakkimda" className="bg-notebook relative px-5 py-16 sm:px-10 sm:py-32">
       <div className="mx-auto max-w-[90rem]">
-        <div className="grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
+        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
           <Reveal className="lg:rotate-[-1.5deg]">
             <figure className="paper-card relative p-3">
               <span className="tape absolute left-1/2 top-0 h-7 w-32 -translate-x-1/2 -translate-y-1/2 rotate-[-3deg]" />
@@ -21,18 +21,18 @@ export function Artist({ about, image }: { about: string[]; image: string }) {
             </figure>
           </Reveal>
 
-          <div className="flex flex-col gap-10">
+          <div className="flex flex-col gap-6 sm:gap-10">
             <Reveal>
-              <h2 className="font-hand text-[clamp(2.25rem,8vw,5.5rem)] leading-[0.92] text-amber drop-shadow-[0_0_8px_rgba(209,140,64,0.3)]">
+              <h2 className="font-hand text-[clamp(1.875rem,7vw,5.5rem)] leading-[0.92] text-amber drop-shadow-[0_0_8px_rgba(209,140,64,0.3)]">
                 Hakkımda
               </h2>
             </Reveal>
 
-            <ul className="flex flex-col gap-8">
+            <ul className="flex flex-col gap-4 sm:gap-8">
               {about.map((point, i) => (
                 <Reveal as="li" key={i} delay={i * 90} className="flex gap-4">
-                  <span aria-hidden className="mt-3.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber/70" />
-                  <p className="max-w-xl font-hand text-xl leading-[28px] sm:text-2xl sm:leading-[32px] text-ink-soft/90">{point}</p>
+                  <span aria-hidden className="mt-2.5 h-1.5 sm:mt-3.5 w-1.5 shrink-0 rounded-full bg-amber/70" />
+                  <p className="max-w-xl font-hand text-lg leading-[26px] sm:text-2xl sm:leading-[32px] text-ink-soft/90">{point}</p>
                 </Reveal>
               ))}
             </ul>

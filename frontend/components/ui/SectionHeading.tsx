@@ -12,7 +12,7 @@ export function SectionHeading({ eyebrow, title, align = "left", className }: Se
   return (
     <div className={clsx("flex flex-col gap-3", align === "center" && "items-center text-center", className)}>
 
-      <h2 className="font-hand text-[clamp(2.25rem,8vw,5.5rem)] leading-[0.95] text-amber drop-shadow-[0_0_8px_rgba(209,140,64,0.3)]">
+      <h2 className="font-hand text-[clamp(1.875rem,7vw,5.5rem)] leading-[0.95] text-amber drop-shadow-[0_0_8px_rgba(209,140,64,0.3)]">
         {title}
       </h2>
     </div>

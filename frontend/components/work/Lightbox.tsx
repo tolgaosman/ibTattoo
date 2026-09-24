@@ -62,17 +62,17 @@ export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
                     className="object-contain lg:object-cover"
                   />
                 </div>
-                <div className="flex shrink-0 flex-col gap-4 rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-parchment/60 p-4 sm:gap-6 sm:p-6 lg:flex-1 lg:justify-center lg:p-8">
+                <div className="flex shrink-0 flex-col gap-4 rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-parchment p-4 sm:gap-6 sm:p-6 lg:flex-1 lg:justify-center lg:p-8">
                   <div className="grid grid-cols-2 gap-3 sm:gap-4">
                     <MetaRow label="Tarz" value={formatStyle(tattoo.style)} />
                     <MetaRow label="Boyut" value={SIZE_LABELS[tattoo.size]} />
-                    <MetaRow label="Bölge" value={tattoo.placement} />
-                    <MetaRow label="Süre" value={tattoo.duration} />
+                    {tattoo.placement?.trim() ? <MetaRow label="Bölge" value={tattoo.placement} /> : null}
+                    {tattoo.duration?.trim() ? <MetaRow label="Süre" value={tattoo.duration} /> : null}
                   </div>
                   {tattoo.story ? (
                     <div className="flex-none border-t border-[var(--hairline)] pt-4 sm:pt-6">
                       <Eyebrow className="text-base sm:text-lg">Sürece Dair</Eyebrow>
-                      <p className="relative mt-2 line-clamp-4 font-serif text-lg leading-relaxed text-ink/90 sm:mt-3 sm:line-clamp-none sm:text-xl lg:text-2xl">
+                      <p className="relative mt-2 font-serif text-lg leading-relaxed text-ink/90 sm:mt-3 sm:text-xl lg:text-2xl">
                         <span aria-hidden className="mr-0.5 font-serif text-2xl text-amber-light/70 sm:text-3xl">
                           &ldquo;
                         </span>
@@ -124,8 +124,8 @@ export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
 function MetaRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex h-full flex-col justify-center gap-1 rounded-[var(--radius-sm)] border border-[var(--hairline)] bg-paper/40 px-3 py-2 sm:px-4 sm:py-3">
-      <Eyebrow className="text-[10px] sm:text-xs">{label}</Eyebrow>
-      <span className="line-clamp-2 font-serif text-xs leading-snug tracking-tight text-ink sm:text-sm md:text-base">{value}</span>
+      <Eyebrow className="text-sm text-ink-soft/80">{label}</Eyebrow>
+      <span className="line-clamp-2 font-serif text-base leading-snug tracking-tight text-ink md:text-lg">{value?.trim() || "—"}</span>
     </div>
   );
 }
