@@ -98,7 +98,9 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
           image: imagePath,
           credit: newTattoo.credit || "Irmak Bozkurt",
         };
-        await updateTattooAction(editingId, updates);
+        const result = await updateTattooAction(editingId, updates);
+        if (result?.error) throw new Error(result.error);
+        
         setItems(items.map((i) => (i.id === editingId ? { ...i, ...updates } : i)));
       } else {
         const fullTattoo: Tattoo = {
@@ -115,7 +117,9 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
           image: imagePath,
           credit: newTattoo.credit || "Irmak Bozkurt",
         };
-        await addTattooAction(fullTattoo);
+        const result = await addTattooAction(fullTattoo);
+        if (result?.error) throw new Error(result.error);
+        
         setItems([fullTattoo, ...items]);
       }
 
@@ -124,7 +128,7 @@ export function GalleryManager({ initialItems }: { initialItems: Tattoo[] }) {
       toast.success(editingId ? "Dövme güncellendi" : "Dövme eklendi");
     } catch (err) {
       console.error(err);
-      alert("Hata oluştu: " + (err instanceof Error ? err.message : String(err)));
+      toast.error(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
     }

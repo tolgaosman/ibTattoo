@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Caveat, Instrument_Serif, Inter, Parisienne } from "next/font/google";
+import { Instrument_Serif, Inter, Parisienne, Shantell_Sans } from "next/font/google";
 import { Chrome } from "@/components/chrome/Chrome";
 import "./globals.css";
 
@@ -24,10 +24,11 @@ const parisienne = Parisienne({
   weight: "400",
 });
 
-// Handwriting for the pinned notes and polaroid captions. latin-ext carries the
-// Turkish glyphs (ğ, ş, ı, İ), which most script faces drop.
-const caveat = Caveat({
-  variable: "--font-caveat",
+// Primary site handwriting face. A marker-style script built for legibility —
+// unlike thinner script faces, it holds up at body-copy sizes. latin-ext
+// carries the Turkish glyphs (ğ, ş, ı, İ), which most script faces drop.
+const shantellSans = Shantell_Sans({
+  variable: "--font-shantell",
   subsets: ["latin", "latin-ext"],
 });
 
@@ -90,7 +91,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html
       lang="tr"
       data-scroll-behavior="smooth"
-      className={`${instrumentSerif.variable} ${inter.variable} ${parisienne.variable} ${caveat.variable} h-full`}
+      className={`${instrumentSerif.variable} ${inter.variable} ${parisienne.variable} ${shantellSans.variable} h-full`}
     >
       <body className="flex min-h-full flex-col bg-paper text-ink antialiased">
         <a href="#icerik" className="skip-link">

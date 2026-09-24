@@ -65,15 +65,17 @@ export function Lightbox({ items, index, onIndexChange }: LightboxProps) {
                     <MetaRow label="Bölge" value={tattoo.placement} />
                     <MetaRow label="Süre" value={tattoo.duration} />
                   </div>
-                  <div className="min-h-0 flex-1 overflow-hidden border-t border-[var(--hairline)] pt-4 sm:flex-none sm:pt-6">
-                    <Eyebrow className="text-base sm:text-lg">Sürece Dair</Eyebrow>
-                    <p className="relative mt-2 line-clamp-4 font-serif text-lg leading-relaxed text-ink/90 sm:mt-3 sm:line-clamp-none sm:text-xl lg:text-2xl">
-                      <span aria-hidden className="mr-0.5 font-serif text-2xl text-amber-light/70 sm:text-3xl">
-                        &ldquo;
-                      </span>
-                      {tattoo.story}
-                    </p>
-                  </div>
+                  {tattoo.story ? (
+                    <div className="min-h-0 flex-1 overflow-hidden border-t border-[var(--hairline)] pt-4 sm:flex-none sm:pt-6">
+                      <Eyebrow className="text-base sm:text-lg">Sürece Dair</Eyebrow>
+                      <p className="relative mt-2 line-clamp-4 font-serif text-lg leading-relaxed text-ink/90 sm:mt-3 sm:line-clamp-none sm:text-xl lg:text-2xl">
+                        <span aria-hidden className="mr-0.5 font-serif text-2xl text-amber-light/70 sm:text-3xl">
+                          &ldquo;
+                        </span>
+                        {tattoo.story}
+                      </p>
+                    </div>
+                  ) : null}
                 </div>
               </div>
 

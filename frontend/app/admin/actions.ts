@@ -37,15 +37,30 @@ export async function saveContactAction(contact: any) {
 }
 
 export async function addTattooAction(tattoo: Tattoo) {
-  await addTattoo(tattoo);
+  try {
+    await addTattoo(tattoo);
+    return { success: true };
+  } catch (err: any) {
+    return { error: err.message || "Bilinmeyen hata" };
+  }
 }
 
 export async function updateTattooAction(id: string, tattoo: Partial<Tattoo>) {
-  await updateTattoo(id, tattoo);
+  try {
+    await updateTattoo(id, tattoo);
+    return { success: true };
+  } catch (err: any) {
+    return { error: err.message || "Bilinmeyen hata" };
+  }
 }
 
 export async function deleteTattooAction(id: string) {
-  await deleteTattoo(id);
+  try {
+    await deleteTattoo(id);
+    return { success: true };
+  } catch (err: any) {
+    return { error: err.message || "Bilinmeyen hata" };
+  }
 }
 
 export async function uploadImageAction(formData: FormData): Promise<string> {

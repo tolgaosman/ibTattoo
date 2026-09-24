@@ -66,10 +66,10 @@
   --color-tape: var(--color-tape);
   --color-note: var(--color-note);
 
-  --font-serif: var(--font-caveat);
-  --font-sans: var(--font-caveat);
-  --font-hand: var(--font-caveat);
-  --font-script: var(--font-caveat);
+  --font-serif: var(--font-shantell);
+  --font-sans: var(--font-shantell);
+  --font-hand: var(--font-shantell);
+  --font-script: var(--font-shantell);
 
   --ease-out: var(--ease-out);
   --ease-in-out: var(--ease-in-out);
