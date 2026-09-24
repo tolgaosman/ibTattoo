@@ -42,7 +42,10 @@ export function GalleryClient({ tattoos }: { tattoos: Tattoo[] }) {
 
         <SectionHeading title="Galeri" className="mb-16" />
 
-        <div className="columns-1 gap-6 sm:columns-2 lg:columns-3 2xl:columns-4">
+        {/* Same 4-column layout on every screen; spacing, frame and caption scale
+            with viewport width so small screens show a smaller copy of the
+            same page instead of a reflowed one. */}
+        <div className="columns-4 gap-[clamp(0.5rem,1.6vw,1.5rem)]">
           {tattoos.map((tattoo, i) => (
             <button
               key={tattoo.id}
@@ -51,22 +54,22 @@ export function GalleryClient({ tattoos }: { tattoos: Tattoo[] }) {
               data-cursor="view"
               aria-label={`${tattoo.title} — ${formatStyle(tattoo.style)}`}
               className={clsx(
-                "paper-card group relative mb-6 block w-full break-inside-avoid p-2.5 pb-11 text-left",
+                "paper-card group relative mb-[clamp(0.5rem,1.6vw,1.5rem)] block w-full break-inside-avoid p-[clamp(3px,0.7vw,10px)] pb-[clamp(1.1rem,3vw,2.75rem)] text-left",
                 "transition-[transform,box-shadow] duration-300 ease-out",
                 "hover:z-20 hover:scale-[1.02]",
               )}
             >
-              <span className="tape absolute left-1/2 top-0 h-6 w-20 -translate-x-1/2 -translate-y-1/2 rotate-[2deg] opacity-60 mix-blend-screen" />
+              <span className="tape absolute left-1/2 top-0 h-[clamp(0.5rem,1.6vw,1.5rem)] w-[clamp(1.75rem,5.5vw,5rem)] -translate-x-1/2 -translate-y-1/2 rotate-[2deg] opacity-60 mix-blend-screen" />
               <span className={clsx("relative block overflow-hidden bg-parchment", IMAGE_ASPECT[tattoo.aspect])}>
                 <Image
                   src={tattoo.image}
                   alt=""
                   fill
-                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  sizes="(min-width: 1440px) 360px, 25vw"
                   className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
                 />
               </span>
-              <span className="absolute inset-x-3 bottom-3 truncate text-center font-hand text-xl leading-none text-ink-soft">
+              <span className="absolute inset-x-[clamp(3px,0.8vw,12px)] bottom-0 pb-[clamp(2px,0.5vw,8px)] truncate text-center font-hand text-[clamp(0.6rem,1.4vw,1.25rem)] leading-[1.4] text-ink-soft">
                 {tattoo.title.toLocaleLowerCase("tr-TR")}
               </span>
             </button>
